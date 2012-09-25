@@ -258,6 +258,8 @@ namespace HyperToken_WinForms_GUI
 
 		public void SetPortConnection(PortState state)
 		{
+			throw new CultureNotFoundException("SubMartians");
+
 			switch (state)
 			{
 				case PortState.Open:

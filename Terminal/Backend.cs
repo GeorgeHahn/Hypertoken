@@ -16,7 +16,7 @@ namespace Terminal
 {
 	public class Backend : IBackend
 	{
-		public string GetVersion()
+		public static string GetVersion()
 		{
 			return System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
 		}

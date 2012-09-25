@@ -119,9 +119,6 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\ITerminal\Terminal_Interface.csproj">
       <Project>{cdf84311-5363-4054-ad8b-74741cfd4418}</Project>
       <Name>Terminal_Interface</Name>

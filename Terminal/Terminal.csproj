@@ -55,9 +55,11 @@
     <Compile Include="AdvancedJit.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-    <Content Include="NLog.config">
+    <None Include="App.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <Content Include="NLog.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
@@ -65,6 +67,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\externals\BugSense\Bugsense.WPF\Bugsense.WPF.csproj">
+      <Project>{96d7fdaa-341f-49d9-b910-1f349ca565d7}</Project>
+      <Name>Bugsense.WPF</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ITerminal\Terminal_Interface.csproj">
       <Project>{cdf84311-5363-4054-ad8b-74741cfd4418}</Project>
       <Name>Terminal_Interface</Name>

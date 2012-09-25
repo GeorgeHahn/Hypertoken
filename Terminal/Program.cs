@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
+using Bugsense.WPF;
 using NLog;
 using Terminal_Interface;
 
@@ -58,6 +59,7 @@ namespace Terminal
 			if (iinitableClass != null)
 			{
 				logger.Trace("Running IInitable");
+
 				IInitable initableClass = (IInitable)Activator.CreateInstance(guiAssembly.GetType(iinitableClass));
 				initableClass.Init();
 			}
@@ -65,9 +67,13 @@ namespace Terminal
 				logger.Warn("IInitable implementation was not found, skipping");
 
 			logger.Trace("Attaching GUI to backend");
+
 			ITerminal gui = (ITerminal)Activator.CreateInstance(guiAssembly.GetType(iterminalClass));
 			Backend b = new Backend(gui);
 			gui.SetBackend(b);
+
+			logger.Trace("Initialize BugSense");
+			BugSense.Init("9eacbe2e");
 
 			logger.Trace("Running GUI");
 			gui.Run();

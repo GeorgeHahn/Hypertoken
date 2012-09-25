@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terminal_Interface", "ITerm
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HyperToken_Avalon_GUI", "HyperToken_Avalon_GUI\HyperToken_Avalon_GUI.csproj", "{47500225-3865-4C6D-A30C-4B96B8D2A41A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bugsense.WPF", "externals\BugSense\Bugsense.WPF\Bugsense.WPF.csproj", "{96D7FDAA-341F-49D9-B910-1F349CA565D7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{6E23681C-544E-44B7-81E1-9086F5BFF888}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6E23681C-544E-44B7-81E1-9086F5BFF888}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6E23681C-544E-44B7-81E1-9086F5BFF888}.Release|Any CPU.Build.0 = Release|Any CPU
+		{96D7FDAA-341F-49D9-B910-1F349CA565D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96D7FDAA-341F-49D9-B910-1F349CA565D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{96D7FDAA-341F-49D9-B910-1F349CA565D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96D7FDAA-341F-49D9-B910-1F349CA565D7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CDF84311-5363-4054-AD8B-74741CFD4418}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CDF84311-5363-4054-AD8B-74741CFD4418}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CDF84311-5363-4054-AD8B-74741CFD4418}.Release|Any CPU.ActiveCfg = Release|Any CPU

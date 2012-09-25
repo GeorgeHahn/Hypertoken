@@ -180,7 +180,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Resources\app.config" />
     <None Include="Properties\app.manifest" />
@@ -284,6 +283,10 @@
     </PublishFile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\externals\BugSense\Bugsense.WPF\Bugsense.WPF.csproj">
+      <Project>{96d7fdaa-341f-49d9-b910-1f349ca565d7}</Project>
+      <Name>Bugsense.WPF</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ITerminal\Terminal_Interface.csproj">
       <Project>{cdf84311-5363-4054-ad8b-74741cfd4418}</Project>
       <Name>Terminal_Interface</Name>
