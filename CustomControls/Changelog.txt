@@ -1,0 +1,21 @@
+﻿6/17: 10 mins
+ + Project created
+ + FileSendPane created
+ + Changelog created
+
+6/17b: 35 mins
+ + Moved DataPane, HexPane, FileSendPane, and ASCIIPane to this project
+ > Added dependency to this assembly in HyperToken and Sniffer
+ > Organized file structure to reflect these changes
+
+6/18: 45 mins
+ + Worked on FileSendPane layout
+
+6/19: 15 mins
+ + Added OnSend event to FileSendPane
+
+~~ Paid
+
+7/29: 0 mins (at work)
+ + Fixed FileSendPane issue where file was not re-loaded if the same file was sent twice in a row
+ + Revved assembly to 1.0.1.0

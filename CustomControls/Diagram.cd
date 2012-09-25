@@ -1,0 +1,139 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Sniffer.AddressSortPane" BaseTypeListCollapsed="true">
+    <Position X="3" Y="1.75" Width="1.5" />
+    <Members>
+      <Field Name="AddrColumn" Hidden="true" />
+      <Field Name="addrData" Hidden="true" />
+      <Method Name="AddressSortPane" Hidden="true" />
+      <Method Name="ByteArrayToString" Hidden="true" />
+      <Field Name="Checked" Hidden="true" />
+      <Field Name="components" Hidden="true" />
+      <Field Name="DataColumn" Hidden="true" />
+      <Field Name="dataGridView1" Hidden="true" />
+      <Method Name="Dispose" Hidden="true" />
+      <Method Name="InitializeComponent" Hidden="true" />
+      <Field Name="RepeatsColumn" Hidden="true" />
+      <Field Name="TimeDeltaColumn" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAKAABACAAACAEAACABgQAAAAAAQAAgAAAAA=</HashCode>
+      <FileName>AddressSortPane.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Sniffer.ASCIIPane" BaseTypeListCollapsed="true">
+    <Position X="4.75" Y="2" Width="1.5" />
+    <Members>
+      <Method Name="ASCIIPane" Hidden="true" />
+      <Field Name="components" Hidden="true" />
+      <Method Name="Dispose" Hidden="true" />
+      <Method Name="InitializeComponent" Hidden="true" />
+      <Field Name="IOBox" Hidden="true" />
+      <Field Name="SB_BOTTOM" Hidden="true" />
+      <Method Name="ScrollToEnd" Hidden="true" />
+      <Method Name="SendMessage" Hidden="true" />
+      <Field Name="timestamp" Hidden="true" />
+      <Field Name="WM_VSCROLL" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAKAAAAAhACCAAAACAgAEAAAAAAAAAAAAAAE=</HashCode>
+      <FileName>ASCIIPane.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Sniffer.HexPane" BaseTypeListCollapsed="true">
+    <Position X="6.5" Y="1.75" Width="1.5" />
+    <Members>
+      <Field Name="components" Hidden="true" />
+      <Method Name="Dispose" Hidden="true" />
+      <Method Name="HexPane" Hidden="true" />
+      <Method Name="InitializeComponent" Hidden="true" />
+      <Field Name="IOBox" Hidden="true" />
+      <Field Name="SB_BOTTOM" Hidden="true" />
+      <Method Name="ScrollToEnd" Hidden="true" />
+      <Method Name="SendMessage" Hidden="true" />
+      <Field Name="WM_VSCROLL" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAKAAAAAgACCAAAACAAAEAAAAAAAAAAAAAAE=</HashCode>
+      <FileName>HexPane.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="CustomControls.FileSendPane">
+    <Position X="0.5" Y="0.5" Width="2.25" />
+    <Members>
+      <Field Name="_data" Hidden="true" />
+      <Field Name="buttonBrowse" Hidden="true" />
+      <Method Name="buttonBrowse_Click" Hidden="true" />
+      <Field Name="buttonCancel" Hidden="true" />
+      <Method Name="buttonCancel_Click" Hidden="true" />
+      <Field Name="buttonClose" Hidden="true" />
+      <Method Name="buttonClose_Click" Hidden="true" />
+      <Field Name="buttonPreviewData" Hidden="true" />
+      <Field Name="buttonSend" Hidden="true" />
+      <Method Name="buttonSend_Click" Hidden="true" />
+      <Field Name="components" Hidden="true" />
+      <Method Name="Dispose" Hidden="true" />
+      <Method Name="FileSendPane" Hidden="true" />
+      <Field Name="flowLayoutPanel1" Hidden="true" />
+      <Method Name="InitializeComponent" Hidden="true" />
+      <Field Name="label1" Hidden="true" />
+      <Field Name="label2" Hidden="true" />
+      <Field Name="label3" Hidden="true" />
+      <Field Name="LabelSendData" Hidden="true" />
+      <Field Name="numericUpDownCharDelay" Hidden="true" />
+      <Field Name="numericUpDownLineDelay" Hidden="true" />
+      <Field Name="openFileDialog1" Hidden="true" />
+      <Method Name="openFileDialog1_FileOk" Hidden="true" />
+      <Field Name="panel1" Hidden="true" />
+      <Field Name="panelBrowse" Hidden="true" />
+      <Field Name="panelCancel" Hidden="true" />
+      <Field Name="panelCharDelay" Hidden="true" />
+      <Field Name="panelData" Hidden="true" />
+      <Field Name="panelLineDelay" Hidden="true" />
+      <Field Name="panelPreviewData" Hidden="true" />
+      <Field Name="panelProgressBar" Hidden="true" />
+      <Field Name="panelSend" Hidden="true" />
+      <Field Name="progressBarSend" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Struct Name="CustomControls.FileSendPane.SerialSendArgs" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>FileSendPane.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Struct>
+      <Delegate Name="CustomControls.FileSendPane.OnFileSendEventHandler" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>FileSendPane.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAIECAABKAgIBgEEACCREQDEIBAgAAgQIAAASIJAAA=</HashCode>
+      <FileName>FileSendPane.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="Sniffer.DataPane">
+    <Position X="4.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DataPane.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
