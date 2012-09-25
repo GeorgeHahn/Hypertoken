@@ -19,10 +19,10 @@ namespace Terminal
 			logger.Trace("Loading GUI assembly");
 
 			// WinForms GUI
-			Assembly guiAssembly = Assembly.LoadFrom(@"C:\Users\ghahn\Documents\Dump\Hypertoken\trunk\HyperToken_WinForms_GUI\bin\Debug\HyperToken_WinForms_GUI.dll");
+			Assembly guiAssembly = Assembly.LoadFrom(@"..\..\..\HyperToken_WinForms_GUI\bin\Debug\HyperToken_WinForms_GUI.dll");
 
-			// WPF Avalon GUI
-			//Assembly guiAssembly = Assembly.LoadFrom(@"C:\Users\ghahn\Documents\Dump\Hypertoken\trunk\HyperToken_Avalon_GUI\bin\Debug\HyperToken_Avalon_GUI.dll");
+			// WPF AvalonDock GUI
+			//Assembly guiAssembly = Assembly.LoadFrom(@"..\..\..\HyperToken_Avalon_GUI\bin\Debug\HyperToken_Avalon_GUI.dll");
 
 			logger.Trace("Finding interfaces");
 
