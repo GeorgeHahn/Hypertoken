@@ -364,7 +364,6 @@ namespace Terminal
 				{
 					logger.Info("Opening port");
 					serialPort.Open();
-					throw new AccessViolationException("SubMartians");
 				}
 				else if (state == PortState.Closed)
 				{

@@ -99,8 +99,6 @@ namespace HyperToken_WinForms_GUI
 		{
 			logger.Trace("Echo set to {0}", echoState);
 
-			throw new Exception("Submartians");
-
 			switch (echoState)
 			{
 				case EchoState.Disabled:
