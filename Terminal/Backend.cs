@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.IO;
 using System.IO.Ports;
 using System.Threading;
+using Bugsense.WPF;
 using HyperToken_WinForms_GUI.Helpers;
 using NLog;
 using Terminal_Interface;
@@ -363,6 +364,7 @@ namespace Terminal
 				{
 					logger.Info("Opening port");
 					serialPort.Open();
+					throw new AccessViolationException("SubMartians");
 				}
 				else if (state == PortState.Closed)
 				{
@@ -380,9 +382,9 @@ namespace Terminal
 				logger.ErrorException("SetPortConnection failed", e);
 				terminal.portState = PortState.Error;
 
-				//TODO Remove old API call
-				terminal.SetPortConnection(PortState.Error);
 				terminal.AddLine(e.Message);
+
+				BugSense.SendException(e);
 			}
 		}
 

@@ -67,7 +67,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\externals\BugSense\Bugsense.WPF\Bugsense.WPF.csproj">
+    <ProjectReference Include="..\Bugsense.WPF\Bugsense.WPF\Bugsense.WPF.csproj">
       <Project>{96d7fdaa-341f-49d9-b910-1f349ca565d7}</Project>
       <Name>Bugsense.WPF</Name>
     </ProjectReference>

@@ -17,7 +17,14 @@ namespace Terminal
 			logger.Trace("Initializing advanced JIT");
 			AdvancedJIT.SetupJIT();
 
+			logger.Trace("Initialize BugSense");
+			BugSense.Init("9eacbe2e", Backend.GetVersion(), "http://www.bugsense.com/api/errors");
+
 			logger.Trace("Loading GUI assembly");
+
+			logger.Fatal("Is this dynamic loading thing really necessary?");
+			logger.Fatal("It's not like I mind the extra dependencies");
+			logger.Fatal("Might be wise to just hardcode the options");
 
 			// WinForms GUI
 			Assembly guiAssembly = Assembly.LoadFrom(@"..\..\..\HyperToken_WinForms_GUI\bin\Debug\HyperToken_WinForms_GUI.dll");
@@ -71,9 +78,6 @@ namespace Terminal
 			ITerminal gui = (ITerminal)Activator.CreateInstance(guiAssembly.GetType(iterminalClass));
 			Backend b = new Backend(gui);
 			gui.SetBackend(b);
-
-			logger.Trace("Initialize BugSense");
-			BugSense.Init("9eacbe2e");
 
 			logger.Trace("Running GUI");
 			gui.Run();

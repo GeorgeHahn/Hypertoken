@@ -8,9 +8,9 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Globalization;
 using System.Windows.Forms;
+using Bugsense.WPF;
 using HyperToken_WinForms_GUI.Helpers;
 using HyperToken_WinForms_GUI.Properties;
-using MRG.Controls.UI;
 using NLog;
 using Terminal_Interface;
 using Terminal_Interface.Enums;
@@ -22,7 +22,6 @@ using Terminal_Interface.Exceptions;
 // TODO right click menu
 // - Copy, Save selection, Send file
 // TODO Parse incoming data for unprintable characters (display as hex?)
-// TODO Optimize key press handler (ugly code, but it fixes the double-newline problem)
 
 namespace HyperToken_WinForms_GUI
 {
@@ -99,6 +98,8 @@ namespace HyperToken_WinForms_GUI
 		private void OnechoStateChanged()
 		{
 			logger.Trace("Echo set to {0}", echoState);
+
+			throw new Exception("Submartians");
 
 			switch (echoState)
 			{
@@ -258,8 +259,6 @@ namespace HyperToken_WinForms_GUI
 
 		public void SetPortConnection(PortState state)
 		{
-			throw new CultureNotFoundException("SubMartians");
-
 			switch (state)
 			{
 				case PortState.Open:
@@ -378,6 +377,7 @@ namespace HyperToken_WinForms_GUI
 
 		public void Run()
 		{
+			BugSense.SendException(new Exception("Test - 3"));
 			Application.Run(this);
 		}
 
