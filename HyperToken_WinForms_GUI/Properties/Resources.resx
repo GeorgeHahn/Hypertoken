@@ -154,4 +154,13 @@
 	<data name="Text_Baud">
 		<value xml:space="preserve"> Baud</value>
 	</data>
+	<data name="MainForm_SaveSession_Save_Session">
+		<value xml:space="preserve">Save Session</value>
+	</data>
+	<data name="MainForm_SaveSession_Text_files">
+		<value xml:space="preserve">Text files</value>
+	</data>
+	<data name="MainForm_SaveSession_All_files">
+		<value xml:space="preserve">All files</value>
+	</data>
 </root>

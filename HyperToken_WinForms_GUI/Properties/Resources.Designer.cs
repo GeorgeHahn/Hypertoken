@@ -91,6 +91,33 @@ namespace HyperToken_WinForms_GUI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to All files.
+        /// </summary>
+        internal static string MainForm_SaveSession_All_files {
+            get {
+                return ResourceManager.GetString("MainForm_SaveSession_All_files", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save Session.
+        /// </summary>
+        internal static string MainForm_SaveSession_Save_Session {
+            get {
+                return ResourceManager.GetString("MainForm_SaveSession_Save_Session", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Text files.
+        /// </summary>
+        internal static string MainForm_SaveSession_Text_files {
+            get {
+                return ResourceManager.GetString("MainForm_SaveSession_Text_files", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to  Baud.
         /// </summary>
         internal static string Text_Baud {

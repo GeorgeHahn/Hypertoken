@@ -24,11 +24,7 @@ namespace HyperToken_Avalon_GUI
 
 		public event SetLoggingPathEventHandler OnSetLoggingPath;
 
-		public event ToggleConnectionEventHandler OnToggleConnection;
-
 		public event OnKeyPressedEventHandler OnKeyPressed;
-
-		public event SerialPortListEventHandler OnSerialPortList;
 
 		public event SaveSessionEventHandler OnSaveSession;
 
@@ -83,16 +79,7 @@ namespace HyperToken_Avalon_GUI
 		{
 			get
 			{
-				logger.Trace("Listing serial ports");
-				if (_backend != null)
-				{
-					string[] result = _backend.GetSerialPorts();
-					logger.Debug("Backend listed {0} serial ports", result.Length);
-					return result;
-				}
-
-				logger.Trace("Serial port listing failed, backend is null");
-				return new string[] { };
+				return _backend.GetSerialPorts();
 			}
 			set { } // Empty to allow WPF binding
 		}
@@ -132,11 +119,6 @@ namespace HyperToken_Avalon_GUI
 		public void SetLoggingState(LoggingState state)
 		{
 			logger.Trace("SetLoggingState {0}", state);
-		}
-
-		public void SetPortConnection(PortState state)
-		{
-			logger.Trace("SetPortConnection {0}", state);
 		}
 
 		public void SetFileSendState(FileSendState fileSendState)

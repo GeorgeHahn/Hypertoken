@@ -8,11 +8,7 @@ namespace Terminal_Interface
 
 	public delegate void SetLoggingPathEventHandler(object sender, SetLoggingPathEventArgs e);
 
-	public delegate void ToggleConnectionEventHandler(object sender, ToggleConnectionEventArgs e);
-
 	public delegate void OnKeyPressedEventHandler(object sender, OnKeyPressedEventArgs e);
-
-	public delegate void SerialPortListEventHandler(object sender, SerialPortListEventArgs e);
 
 	public delegate void SaveSessionEventHandler(object sender, SaveSessionEventArgs e);
 
@@ -36,9 +32,6 @@ namespace Terminal_Interface
 		event SendFileEventHandler OnSendFile;
 
 		event OnKeyPressedEventHandler OnKeyPressed;
-
-		// TODO How can this be eliminated?
-		event SerialPortListEventHandler OnSerialPortList;
 
 		// New API
 		string Title { get; set; }
@@ -71,13 +64,9 @@ namespace Terminal_Interface
 
 		event SetLoggingPathEventHandler OnSetLoggingPath;
 
-		event ToggleConnectionEventHandler OnToggleConnection;
-
 		event SaveSessionEventHandler OnSaveSession;
 
 		string GetLoggingFilePath();
-
-		void SetPortConnection(PortState state);
 
 		void SetFileSendState(FileSendState fileSendState);
 	}

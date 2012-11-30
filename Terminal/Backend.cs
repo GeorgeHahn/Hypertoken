@@ -17,61 +17,67 @@ namespace Terminal
 {
 	public class Backend : IBackend
 	{
+		private IDataReader _reader;
+
 		public static string GetVersion()
 		{
 			return System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
 		}
 
-		public Backend(ITerminal _terminal)
+		public Backend(ITerminal terminal, IDataReader reader)
 		{
-			#region Serial port initialization
+			if (terminal == null)
+				throw new ArgumentNullException("terminal");
+			if (reader == null)
+				throw new ArgumentNullException("reader");
 
-			recieveBuffer = new byte[1024];
+			_reader = reader;
+			_terminal = terminal;
 
-			serialPort = new SerialPort();
-			serialPort.DataReceived += SerialPortOnDataReceived;
+			reader.DataReceived += OnDataReceived;
 
-			#endregion Serial port initialization
+			ShowVersionInformation();
 
-			#region terminal initialization
+			#region _terminal initialization
 
-			this.terminal = _terminal;
+			terminal.SetBackend(this);
 
+			_terminal.PropertyChanged += TerminalOnPropertyChanged;
+
+			//TODO Remove old API calls
+			_terminal.OnKeyPressed += TerminalOnKeyPressed;
+			_terminal.OnSaveSession += TerminalOnSaveSession;
+			_terminal.OnSendFile += TerminalOnSendFile;
+			_terminal.OnSetLoggingPath += TerminalOnSetLoggingPath;
+
+			_terminal.baud = 115200;
+			_terminal.dataBits = 8;
+			_terminal.stopBits = Terminal_Interface.Enums.StopBits.One;
+			_terminal.parity = Parity.None;
+			_terminal.flowControl = FlowControl.None;
+
+			#endregion _terminal initialization
+		}
+
+		private void ShowVersionInformation()
+		{
 			logger.Warn("Version {0}", GetVersion());
 
-			this.terminal.Title = "HyperToken";
+			_terminal.Title = "HyperToken";
 
 #if DEBUG
-			this.terminal.Title += " [Debug]";
+			_terminal.Title += " [Debug]";
 
 			logger.Warn("Debug version");
 #endif
 
-			this.terminal.Title += " (" + GetVersion() + ')';
+			_terminal.Title += " (" + GetVersion() + ')';
 
 			if (System.Diagnostics.Debugger.IsAttached)
 			{
 				logger.Warn("Debugger attached");
-				this.terminal.Title += " [Debugger attached]";
+				_terminal.Title += " [Debugger attached]";
 			}
-
-			this.terminal.PropertyChanged += TerminalOnPropertyChanged;
-
-			//TODO Remove old API calls
-			this.terminal.OnKeyPressed += TerminalOnKeyPressed;
-			this.terminal.OnSaveSession += TerminalOnSaveSession;
-			this.terminal.OnSendFile += TerminalOnSendFile;
-			this.terminal.OnSerialPortList += TerminalOnSerialPortList;
-			this.terminal.OnSetLoggingPath += TerminalOnSetLoggingPath;
-			this.terminal.OnToggleConnection += TerminalOnToggleConnection;
-
-			this.terminal.baud = 115200;
-			this.terminal.dataBits = 8;
-			this.terminal.stopBits = Terminal_Interface.Enums.StopBits.One;
-			this.terminal.parity = Parity.None;
-			this.terminal.flowControl = FlowControl.None;
-
-			#endregion terminal initialization
 		}
 
 		private void TerminalOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
@@ -84,52 +90,53 @@ namespace Terminal
 					break;
 
 				case "LoggingFilePath":
-					TerminalOnSetLoggingPath(null, new SetLoggingPathEventArgs(terminal.LoggingFilePath));
+					TerminalOnSetLoggingPath(null, new SetLoggingPathEventArgs(_terminal.LoggingFilePath));
 					break;
 
 				case "loggingState":
-					SetLoggingState(terminal.loggingState);
+					SetLoggingState(_terminal.loggingState);
 					break;
 
 				case "echoState":
-					SetEchoState(terminal.echoState);
+					SetEchoState(_terminal.echoState);
 					break;
 
 				case "portState":
-					SetPortConnection(terminal.portState);
+					SetPortConnection(_terminal.portState);
 					break;
 
 				case "fileSendState":
 					break;
 
 				case "COMPort":
-					SetCOMPort(terminal.COMPort);
+					SetCOMPort(_terminal.COMPort);
 					break;
 
 				case "baud":
-					SetBaudRate(terminal.baud);
+					SetBaudRate(_terminal.baud);
 					break;
 
 				case "stopBits":
-					SetStopBits(terminal.stopBits);
+					SetStopBits(_terminal.stopBits);
 					break;
 
 				case "dataBits":
-					SetDataBits(terminal.dataBits);
+					SetDataBits(_terminal.dataBits);
 					break;
 
 				case "flowControl":
-					SetFlowControl(terminal.flowControl);
+					SetFlowControl(_terminal.flowControl);
 					break;
 
 				case "parity":
-					SetParity(terminal.parity);
+					SetParity(_terminal.parity);
 					break;
 
 				case "serialPorts":
 					break;
 
 				case "connected":
+
 					break;
 			}
 		}
@@ -138,48 +145,35 @@ namespace Terminal
 		{
 			logger.Trace("Databits set to {0}", p);
 			serialPort.DataBits = p;
-			terminal.dataBits = p;
+			_terminal.dataBits = p;
 		}
 
 		private void SetStopBits(Terminal_Interface.Enums.StopBits stopBits)
 		{
 			logger.Trace("Stopbits set to {0}", stopBits);
 			serialPort.StopBits = (System.IO.Ports.StopBits)stopBits;
-			terminal.stopBits = stopBits;
+			_terminal.stopBits = stopBits;
 		}
 
 		private void SetFlowControl(Terminal_Interface.Enums.FlowControl flowControl)
 		{
 			logger.Trace("FlowControl set to {0}", flowControl);
 			serialPort.Handshake = (System.IO.Ports.Handshake)flowControl;
-			terminal.flowControl = flowControl;
+			_terminal.flowControl = flowControl;
 		}
 
 		private void SetBaudRate(int baudrate)
 		{
 			logger.Trace("Baud set to {0}", baudrate);
 			serialPort.BaudRate = baudrate;
-			terminal.baud = baudrate;
+			_terminal.baud = baudrate;
 		}
 
 		private void SetParity(Terminal_Interface.Enums.Parity parity)
 		{
 			logger.Trace("Parity being set to {0}", parity);
 			serialPort.Parity = (System.IO.Ports.Parity)parity;
-			terminal.parity = parity;
-		}
-
-		private void TerminalOnToggleConnection(object sender, ToggleConnectionEventArgs e)
-		{
-			logger.Trace("Connection toggled");
-			ToggleConnected();
-		}
-
-		private void TerminalOnSerialPortList(object sender, SerialPortListEventArgs e)
-		{
-			logger.Trace("Serial ports listed");
-			e.ports = SerialPort.GetPortNames();
-			logger.Debug("{0} ports available", e.ports.Length);
+			_terminal.parity = parity;
 		}
 
 		private void TerminalOnSaveSession(object sender, SaveSessionEventArgs e)
@@ -206,13 +200,18 @@ namespace Terminal
 			serialPort.Write(new[] { c }, 0, 1);
 
 			if (echoState == EchoState.Enabled)
-				terminal.AddChar(c);
+				_terminal.AddChar(c);
 		}
 
 		private void TerminalOnKeyPressed(object sender, OnKeyPressedEventArgs e)
 		{
 			logger.Trace("Key pressed: {0}", e.KeyChar);
 			SendChar(e.KeyChar);
+		}
+
+		internal static void Shutdown()
+		{
+			logger.Info("Logger shutting down");
 		}
 
 		private void SetCOMPort(string COMPort)
@@ -249,7 +248,7 @@ namespace Terminal
 				logger.Info("Disabling logging");
 				loggingState = LoggingState.Disabled;
 
-				terminal.loggingState = loggingState;
+				_terminal.loggingState = loggingState;
 
 				loggingStream.Close();
 				logger.Info("Disabled logging");
@@ -265,11 +264,11 @@ namespace Terminal
 				logger.Trace("Setting logging file");
 
 				if (string.IsNullOrEmpty(loggingFile))
-					loggingFile = terminal.LoggingFilePath;
+					loggingFile = _terminal.LoggingFilePath;
 
 				//TODO Remove old API call
 				if (loggingFile == null)
-					loggingFile = terminal.GetLoggingFilePath();
+					loggingFile = _terminal.GetLoggingFilePath();
 
 				if (loggingFile == null)
 					throw new Exception("Logging file not selected");
@@ -294,15 +293,15 @@ namespace Terminal
 			catch (IOException e)
 			{
 				logger.ErrorException("IOException encountered in ToggleLogging", e);
-				terminal.AddLine(e.Message);
+				_terminal.AddLine(e.Message);
 			}
 			catch (Exception e)
 			{
 				logger.ErrorException("Generic exception encountered in ToggleLogging", e);
-				terminal.AddLine(e.Message);
+				_terminal.AddLine(e.Message);
 			}
 
-			terminal.loggingState = loggingState;
+			_terminal.loggingState = loggingState;
 
 			logger.Info("Logging to file {0}", loggingFile);
 		}
@@ -326,7 +325,7 @@ namespace Terminal
 		{
 			logger.Trace("Setting echoState to {0}", state);
 			echoState = state;
-			terminal.echoState = state;
+			_terminal.echoState = state;
 		}
 
 		private void Uninitialize()
@@ -371,31 +370,17 @@ namespace Terminal
 					serialPort.Close();
 				}
 
-				terminal.portState = state;
-
-				//TODO Remove old API call
-				terminal.SetPortConnection(state);
+				_terminal.portState = state;
 			}
 			catch (Exception e)
 			{
 				logger.ErrorException("SetPortConnection failed", e);
-				terminal.portState = PortState.Error;
+				_terminal.portState = PortState.Error;
 
-				terminal.AddLine(e.Message);
+				_terminal.AddLine(e.Message);
 
 				BugSense.SendException(e);
 			}
-		}
-
-		/// <summary>
-		/// Toggle COM port connection state
-		/// </summary>
-		private void ToggleConnected()
-		{
-			if (serialPort.IsOpen)
-				SetPortConnection(PortState.Closed);
-			else
-				SetPortConnection(PortState.Open);
 		}
 
 		private void SerialFileSendThreadProc(object data)
@@ -412,19 +397,17 @@ namespace Terminal
 			if (!serialPort.IsOpen)
 			{
 				logger.Warn("Serial port is closed");
-				terminal.portState = PortState.Error;
+				_terminal.portState = PortState.Error;
 
-				//TODO Remove old API call
-				terminal.SetPortConnection(PortState.Error);
 				return;
 			}
 
 			try
 			{
-				terminal.fileSendState = FileSendState.InProgress;
+				_terminal.fileSendState = FileSendState.InProgress;
 
 				//TODO Remove old API call
-				terminal.SetFileSendState(FileSendState.InProgress);
+				_terminal.SetFileSendState(FileSendState.InProgress);
 
 				logger.Trace("Entering serial data send loop");
 				HighResolutionSleep.MM_BeginPeriod(1);
@@ -441,19 +424,19 @@ namespace Terminal
 
 				HighResolutionSleep.MM_EndPeriod(1);
 				logger.Trace("Exiting serial data send loop");
-				terminal.fileSendState = FileSendState.Success;
+				_terminal.fileSendState = FileSendState.Success;
 
 				//TODO Remove old API call
-				terminal.SetFileSendState(FileSendState.Success);
+				_terminal.SetFileSendState(FileSendState.Success);
 			}
 			catch (Exception e)
 			{
 				logger.ErrorException("Error in file send thread", e);
-				terminal.fileSendState = FileSendState.Error;
+				_terminal.fileSendState = FileSendState.Error;
 
 				//TODO Remove old API call
-				terminal.SetFileSendState(FileSendState.Error);
-				terminal.AddLine(e.Message);
+				_terminal.SetFileSendState(FileSendState.Error);
+				_terminal.AddLine(e.Message);
 			}
 		}
 
@@ -468,22 +451,18 @@ namespace Terminal
 			if (serialPort == null)
 			{
 				logger.Info("TerminalOnSendFile hit a null serial port");
-				terminal.portState = PortState.Error;
-
-				//TODO Remove old API call
-				terminal.SetPortConnection(PortState.Error);
+				_terminal.portState = PortState.Error;
 				return;
 			}
 
 			if (!serialPort.IsOpen)
 			{
 				logger.Debug("TerminalOnSendFile hit a closed serial port");
-				terminal.portState = PortState.Error;
-				terminal.fileSendState = FileSendState.Error;
+				_terminal.portState = PortState.Error;
+				_terminal.fileSendState = FileSendState.Error;
 
 				//TODO Remove old API calls
-				terminal.SetFileSendState(FileSendState.Error);
-				terminal.SetPortConnection(PortState.Error);
+				_terminal.SetFileSendState(FileSendState.Error);
 			}
 
 			if ((serialFileSendThread == null) || (!serialFileSendThread.IsAlive))
@@ -495,68 +474,19 @@ namespace Terminal
 			else
 			{
 				logger.Warn("Already sending a file; cancelling user request for another file send");
-				terminal.AddLine("Already sending a file, please wait until send is complete");
+				_terminal.AddLine("Already sending a file, please wait until send is complete");
 				return;
 			}
 		}
 
-		private void SerialPortOnDataReceived(object sender, SerialDataReceivedEventArgs e)
+		private void OnDataReceived(object sender, DataReceivedEventArgs e)
 		{
-			logger.Trace("Received {0} bytes", serialPort.BytesToRead);
-			if (!serialPort.IsOpen)
-				return;
-
-			// Print the received data to the screen
-			int count = serialPort.BytesToRead;
-
-			if (count == 0)
-				return;
-
-			if (count > 200)
-			{
-				logger.Warn("High memory usage detected, trimming lines!");
-				terminal.TrimLines(1000);
-			}
-
-			//if (count > 1024)
-			//	count = 1024;
-
-			serialPort.Read(recieveBuffer, 0, count);
-
-			//TODO Translate unprintable characters to hex
-			string inStr = System.Text.Encoding.ASCII.GetString(recieveBuffer, 0, count);
-
-			//int inStrLen = inStr.Length;
-
-			inStr = inStr.Replace(new string(new char[] { (char)0xA, (char)0xD }), Environment.NewLine);
-
-			//if (inStrLen > 1)
-			//{
-			//	for (int i = 1; i < inStrLen; i++)
-			//		if ((inStr[i - 1] == 0x0a) && (inStr[i] == 0x0d))
-			//		{
-			//			inStr = inStr.Remove(i, 1);
-			//			inStrLen--;
-			//		}
-
-			//	lastChar = inStr[inStrLen - 1];
-			//}
-			//else
-			//	if (inStrLen == 1)
-			//		if ((lastChar == 0x0a) && (inStr[0] == 0x0d))
-			//			return;
-
-			terminal.AddLine(inStr);
-
-			//TODO implement this in the backend code
-			//if (loggingEnabled)
-			//    if (loggingStream.CanWrite)
-			//        loggingStream.Write(recieveBuffer, 0, count);
+			_terminal.AddLine(e.Data);
 		}
 
 		#endregion Serial port functions
 
-		private ITerminal terminal;
+		private ITerminal _terminal;
 		private static Logger logger = LogManager.GetCurrentClassLogger();
 
 		private LoggingState loggingState = LoggingState.Disabled;
@@ -578,20 +508,16 @@ namespace Terminal
 		/// </summary>
 		private Thread serialFileSendThread;
 
-		private SerialPort serialPort;
-
-		/// <summary>
-		/// Buffer for serial port incoming data
-		/// </summary>
-		private byte[] recieveBuffer;
-
 		private char lastChar;
 
 		#region Implementation of IBackend
 
 		public string[] GetSerialPorts()
 		{
-			return SerialPort.GetPortNames();
+			logger.Trace("Serial ports listed");
+			string[] ports = SerialPort.GetPortNames();
+			logger.Debug("{0} ports available", ports.Length);
+			return ports;
 		}
 
 		public void KeyPressed(char c)

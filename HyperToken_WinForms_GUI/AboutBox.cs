@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Reflection;
 using System.Windows.Forms;
+using Terminal_Interface;
 
 namespace HyperToken_WinForms_GUI
 {
-	partial class AboutBox : Form
+	public partial class AboutBox : Form, IAboutBox
 	{
 		public AboutBox()
 		{
@@ -26,6 +27,11 @@ namespace HyperToken_WinForms_GUI
 			//textBoxDescription.Text = Assembly.GetExecutingAssembly().GetName().Version;
 
 			//this.textBoxDescription.Text = AssemblyDescription;
+		}
+
+		public void Open()
+		{
+			this.ShowDialog();
 		}
 
 		#region Assembly Attribute Accessors

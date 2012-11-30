@@ -63,6 +63,30 @@ namespace HyperToken_WinForms_GUI
 			this.Text = Title;
 		}
 
+		public PortState portState { get; set; }
+
+		public void OnportStateChanged()
+		{
+			switch (portState)
+			{
+				case PortState.Open:
+					toolStripButtonConnect.Text = Resources.Text_Disconnect;
+					toolStripButtonConnect.Image = Resources.disconnected;
+					toolStripButtonConnect.ForeColor = SystemColors.ControlText;
+					break;
+
+				case PortState.Closed:
+					toolStripButtonConnect.Text = Resources.Text_Connect;
+					toolStripButtonConnect.Image = Resources.connected;
+					break;
+
+				case PortState.Error:
+					portState = PortState.Closed;
+					toolStripButtonConnect.ForeColor = Color.Red;
+					break;
+			}
+		}
+
 		public string LoggingFilePath { get; set; }
 
 		public LoggingState loggingState { get; set; }
@@ -87,10 +111,8 @@ namespace HyperToken_WinForms_GUI
 
 		private void ToggleLogging(object sender, System.EventArgs e)
 		{
-			if (loggingState == LoggingState.Disabled)
-				loggingState = LoggingState.Enabled;
-			else
-				loggingState = LoggingState.Disabled;
+			logger.Trace("Toggle logging");
+			loggingState = loggingState == LoggingState.Disabled ? LoggingState.Enabled : LoggingState.Disabled;
 		}
 
 		public EchoState echoState { get; set; }
@@ -110,8 +132,6 @@ namespace HyperToken_WinForms_GUI
 					break;
 			}
 		}
-
-		public PortState portState { get; set; }
 
 		public FileSendState fileSendState { get; set; }
 
@@ -137,10 +157,10 @@ namespace HyperToken_WinForms_GUI
 			dropDownBaud.Text = baud.ToString(CultureInfo.InvariantCulture) + Resources.Text_Baud;
 
 			foreach (ToolStripMenuItem item in menuItemBaud.DropDownItems)
-				item.Checked = item.Text == baud.ToString();
+				item.Checked = item.Text == baud.ToString(CultureInfo.InvariantCulture);
 
 			foreach (ToolStripMenuItem item in dropDownBaud.DropDownItems)
-				item.Checked = item.Text == baud.ToString();
+				item.Checked = item.Text == baud.ToString(CultureInfo.InvariantCulture);
 		}
 
 		public StopBits stopBits { get; set; }
@@ -213,68 +233,40 @@ namespace HyperToken_WinForms_GUI
 		public void TrimLines(int trimTo)
 		{
 			Invoke(new MethodInvoker(
+					   () =>
+					   {
+						   logger.Info("Trimming lines; current count: {0}", IOBox.Lines.Length);
+						   if (IOBox.Lines.Length <= trimTo)
+							   return;
 
-				delegate
-				{
-					if (IOBox.Lines.Length <= trimTo)
-						return;
+						   string[] newLines = new string[trimTo];
 
-					string[] newLines = new string[trimTo];
+						   Array.Copy(IOBox.Lines, IOBox.Lines.Length - trimTo, newLines, 0, newLines.Length);
+						   IOBox.Lines = newLines;
 
-					Array.Copy(IOBox.Lines, IOBox.Lines.Length - trimTo, newLines, 0, newLines.Length);
-					IOBox.Lines = newLines;
+						   IOBox.Text = string.Join(Environment.NewLine, IOBox.Lines); // TODO is this necessary?
 
-					IOBox.Text = string.Join(Environment.NewLine, IOBox.Lines); // TODO is this necessary?
-				}));
+						   logger.Info("After trim, lines: {0}", IOBox.Lines.Length);
+					   }));
 		}
 
 		public void AddLine(string line)
 		{
 			Invoke(new MethodInvoker(
-
-				delegate
-				{
-					if (!Focused)
-					{
-						IOBox.Select(IOBox.Text.Length, 0);
-						IOBox.ScrollToCaret();
-					}
-					IOBox.AppendText(line);
-				}));
+					   () =>
+					   {
+						   if (!Focused)
+						   {
+							   IOBox.Select(IOBox.Text.Length, 0);
+							   IOBox.ScrollToCaret();
+						   }
+						   IOBox.AppendText(line);
+					   }));
 		}
 
 		public void AddChar(char c)
 		{
-			Invoke(new MethodInvoker(
-				delegate
-				{
-					IOBox.AppendText(c.ToString(CultureInfo.InvariantCulture));
-
-					// Apparently this doesn't work:
-					// IOBox.Lines[IOBox.Lines.Length - 1] += c;
-				}));
-		}
-
-		public void SetPortConnection(PortState state)
-		{
-			switch (state)
-			{
-				case PortState.Open:
-					toolStripButtonConnect.Text = Resources.Text_Disconnect;
-					toolStripButtonConnect.Image = Resources.disconnected;
-					toolStripButtonConnect.ForeColor = SystemColors.ControlText;
-					break;
-
-				case PortState.Closed:
-					toolStripButtonConnect.Text = Resources.Text_Connect;
-					toolStripButtonConnect.Image = Resources.connected;
-					break;
-
-				case PortState.Error:
-					SetPortConnection(PortState.Closed);
-					toolStripButtonConnect.ForeColor = Color.Red;
-					break;
-			}
+			Invoke(new MethodInvoker(() => IOBox.AppendText(c.ToString(CultureInfo.InvariantCulture))));
 		}
 
 		public void SetFileSendState(FileSendState state)
@@ -288,12 +280,9 @@ namespace HyperToken_WinForms_GUI
 				case FileSendState.Error:
 					circleColor = Color.Red;
 					circleVisible = true;
-					circleActive = false;
 					break;
 
 				case FileSendState.Hidden:
-					circleVisible = false;
-					circleActive = false;
 					break;
 
 				case FileSendState.InProgress:
@@ -305,10 +294,6 @@ namespace HyperToken_WinForms_GUI
 				case FileSendState.Success:
 					circleColor = Color.Lime;
 					circleVisible = true;
-					circleActive = false;
-					break;
-				default:
-					SetFileSendState(FileSendState.Hidden);
 					break;
 			}
 
@@ -332,11 +317,7 @@ namespace HyperToken_WinForms_GUI
 
 		public event SetLoggingPathEventHandler OnSetLoggingPath;
 
-		public event ToggleConnectionEventHandler OnToggleConnection;
-
 		public event OnKeyPressedEventHandler OnKeyPressed;
-
-		public event SerialPortListEventHandler OnSerialPortList;
 
 		public event SaveSessionEventHandler OnSaveSession;
 
@@ -375,11 +356,20 @@ namespace HyperToken_WinForms_GUI
 
 		public void Run()
 		{
+			Initialize();
 			BugSense.SendException(new Exception("Test - 3"));
 			Application.Run(this);
 		}
 
-		public MainForm()
+		private IAboutBox _aboutBox;
+
+		public MainForm(IAboutBox aboutBox)
+		{
+			logger.Trace("Mainform object created");
+			_aboutBox = aboutBox;
+		}
+
+		private void Initialize()
 		{
 			logger.Trace("Initializing MainForm");
 			InitializeComponent();
@@ -407,16 +397,17 @@ namespace HyperToken_WinForms_GUI
 		private void ToggleConnection(object sender, EventArgs e)
 		{
 			logger.Trace("ToggleConnection");
-			if (OnToggleConnection != null)
-			{
-				ToggleConnectionEventArgs ev = new ToggleConnectionEventArgs();
-				OnToggleConnection(this, ev);
-			}
-			else
-				logger.Trace("No OnToggleConnection handler available");
+			portState = portState == PortState.Open ? PortState.Closed : PortState.Open;
 		}
 
-		// Why both of these?
+		//Toggle echo
+		private void ToggleEcho(object sender, EventArgs e)
+		{
+			logger.Trace("Toggle Echo");
+			echoState = echoState == EchoState.Enabled ? EchoState.Disabled : EchoState.Enabled;
+		}
+
+		// Why both of these? - they catch from different controls
 		private void SendKey(object sender, KeyPressEventArgs e) //Key press handler
 		{
 			e.Handled = true;
@@ -451,15 +442,6 @@ namespace HyperToken_WinForms_GUI
 			fileSendPane1.Visible = !fileSendPane1.Visible;
 		}
 
-		//Toggle echo
-		private void ToggleEcho(object sender, EventArgs e)
-		{
-			if (echoState == EchoState.Enabled)
-				echoState = EchoState.Disabled;
-			else
-				echoState = EchoState.Enabled;
-		}
-
 		//Initialize application shutdown
 		private void Exit(object sender, EventArgs e)
 		{
@@ -470,18 +452,7 @@ namespace HyperToken_WinForms_GUI
 		//Show about form
 		private void ShowAboutForm(object sender, EventArgs e)
 		{
-			//Display a brief 'about' form
-			if ((formAbout == null) || (!formAbout.Visible))
-			{
-				logger.Trace("Showing about form");
-				formAbout = new AboutBox();
-				formAbout.Show();
-			}
-			else
-			{
-				logger.Trace("About form already open");
-				formAbout.BringToFront();
-			}
+			_aboutBox.Open();
 		}
 
 		private void SelectCOMPort(object sender, ToolStripItemClickedEventArgs e)
@@ -497,15 +468,20 @@ namespace HyperToken_WinForms_GUI
 		private bool SaveSession()
 		{
 			logger.Info("Saving session");
-			SaveFileDialog save = new SaveFileDialog();
-			save.AddExtension = true;
-			save.AutoUpgradeEnabled = true;
-			save.Filter = "Text files|*.txt|All files|*.*";
-			save.FilterIndex = 0;
-			save.OverwritePrompt = true;
-			save.Title = "Save Session";
-			save.ValidateNames = true;
-			if (save.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+			var save = new SaveFileDialog
+									  {
+										  AddExtension = true,
+										  AutoUpgradeEnabled = true,
+										  Filter =
+											  Resources.MainForm_SaveSession_Text_files + "|*.txt|" +
+											  Resources.MainForm_SaveSession_All_files + "|*.*",
+										  FilterIndex = 0,
+										  OverwritePrompt = true,
+										  Title = Resources.MainForm_SaveSession_Save_Session,
+										  ValidateNames = true
+									  };
+
+			if (save.ShowDialog() == DialogResult.OK)
 			{
 				if (!string.IsNullOrEmpty(save.FileName))
 				{
@@ -518,8 +494,7 @@ namespace HyperToken_WinForms_GUI
 						logger.Debug("Session saved");
 						return true;
 					}
-					else
-						logger.Warn("OnSaveSession event has no handlers");
+					logger.Warn("OnSaveSession event has no handlers");
 				}
 				else
 					logger.Error("Filename null or empty");
@@ -534,22 +509,22 @@ namespace HyperToken_WinForms_GUI
 		private void newToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			logger.Trace("User clicked menu item: New");
-			DialogResult result = MessageBox.Show("Would you like to save current session?", "Save Session", MessageBoxButtons.YesNoCancel);
+			DialogResult result = MessageBox.Show("Would you like to save current session?", Resources.MainForm_SaveSession_Save_Session, MessageBoxButtons.YesNoCancel);
 
-			if (result == System.Windows.Forms.DialogResult.Cancel)
+			if (result == DialogResult.Cancel)
 			{
 				logger.Trace("User canceled");
 				return;
 			}
 
-			if (result == System.Windows.Forms.DialogResult.No)
+			if (result == DialogResult.No)
 			{
 				logger.Debug("User cleared session");
 				IOBox.Clear();
 				return;
 			}
 
-			if (result == System.Windows.Forms.DialogResult.Yes)
+			if (result == DialogResult.Yes)
 			{
 				logger.Debug("User saved session");
 				if (SaveSession())
@@ -559,7 +534,6 @@ namespace HyperToken_WinForms_GUI
 				}
 				else
 					logger.Debug("Session not cleared");
-				return;
 			}
 		}
 
@@ -573,15 +547,15 @@ namespace HyperToken_WinForms_GUI
 		/// <param name="type">What type of menu the items are for</param>
 		/// <param name="clickHandler">OnClick event for each item</param>
 		/// <returns>Success</returns>
-		private bool CreateMenuFrom(ref ToolStripItem[] items, object[] values, object parentMenu, string name, MenuType type, System.EventHandler clickHandler)
+		private void CreateMenuFrom(ref ToolStripItem[] items, object[] values, object parentMenu, string name, MenuType type, EventHandler clickHandler)
 		{
 			if (values == null)
-				return false;
+				return;
 
 			if (values.Length <= 0)
-				return false;
+				return;
 
-			//LogLine("Creating menu \"" + name + '"');
+			logger.Trace("Creating menu \"" + name + '"');
 
 			items = new ToolStripItem[values.Length];
 
@@ -603,14 +577,12 @@ namespace HyperToken_WinForms_GUI
 				}
 
 				items[i].Name = name;
-				items[i].Size = new System.Drawing.Size(152, 22);
-				items[i].Click += new System.EventHandler(clickHandler);
+				items[i].Size = new Size(152, 22);
+				items[i].Click += clickHandler;
 				items[i].Text = values[i].ToString();
 			}
 
 			((ToolStripDropDownItem)parentMenu).DropDownItems.AddRange(items);
-
-			return true;
 		}
 
 		private void SetupFileSendSpinnerSpokes()
@@ -739,18 +711,13 @@ namespace HyperToken_WinForms_GUI
 		//List all COM ports
 		private void UpdateCOMPorts(object sender, EventArgs e)
 		{
-			string[] ports = null;
-			if (OnSerialPortList != null)
-			{
-				SerialPortListEventArgs ev = new SerialPortListEventArgs();
-				OnSerialPortList(this, ev);
-				if (ev.ports != null)
-					ports = ev.ports;
-			}
+			string[] ports = _backend.GetSerialPorts();
 
 			if (ports == null)
 			{
-				logger.Warn("No serial ports to list");
+				logger.Error("No serial ports to list");
+				logger.Fatal("TODO We should handle this more gracefully");
+				logger.Fatal("Show a 'No serial ports found' item");
 				return;
 			}
 
