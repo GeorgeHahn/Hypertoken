@@ -10,5 +10,7 @@ namespace Terminal_Interface
 		string[] GetSerialPorts();
 
 		void KeyPressed(char c);
+
+		void Shutdown();
 	}
 }

@@ -18,20 +18,21 @@ namespace Terminal
 
 		public event DataReceivedEventHandler DataReceived;
 
-		private SerialPortDataHandler()
+		public SerialPortDataHandler()
 		{
 			_port = new SerialPort();
 			_port.DataReceived += PortOnDataReceived;
 
 			_receiveBuffer = new byte[1024];
 
-			Settings.SettingChanged += OnSettingChanged;
-
 			// TODO Can this dependency be injected?
 			Settings = new SettingsDictionary();
+
+			Settings.SettingChanged += OnSettingChanged;
+
 			Settings.Set("port", "COM1");
 			Settings.Set("baud", 115200);
-			Settings.Set("stopbits", StopBits.None);
+			Settings.Set("stopbits", StopBits.One);
 			Settings.Set("databits", 8);
 			Settings.Set("parity", Parity.None);
 			Settings.Set("handshake", Handshake.None);

@@ -42,7 +42,7 @@ namespace Terminal
 
 			#region _terminal initialization
 
-			terminal.SetBackend(this);
+			_terminal.SetBackend(this);
 
 			_terminal.PropertyChanged += TerminalOnPropertyChanged;
 
@@ -215,7 +215,7 @@ namespace Terminal
 			SendChar(e.KeyChar);
 		}
 
-		internal static void Shutdown()
+		public void Shutdown()
 		{
 			logger.Info("Logger shutting down");
 		}

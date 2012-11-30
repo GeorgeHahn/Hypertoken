@@ -34,10 +34,6 @@ namespace Terminal
 			container.Resolve<InitableRunner>().Init();
 			container.Resolve<TerminalRunner>().Run();
 
-			logger.Info("Application shutting down");
-
-			Backend.Shutdown();
-
 			//}
 			//catch (Exception e)
 			//{

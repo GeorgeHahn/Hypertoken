@@ -154,6 +154,11 @@ namespace HyperToken_WinForms_GUI
 
 		public void OnbaudChanged()
 		{
+			if (dropDownBaud == null)
+				return;
+
+			// TODO Throw an error. Also, rejigger this shit.
+
 			dropDownBaud.Text = baud.ToString(CultureInfo.InvariantCulture) + Resources.Text_Baud;
 
 			foreach (ToolStripMenuItem item in menuItemBaud.DropDownItems)
@@ -167,6 +172,10 @@ namespace HyperToken_WinForms_GUI
 
 		public void OnstopBitsChanged()
 		{
+			if (menuItemStopBits == null)
+				return;
+			// TODO fix this.
+
 			logger.Trace("Changing stopBits to {0}", stopBits);
 
 			foreach (ToolStripMenuItem item in menuItemStopBits.DropDownItems)
@@ -184,6 +193,10 @@ namespace HyperToken_WinForms_GUI
 
 		public void OndataBitsChanged()
 		{
+			if (menuItemDataBits == null)
+				return;
+			// TODO this is gross, fix it.
+
 			logger.Trace("Setting dataBits to {0}", dataBits);
 
 			foreach (ToolStripMenuItem item in menuItemDataBits.DropDownItems)
@@ -310,6 +323,7 @@ namespace HyperToken_WinForms_GUI
 
 		public void SetBackend(IBackend backend)
 		{
+			logger.Trace("Set backend");
 			_backend = backend;
 		}
 

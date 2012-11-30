@@ -10,19 +10,26 @@ namespace Terminal
 	internal class TerminalRunner
 	{
 		private ITerminal _terminal;
+		private IBackend _backend;
 
 		private static Logger logger = LogManager.GetCurrentClassLogger();
 
-		public TerminalRunner(ITerminal terminal)
+		public TerminalRunner(ITerminal terminal, IBackend backend)
 		{
 			logger.Trace("TerminalRunner created");
+			_backend = backend;
 			_terminal = terminal;
 		}
 
 		public void Run()
 		{
 			logger.Trace("Running terminal");
+			_terminal.SetBackend(_backend);
 			_terminal.Run();
+
+			logger.Info("Application shutting down");
+
+			_backend.Shutdown();
 		}
 	}
 }
