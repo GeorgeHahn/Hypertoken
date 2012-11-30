@@ -11,10 +11,10 @@ namespace Terminal
 {
 	public class SerialPortDataHandler : IDataReader, IDataWriter
 	{
-		private SerialPort _port;
-		private byte[] _receiveBuffer;
+		private readonly SerialPort _port;
+		private readonly byte[] _receiveBuffer;
 
-		private static Logger logger = LogManager.GetCurrentClassLogger();
+		private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
 		public event DataReceivedEventHandler DataReceived;
 
@@ -24,7 +24,51 @@ namespace Terminal
 			_port.DataReceived += PortOnDataReceived;
 
 			_receiveBuffer = new byte[1024];
+
+			Settings.SettingChanged += OnSettingChanged;
+
+			// TODO Can this dependency be injected?
+			Settings = new SettingsDictionary();
+			Settings.Set("port", "COM1");
+			Settings.Set("baud", 115200);
+			Settings.Set("stopbits", StopBits.None);
+			Settings.Set("databits", 8);
+			Settings.Set("parity", Parity.None);
+			Settings.Set("handshake", Handshake.None);
 		}
+
+		private void OnSettingChanged(object sender, SettingChangedEventArgs settingChangedEventArgs)
+		{
+			object value = Settings.Get(settingChangedEventArgs.ChangedSetting);
+			switch (settingChangedEventArgs.ChangedSetting)
+			{
+				case "port":
+					_port.PortName = (string)value;
+					break;
+
+				case "baud":
+					_port.BaudRate = (int)value;
+					break;
+
+				case "stopbits":
+					_port.StopBits = (StopBits)value;
+					break;
+
+				case "databits":
+					_port.DataBits = (int)value;
+					break;
+
+				case "handshake":
+					_port.Handshake = (Handshake)value;
+					break;
+
+				case "parity":
+					_port.Parity = (Parity)value;
+					break;
+			}
+		}
+
+		public ISettings Settings { get; private set; }
 
 		private void PortOnDataReceived(object sender, SerialDataReceivedEventArgs serialDataReceivedEventArgs)
 		{
@@ -89,20 +133,66 @@ namespace Terminal
 
 		public int Write(byte[] data)
 		{
+			verifyPortOpen();
+
 			int length = data.Length;
 			if (length > _port.WriteBufferSize)
 				length = _port.WriteBufferSize;
 
 			_port.Write(data, 0, length);
-
 			return length;
+		}
+
+		public int Write(byte data)
+		{
+			verifyPortOpen();
+
+			_port.Write(new byte[] { data }, 0, 1);
+			return 1;
 		}
 
 		public int Write(string data)
 		{
+			verifyPortOpen();
+
 			// TODO handle long string sending
 
 			_port.WriteLine(data);
+			return data.Length;
+		}
+
+		public int Write(char data)
+		{
+			verifyPortOpen();
+
+			_port.Write(new[] { data }, 0, 1);
+			return 1;
+		}
+
+		private void verifyPortOpen()
+		{
+			if (!_port.IsOpen)
+			{
+				_port.Open();
+			}
+		}
+
+		public bool IsOpen
+		{
+			get
+			{
+				return _port.IsOpen;
+			}
+		}
+
+		public void Close()
+		{
+			_port.Close();
+		}
+
+		public void Open()
+		{
+			_port.Open();
 		}
 	}
 }

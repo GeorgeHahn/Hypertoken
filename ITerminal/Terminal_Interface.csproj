@@ -52,6 +52,7 @@
     <Compile Include="Enums\StopBits.cs" />
     <Compile Include="Events\DataReceivedEventArgs.cs" />
     <Compile Include="Events\OnKeyPressedEventArgs.cs" />
+    <Compile Include="Events\OnSettingChangedEventArgs.cs" />
     <Compile Include="Events\SaveSessionEventArgs.cs" />
     <Compile Include="Events\SendFileEventArgs.cs" />
     <Compile Include="Events\SerialPortListEventArgs.cs" />
@@ -63,8 +64,10 @@
     <Compile Include="IDataReader.cs" />
     <Compile Include="IDataWriter.cs" />
     <Compile Include="IInitable.cs" />
+    <Compile Include="ISettings.cs" />
     <Compile Include="ITerminal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Events\SettingChangedEventArgs.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

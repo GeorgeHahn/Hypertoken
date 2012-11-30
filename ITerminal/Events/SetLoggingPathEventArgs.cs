@@ -7,22 +7,15 @@ namespace Terminal_Interface.Events
 		public SetLoggingPathEventArgs()
 			: base()
 		{
-			_path = null;
+			Path = null;
 		}
 
-		public SetLoggingPathEventArgs(string Path)
+		public SetLoggingPathEventArgs(string path)
+			: base()
 		{
-			_path = Path;
+			Path = path;
 		}
 
-		private string _path;
-
-		public string Path
-		{
-			get
-			{
-				return _path;
-			}
-		}
+		public string Path { get; private set; }
 	}
 }

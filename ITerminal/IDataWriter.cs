@@ -9,6 +9,18 @@ namespace Terminal_Interface
 	{
 		int Write(byte[] data);
 
+		int Write(byte data);
+
+		int Write(char data);
+
 		int Write(string data);
+
+		void Close();
+
+		void Open();
+
+		bool IsOpen { get; }
+
+		ISettings Settings { get; }
 	}
 }

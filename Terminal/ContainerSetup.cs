@@ -15,10 +15,16 @@ namespace Terminal
 		{
 			builder = new ContainerBuilder();
 
+			// WinForms GUI wiring
 			builder.RegisterType<HyperToken_WinForms_GUI.Initializer>().As<IInitable>();
 			builder.RegisterType<HyperToken_WinForms_GUI.MainForm>().As<ITerminal>();
 			builder.RegisterType<HyperToken_WinForms_GUI.AboutBox>().As<IAboutBox>();
 
+			// Serial port wiring
+			builder.RegisterType<SerialPortDataHandler>().As<IDataReader>();
+			builder.RegisterType<SerialPortDataHandler>().As<IDataWriter>();
+
+			// Application wiring
 			builder.RegisterType<TerminalRunner>();
 			builder.RegisterType<InitableRunner>();
 
