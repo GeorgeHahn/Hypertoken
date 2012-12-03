@@ -28,8 +28,6 @@ namespace Terminal_Interface
 
 		PortState PortState { get; set; }
 
-		string StatusLabel { get; set; }
-
 		string[] Devices { get; }
 
 		string CurrentDevice { get; set; }

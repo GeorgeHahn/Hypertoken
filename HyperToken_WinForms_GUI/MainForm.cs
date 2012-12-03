@@ -695,7 +695,7 @@ namespace HyperToken_WinForms_GUI
 						break;
 
 					case "DeviceStatus":
-						toolStripStatusLabelPortSettings.Text = _serialPort.StatusLabel;
+						toolStripStatusLabelPortSettings.Text = _serialPort.DeviceStatus;
 						break;
 
 					default:

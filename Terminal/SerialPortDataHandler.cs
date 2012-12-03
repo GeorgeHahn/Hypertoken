@@ -28,51 +28,13 @@ namespace Terminal
 
 			_receiveBuffer = new byte[1024];
 
-			// TODO Can this dependency be injected?
-			Settings = new SettingsDictionary();
-
-			Settings.SettingChanged += OnSettingChanged;
-
-			_port.PortName = "COM1";
-			_port.BaudRate = 115200;
-			_port.DataBits = 8;
-			_port.StopBits = System.IO.Ports.StopBits.One;
-			_port.Parity = System.IO.Ports.Parity.None;
-			_port.Handshake = Handshake.None;
+			DeviceName = "COM1";
+			Baud = 115200;
+			DataBits = 8;
+			StopBits = Terminal_Interface.Enums.StopBits.One;
+			Parity = Terminal_Interface.Enums.Parity.None;
+			FlowControl = FlowControl.None;
 		}
-
-		private void OnSettingChanged(object sender, SettingChangedEventArgs settingChangedEventArgs)
-		{
-			object value = Settings.Get(settingChangedEventArgs.ChangedSetting);
-			switch (settingChangedEventArgs.ChangedSetting)
-			{
-				case "port":
-					_port.PortName = (string)value;
-					break;
-
-				case "Baud":
-					_port.BaudRate = (int)value;
-					break;
-
-				case "stopbits":
-					_port.StopBits = (StopBits)value;
-					break;
-
-				case "databits":
-					_port.DataBits = (int)value;
-					break;
-
-				case "handshake":
-					_port.Handshake = (Handshake)value;
-					break;
-
-				case "parity":
-					_port.Parity = (Parity)value;
-					break;
-			}
-		}
-
-		public ISettings Settings { get; private set; }
 
 		private void PortOnDataReceived(object sender, SerialDataReceivedEventArgs serialDataReceivedEventArgs)
 		{
@@ -170,14 +132,6 @@ namespace Terminal
 			return SerialPort.GetPortNames().AsEnumerable();
 		}
 
-		public bool IsOpen
-		{
-			get
-			{
-				return _port.IsOpen;
-			}
-		}
-
 		public string DeviceName
 		{
 			get { return _port.PortName; }
@@ -193,13 +147,15 @@ namespace Terminal
 					_port.Parity.ToString()[0],
 					(float)((int)_port.StopBits + 1) / 2);
 			}
+			set
+			{
+				logger.Trace("Invalidated DeviceStatus; {0}", value);
+			}
 		}
 
 		public deviceType DeviceType { get; private set; }
 
 		public PortState PortState { get; set; }
-
-		public string StatusLabel { get; set; }
 
 		public string[] Devices { get; private set; }
 
@@ -220,16 +176,56 @@ namespace Terminal
 			_port.Open();
 		}
 
+		public bool IsOpen
+		{
+			get
+			{
+				return _port.IsOpen;
+			}
+		}
+
 		public event PropertyChangedEventHandler PropertyChanged;
 
-		public int Baud { get; set; }
+		public int Baud
+		{
+			get { return _port.BaudRate; }
+			set { _port.BaudRate = value; }
+		}
 
-		public Terminal_Interface.Enums.StopBits StopBits { get; set; }
+		public Terminal_Interface.Enums.StopBits StopBits
+		{
+			get { return (Terminal_Interface.Enums.StopBits)_port.StopBits; }
+			set
+			{
+				_port.StopBits = (System.IO.Ports.StopBits)value;
+				DeviceStatus = "";
+			}
+		}
 
-		public int DataBits { get; set; }
+		public int DataBits
+		{
+			get { return _port.DataBits; }
+			set
+			{
+				_port.DataBits = value;
+				DeviceStatus = "";
+			}
+		}
 
-		public FlowControl FlowControl { get; set; }
+		public FlowControl FlowControl
+		{
+			get { return (Terminal_Interface.Enums.FlowControl)_port.Handshake; }
+			set { _port.Handshake = (System.IO.Ports.Handshake)value; }
+		}
 
-		public Terminal_Interface.Enums.Parity Parity { get; set; }
+		public Terminal_Interface.Enums.Parity Parity
+		{
+			get { return (Terminal_Interface.Enums.Parity)_port.Parity; }
+			set
+			{
+				_port.Parity = (System.IO.Ports.Parity)value;
+				DeviceStatus = "";
+			}
+		}
 	}
 }
