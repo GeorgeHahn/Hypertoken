@@ -4,9 +4,12 @@
 //$Date:: 2011-07-13 13:47:52 -0400 (Wed, 13 Jul 2011)   $:  Date of last commit
 
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Globalization;
+using System.Linq;
 using System.Windows.Forms;
 using Bugsense.WPF;
 using HyperToken_WinForms_GUI.Helpers;
@@ -174,6 +177,7 @@ namespace HyperToken_WinForms_GUI
 		{
 			if (menuItemStopBits == null)
 				return;
+
 			// TODO fix this.
 
 			logger.Trace("Changing stopBits to {0}", stopBits);
@@ -195,6 +199,7 @@ namespace HyperToken_WinForms_GUI
 		{
 			if (menuItemDataBits == null)
 				return;
+
 			// TODO this is gross, fix it.
 
 			logger.Trace("Setting dataBits to {0}", dataBits);
@@ -377,10 +382,14 @@ namespace HyperToken_WinForms_GUI
 
 		private IAboutBox _aboutBox;
 
+		private List<int> baudRateVals;
+
 		public MainForm(IAboutBox aboutBox)
 		{
 			logger.Trace("Mainform object created");
 			_aboutBox = aboutBox;
+
+			baudRateVals = new List<int>(new[] { 110, 300, 1200, 2400, 4800, 9600, 19200, 38400, 57600, 115200, 230400, 460800, 921600 });
 		}
 
 		private void Initialize()
@@ -393,18 +402,18 @@ namespace HyperToken_WinForms_GUI
 			if (System.Diagnostics.Debugger.IsAttached)
 				saveEntireSessionToolStripMenuItem.Visible = true;
 
-			// TODO Rewrite this steaming pile of %$&#
-			object[] baudRateValues = new object[13] { 110, 300, 1200, 2400, 4800, 9600, 19200, 38400, 57600, 115200, 230400, 460800, 921600 };
-
-			baudRates = new ToolStripItem[2][];
-			CreateMenuFrom(ref baudRates[0], baudRateValues, dropDownBaud, "BaudRate", MenuType.dropdown, ChangeCOMParam);
-			CreateMenuFrom(ref baudRates[1], baudRateValues, menuItemBaud, "BaudRate", MenuType.menu, ChangeCOMParam);
-
+			UpdateBaudRates();
 			fileSendLoadingCircle.Alignment = ToolStripItemAlignment.Right;
 
 			SetupFileSendSpinnerSpokes();
 
 			logger.Warn("MainForm initialization complete");
+		}
+
+		private void UpdateBaudRates()
+		{
+			CreateMenuFrom(dropDownBaud, baudRateVals, "BaudRate", ChangeCOMParam);
+			CreateMenuFrom(menuItemBaud, baudRateVals, "BaudRate", ChangeCOMParam);
 		}
 
 		//Toggle connected
@@ -558,45 +567,28 @@ namespace HyperToken_WinForms_GUI
 		/// <param name="values">One item will be generated for each value</param>
 		/// <param name="parentMenu">Parent menu for the items</param>
 		/// <param name="name">Name property for each item</param>
-		/// <param name="type">What type of menu the items are for</param>
 		/// <param name="clickHandler">OnClick event for each item</param>
 		/// <returns>Success</returns>
-		private void CreateMenuFrom(ref ToolStripItem[] items, object[] values, object parentMenu, string name, MenuType type, EventHandler clickHandler)
+		private void CreateMenuFrom(ToolStripDropDownItem parentMenu, IEnumerable values, string name, EventHandler clickHandler)
 		{
 			if (values == null)
 				return;
 
-			if (values.Length <= 0)
-				return;
-
 			logger.Trace("Creating menu \"" + name + '"');
 
-			items = new ToolStripItem[values.Length];
+			var items = new List<ToolStripItem>();
 
-			for (int i = 0; i < values.Length; i++)
+			foreach (var value in values)
 			{
-				switch (type)
-				{
-					case MenuType.menu:
-						items[i] = new ToolStripMenuItem();
-
-						//items[i].Name = "menu";
-						break;
-
-					case MenuType.dropdown:
-						items[i] = new ToolStripMenuItem();
-
-						//items[i].Name = "dropDown";
-						break;
-				}
-
-				items[i].Name = name;
-				items[i].Size = new Size(152, 22);
-				items[i].Click += clickHandler;
-				items[i].Text = values[i].ToString();
+				ToolStripItem temp = new ToolStripMenuItem();
+				temp.Name = name;
+				temp.Size = new Size(152, 22);
+				temp.Click += clickHandler;
+				temp.Text = value.ToString();
+				items.Add(temp);
 			}
 
-			((ToolStripDropDownItem)parentMenu).DropDownItems.AddRange(items);
+			parentMenu.DropDownItems.AddRange(items.ToArray());
 		}
 
 		private void SetupFileSendSpinnerSpokes()
