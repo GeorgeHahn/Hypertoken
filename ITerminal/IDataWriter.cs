@@ -14,11 +14,5 @@ namespace Terminal_Interface
 		int Write(char data);
 
 		int Write(string data);
-
-		void Close();
-
-		void Open();
-
-		bool IsOpen { get; }
 	}
 }

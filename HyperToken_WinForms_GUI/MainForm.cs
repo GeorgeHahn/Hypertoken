@@ -256,7 +256,6 @@ namespace HyperToken_WinForms_GUI
 			}
 		}
 
-		//Toggle connected
 		private void ToggleConnection(object sender, EventArgs e)
 		{
 			logger.Trace("ToggleConnection");
@@ -265,7 +264,6 @@ namespace HyperToken_WinForms_GUI
 
 		private IEchoer _echoer;
 
-		//Toggle echo
 		private void ToggleEcho(object sender, EventArgs e)
 		{
 			logger.Trace("Toggle Echo");
@@ -322,7 +320,7 @@ namespace HyperToken_WinForms_GUI
 
 		private void SelectCOMPort(object sender, ToolStripItemClickedEventArgs e)
 		{
-			_serialPort.CurrentDevice = e.ClickedItem.Text;
+			_serialPort.DeviceName = e.ClickedItem.Text;
 		}
 
 		private void SaveEntireSessionToolStripMenuItemClick(object sender, EventArgs e)
@@ -642,13 +640,13 @@ namespace HyperToken_WinForms_GUI
 
 		private void SerialPortOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
 		{
-			logger.Warn("VersionShim setting {0}", propertyChangedEventArgs.PropertyName);
+			logger.Warn("BindingShim setting {0}", propertyChangedEventArgs.PropertyName);
 
 			try
 			{
 				switch (propertyChangedEventArgs.PropertyName)
 				{
-					case "CurrentDevice":
+					case "DeviceName":
 						UpdateCOMPort();
 						break;
 
@@ -740,13 +738,11 @@ namespace HyperToken_WinForms_GUI
 			switch (_logger.LoggingState)
 			{
 				case LoggingState.Disabled:
-
 					toolStripLoggingEnabled.Text = Resources.Text_Logging_Disabled;
 					MenuItemToggleLogging.Checked = false;
 					break;
 
 				case LoggingState.Enabled:
-
 					toolStripLoggingEnabled.Text = Resources.Text_Logging_Enabled;
 					MenuItemToggleLogging.Checked = true;
 					break;
@@ -777,13 +773,13 @@ namespace HyperToken_WinForms_GUI
 
 		public void UpdateCOMPort()
 		{
-			dropDownCOMPort.Text = _serialPort.CurrentDevice;
+			dropDownCOMPort.Text = _serialPort.DeviceName;
 
 			foreach (ToolStripMenuItem item in menuItemCOMPort.DropDownItems)
-				item.Checked = item.Text == _serialPort.CurrentDevice;
+				item.Checked = item.Text == _serialPort.DeviceName;
 
 			foreach (ToolStripMenuItem item in dropDownCOMPort.DropDownItems)
-				item.Checked = item.Text == _serialPort.CurrentDevice;
+				item.Checked = item.Text == _serialPort.DeviceName;
 		}
 
 		public void UpdateBaudRate()

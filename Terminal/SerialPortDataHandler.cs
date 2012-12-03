@@ -153,35 +153,44 @@ namespace Terminal
 			}
 		}
 
-		public deviceType DeviceType { get; private set; }
+		public deviceType DeviceType
+		{
+			get
+			{
+				return deviceType.SerialPort;
+			}
+		}
 
-		public PortState PortState { get; set; }
+		public PortState PortState
+		{
+			get { return _port.IsOpen ? PortState.Open : PortState.Closed; }
+			set
+			{
+				logger.Trace("Port being set to {0}", value);
+				if (value == PortState.Open)
+					try
+					{
+						_port.Open();
+					}
+					catch (UnauthorizedAccessException)
+					{
+						logger.Error("{0} is in use", DeviceName);
+					}
+				else
+					_port.Close();
+			}
+		}
 
-		public string[] Devices { get; private set; }
+		public string[] Devices
+		{
+			get { return ListAvailableDevices().ToArray(); }
+		}
 
 		public string CurrentDevice { get; set; }
 
 		public void KeyPressed(char c)
 		{
 			_port.Write(new char[] { c }, 0, 1);
-		}
-
-		public void Close()
-		{
-			_port.Close();
-		}
-
-		public void Open()
-		{
-			_port.Open();
-		}
-
-		public bool IsOpen
-		{
-			get
-			{
-				return _port.IsOpen;
-			}
 		}
 
 		public event PropertyChangedEventHandler PropertyChanged;

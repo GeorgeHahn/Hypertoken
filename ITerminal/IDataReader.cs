@@ -11,11 +11,5 @@ namespace Terminal_Interface
 	public interface IDataReader
 	{
 		event DataReceivedEventHandler DataReceived;
-
-		void Close();
-
-		void Open();
-
-		bool IsOpen { get; }
 	}
 }

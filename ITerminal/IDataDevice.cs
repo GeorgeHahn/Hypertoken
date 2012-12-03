@@ -12,12 +12,6 @@ namespace Terminal_Interface
 
 	public interface IDataDevice : IDataWriter, IDataReader, INotifyPropertyChanged
 	{
-		new void Close();
-
-		new void Open();
-
-		new bool IsOpen { get; }
-
 		IEnumerable<string> ListAvailableDevices();
 
 		string DeviceName { get; set; }
@@ -29,8 +23,6 @@ namespace Terminal_Interface
 		PortState PortState { get; set; }
 
 		string[] Devices { get; }
-
-		string CurrentDevice { get; set; }
 
 		void KeyPressed(char c);
 	}
