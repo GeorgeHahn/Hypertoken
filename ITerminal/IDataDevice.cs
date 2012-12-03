@@ -8,12 +8,20 @@ namespace Terminal_Interface
 
 		new void Open();
 
-		IEnumerable<string> ListAvailable();
-
 		new bool IsOpen { get; }
 
-		string Name { get; set; }
+		IEnumerable<string> ListAvailableDevices();
 
-		string StatusLabel { get; }
+		string DeviceName { get; set; }
+
+		string DeviceStatus { get; }
+	}
+
+	public interface ISerialPort : IDataDevice
+	{
+	}
+
+	public interface IHIDDevice : IDataDevice
+	{
 	}
 }

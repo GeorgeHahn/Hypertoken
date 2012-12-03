@@ -88,7 +88,7 @@
 			this.labelProductName.Name = "labelProductName";
 			this.labelProductName.Size = new System.Drawing.Size(271, 17);
 			this.labelProductName.TabIndex = 19;
-			this.labelProductName.Text = "Product Name";
+			this.labelProductName.Text = "Product DeviceName";
 			this.labelProductName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
 			// labelVersion
@@ -124,7 +124,7 @@
 			this.labelCompanyName.Name = "labelCompanyName";
 			this.labelCompanyName.Size = new System.Drawing.Size(271, 17);
 			this.labelCompanyName.TabIndex = 22;
-			this.labelCompanyName.Text = "Company Name";
+			this.labelCompanyName.Text = "Company DeviceName";
 			this.labelCompanyName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
 			// textBoxDescription

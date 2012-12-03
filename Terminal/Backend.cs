@@ -1,13 +1,11 @@
 ﻿using System;
 using System.ComponentModel;
 using System.IO;
-using System.IO.Ports;
 using System.Linq;
 using System.Threading;
 using Bugsense.WPF;
 using HyperToken_WinForms_GUI.Helpers;
 using NLog;
-using PropertyChanged;
 using Terminal_Interface;
 using Terminal_Interface.Enums;
 using Terminal_Interface.Events;
@@ -50,11 +48,11 @@ namespace Terminal
 			_terminal.OnSendFile += TerminalOnSendFile;
 			_terminal.OnSetLoggingPath += TerminalOnSetLoggingPath;
 
-			baud = 115200;
-			dataBits = 8;
-			stopBits = Terminal_Interface.Enums.StopBits.One;
-			parity = Parity.None;
-			flowControl = FlowControl.None;
+			Baud = 115200;
+			DataBits = 8;
+			StopBits = Terminal_Interface.Enums.StopBits.One;
+			Parity = Parity.None;
+			FlowControl = FlowControl.None;
 
 			#endregion _terminal initialization
 		}
@@ -90,7 +88,7 @@ namespace Terminal
 			_comms.Write(c);
 
 			// TODO implement write echoing as a IDataWriter
-			if (echoState == EchoState.Enabled)
+			if (EchoState == EchoState.Enabled)
 				_terminal.AddChar(c);
 		}
 
@@ -109,30 +107,30 @@ namespace Terminal
 
 		public string LoggingFilePath { get; set; }
 
-		public LoggingState loggingState { get; set; }
+		public LoggingState LoggingState { get; set; }
 
-		public EchoState echoState { get; set; }
+		public EchoState EchoState { get; set; }
 
-		public FileSendState fileSendState { get; set; }
+		public FileSendState FileSendState { get; set; }
 
-		public string COMPort
+		public string CurrentDevice
 		{
-			get { return _comms.Name; }
-			set { _comms.Name = value; }
+			get { return _comms.DeviceName; }
+			set { _comms.DeviceName = value; }
 		}
 
 		public string StatusLabel { get; set; }
 
 		private void UpdateStatusLabel()
 		{
-			StatusLabel = _comms.StatusLabel;
+			StatusLabel = _comms.DeviceStatus;
 		}
 
 		#region Logging
 
 		private void ToggleLogging()
 		{
-			if (loggingState == LoggingState.Enabled)
+			if (LoggingState == LoggingState.Enabled)
 				SetLoggingState(LoggingState.Disabled);
 			else
 				SetLoggingState(LoggingState.Enabled);
@@ -152,7 +150,7 @@ namespace Terminal
 					return;
 				}
 				logger.Info("Disabling logging");
-				loggingState = LoggingState.Disabled;
+				LoggingState = LoggingState.Disabled;
 
 				loggingStream.Close();
 				logger.Info("Disabled logging");
@@ -188,7 +186,7 @@ namespace Terminal
 				if (!loggingStream.CanWrite) // Will this ever happen?
 					throw new IOException("Logging file cannot be written to");
 
-				loggingState = LoggingState.Enabled;
+				LoggingState = LoggingState.Enabled;
 			}
 			catch (FileSelectionCanceledException e)
 			{
@@ -225,7 +223,7 @@ namespace Terminal
 
 		#region Serial port functions
 
-		public PortState portState
+		public PortState PortState
 		{
 			get
 			{
@@ -244,7 +242,7 @@ namespace Terminal
 
 		private void SetPortConnection(PortState state)
 		{
-			if (portState == state)
+			if (PortState == state)
 				return;
 
 			try
@@ -260,12 +258,12 @@ namespace Terminal
 					_comms.Close();
 				}
 
-				portState = state;
+				PortState = state;
 			}
 			catch (Exception e)
 			{
 				logger.ErrorException("SetPortConnection failed", e);
-				portState = PortState.Error;
+				PortState = PortState.Error;
 
 				_terminal.AddLine(e.Message);
 
@@ -287,14 +285,14 @@ namespace Terminal
 			if (!_comms.IsOpen)
 			{
 				logger.Warn("Serial port is closed");
-				portState = PortState.Error;
+				PortState = PortState.Error;
 
 				return;
 			}
 
 			try
 			{
-				fileSendState = FileSendState.InProgress;
+				FileSendState = FileSendState.InProgress;
 
 				//TODO Remove old API call
 				_terminal.SetFileSendState(FileSendState.InProgress);
@@ -314,12 +312,12 @@ namespace Terminal
 
 				HighResolutionSleep.MM_EndPeriod(1);
 				logger.Trace("Exiting serial data send loop");
-				fileSendState = FileSendState.Success;
+				FileSendState = FileSendState.Success;
 			}
 			catch (Exception e)
 			{
 				logger.ErrorException("Error in file send thread", e);
-				fileSendState = FileSendState.Error;
+				FileSendState = FileSendState.Error;
 
 				_terminal.SetFileSendState(FileSendState.Error);
 				_terminal.AddLine(e.Message);
@@ -337,8 +335,8 @@ namespace Terminal
 			if (!_comms.IsOpen)
 			{
 				logger.Debug("TerminalOnSendFile hit a closed serial port");
-				portState = PortState.Error;
-				fileSendState = FileSendState.Error;
+				PortState = PortState.Error;
+				FileSendState = FileSendState.Error;
 			}
 
 			if ((serialFileSendThread == null) || (!serialFileSendThread.IsAlive))
@@ -389,13 +387,13 @@ namespace Terminal
 
 		#endregion Implementation of IBackend
 
-		public int baud { get; set; }
+		public int Baud { get; set; }
 
-		public FlowControl flowControl { get; set; }
+		public FlowControl FlowControl { get; set; }
 
 		private Parity _parity;
 
-		public Parity parity
+		public Parity Parity
 		{
 			get { return _parity; }
 			set
@@ -407,7 +405,7 @@ namespace Terminal
 
 		private int _dataBits;
 
-		public int dataBits
+		public int DataBits
 		{
 			get { return _dataBits; }
 			set
@@ -419,7 +417,7 @@ namespace Terminal
 
 		private StopBits _stopBits;
 
-		public StopBits stopBits
+		public StopBits StopBits
 		{
 			get { return _stopBits; }
 			set
@@ -429,9 +427,9 @@ namespace Terminal
 			}
 		}
 
-		public string[] serialPorts
+		public string[] Devices
 		{
-			get { return _comms.ListAvailable().ToArray(); }
+			get { return _comms.ListAvailableDevices().ToArray(); }
 		}
 
 		public event PropertyChangedEventHandler PropertyChanged;

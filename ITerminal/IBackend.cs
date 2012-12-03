@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
+﻿using System.ComponentModel;
 using Terminal_Interface.Enums;
 
 namespace Terminal_Interface
@@ -13,36 +9,40 @@ namespace Terminal_Interface
 
 		void Shutdown();
 
-		// New API
 		string Title { get; set; }
 
 		string LoggingFilePath { get; set; }
 
-		LoggingState loggingState { get; set; }
+		LoggingState LoggingState { get; set; }
 
-		EchoState echoState { get; set; }
+		EchoState EchoState { get; set; }
 
-		PortState portState { get; set; }
+		PortState PortState { get; set; }
 
-		FileSendState fileSendState { get; set; }
+		FileSendState FileSendState { get; set; }
+
+		string StatusLabel { get; set; }
+
+		string[] Devices { get; }
+
+		string CurrentDevice { get; set; }
+	}
+
+	public interface IHIDBackend : IBackend
+	{
+		int ReportLength { get; set; }
 	}
 
 	public interface ISerialBackend : IBackend
 	{
-		string COMPort { get; set; }
+		int Baud { get; set; }
 
-		int baud { get; set; }
+		StopBits StopBits { get; set; }
 
-		StopBits stopBits { get; set; }
+		int DataBits { get; set; }
 
-		int dataBits { get; set; }
+		FlowControl FlowControl { get; set; }
 
-		FlowControl flowControl { get; set; }
-
-		Parity parity { get; set; }
-
-		string[] serialPorts { get; }
-
-		string StatusLabel { get; set; }
+		Parity Parity { get; set; }
 	}
 }

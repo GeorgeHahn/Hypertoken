@@ -2,7 +2,7 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="HyperToken.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="COMPort" Type="System.String" Scope="User">
+    <Setting Name="currentDevice" Type="System.String" Scope="User">
       <Value Profile="(Default)">COM1</Value>
     </Setting>
     <Setting Name="DataBits" Type="System.Int32" Scope="User">

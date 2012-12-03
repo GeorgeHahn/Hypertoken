@@ -1,17 +1,10 @@
-//Author: George Hahn
-//$Rev:: 761                                             $:  Revision of last commit
-//$Author:: ghahn                                        $:  Author of last commit
-//$Date:: 2011-07-13 13:47:52 -0400 (Wed, 13 Jul 2011)   $:  Date of last commit
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Globalization;
-using System.Linq;
 using System.Windows.Forms;
-using Bugsense.WPF;
 using HyperToken_WinForms_GUI.Helpers;
 using HyperToken_WinForms_GUI.Properties;
 using NLog;
@@ -21,7 +14,7 @@ using Terminal_Interface.Events;
 using Terminal_Interface.Exceptions;
 
 // TODO tweak garbage collection
-// TODO Custom baud setting
+// TODO Custom Baud setting
 // TODO right click menu
 // - Copy, Save selection, Send file
 // TODO Parse incoming data for unprintable characters (display as hex?)
@@ -233,14 +226,14 @@ namespace HyperToken_WinForms_GUI
 		private void ToggleConnection(object sender, EventArgs e)
 		{
 			logger.Trace("ToggleConnection");
-			_backend.portState = _backend.portState == PortState.Open ? PortState.Closed : PortState.Open;
+			_backend.PortState = _backend.PortState == PortState.Open ? PortState.Closed : PortState.Open;
 		}
 
 		//Toggle echo
 		private void ToggleEcho(object sender, EventArgs e)
 		{
 			logger.Trace("Toggle Echo");
-			_backend.echoState = _backend.echoState == EchoState.Enabled ? EchoState.Disabled : EchoState.Enabled;
+			_backend.EchoState = _backend.EchoState == EchoState.Enabled ? EchoState.Disabled : EchoState.Enabled;
 		}
 
 		// Why both of these? - they catch from different controls
@@ -293,7 +286,7 @@ namespace HyperToken_WinForms_GUI
 
 		private void SelectCOMPort(object sender, ToolStripItemClickedEventArgs e)
 		{
-			_backend.COMPort = e.ClickedItem.Text;
+			_backend.CurrentDevice = e.ClickedItem.Text;
 		}
 
 		private void SaveEntireSessionToolStripMenuItemClick(object sender, EventArgs e)
@@ -379,7 +372,7 @@ namespace HyperToken_WinForms_GUI
 		/// <param name="items">Reference to the finished items</param>
 		/// <param name="values">One item will be generated for each value</param>
 		/// <param name="parentMenu">Parent menu for the items</param>
-		/// <param name="name">Name property for each item</param>
+		/// <param name="name">DeviceName property for each item</param>
 		/// <param name="clickHandler">OnClick event for each item</param>
 		/// <returns>Success</returns>
 		private void CreateMenuFrom(ToolStripDropDownItem parentMenu, IEnumerable values, string name, EventHandler clickHandler)
@@ -451,23 +444,23 @@ namespace HyperToken_WinForms_GUI
 					switch (value.ToLower())
 					{
 						case "even":
-							_backend.parity = Parity.Even;
+							_backend.Parity = Parity.Even;
 							break;
 
 						case "odd":
-							_backend.parity = Parity.Odd;
+							_backend.Parity = Parity.Odd;
 							break;
 
 						case "none":
-							_backend.parity = Parity.None;
+							_backend.Parity = Parity.None;
 							break;
 
 						case "mark":
-							_backend.parity = Parity.Mark;
+							_backend.Parity = Parity.Mark;
 							break;
 
 						case "space":
-							_backend.parity = Parity.Space;
+							_backend.Parity = Parity.Space;
 							break;
 					}
 					break;
@@ -476,50 +469,50 @@ namespace HyperToken_WinForms_GUI
 					switch ((int)(double.Parse(value) * 10))
 					{
 						case 10:
-							_backend.stopBits = StopBits.One;
+							_backend.StopBits = StopBits.One;
 							break;
 
 						case 15:
-							_backend.stopBits = StopBits.OnePointFive;
+							_backend.StopBits = StopBits.OnePointFive;
 							break;
 
 						case 20:
-							_backend.stopBits = StopBits.Two;
+							_backend.StopBits = StopBits.Two;
 							break;
 					}
 					break;
 
 				case "Data Bits": //Int
-					_backend.dataBits = int.Parse(value);
+					_backend.DataBits = int.Parse(value);
 					break;
 
 				case "Flow Control": //String
 					switch (value)
 					{
 						case "None":
-							_backend.flowControl = FlowControl.None;
+							_backend.FlowControl = FlowControl.None;
 							break;
 
 						case "Request To Send":
-							_backend.flowControl = FlowControl.RequestToSend;
+							_backend.FlowControl = FlowControl.RequestToSend;
 							break;
 
 						case "Xon/Xoff":
-							_backend.flowControl = FlowControl.XOnXOff;
+							_backend.FlowControl = FlowControl.XOnXOff;
 							break;
 
 						case "RTS + Xon/Xoff":
-							_backend.flowControl = FlowControl.RequestToSendXOnXOff;
+							_backend.FlowControl = FlowControl.RequestToSendXOnXOff;
 							break;
 
 						default:
-							_backend.flowControl = FlowControl.None;
+							_backend.FlowControl = FlowControl.None;
 							break;
 					}
 					break;
 
 				case "BaudRate": //Int
-					_backend.baud = int.Parse(value);
+					_backend.Baud = int.Parse(value);
 					break;
 			}
 		}
@@ -527,7 +520,7 @@ namespace HyperToken_WinForms_GUI
 		//List all COM ports
 		private void UpdateCOMPorts(object sender, EventArgs e)
 		{
-			string[] ports = _backend.serialPorts;
+			string[] ports = _backend.Devices;
 
 			if (ports == null)
 			{
@@ -623,7 +616,7 @@ namespace HyperToken_WinForms_GUI
 						this.Text = _backend.Title;
 						break;
 
-					case "COMPort":
+					case "currentDevice":
 						UpdateCOMPort();
 						break;
 
@@ -631,7 +624,7 @@ namespace HyperToken_WinForms_GUI
 						UpdatePortState();
 						break;
 
-					case "baud":
+					case "Baud":
 						UpdateBaudRate();
 						break;
 
@@ -644,7 +637,7 @@ namespace HyperToken_WinForms_GUI
 						break;
 
 					case "stopBits":
-						logger.Trace("Changing stopBits to {0}", _backend.stopBits);
+						logger.Trace("Changing stopBits to {0}", _backend.StopBits);
 
 						if (menuItemStopBits == null)
 						{
@@ -653,7 +646,7 @@ namespace HyperToken_WinForms_GUI
 						}
 
 						foreach (ToolStripMenuItem item in menuItemStopBits.DropDownItems)
-							item.Checked = item.Text == _backend.stopBits.GetDescription<StopBits>();
+							item.Checked = item.Text == _backend.StopBits.GetDescription<StopBits>();
 
 						break;
 
@@ -669,7 +662,7 @@ namespace HyperToken_WinForms_GUI
 						UpdateParity();
 						break;
 
-					case "StatusLabel":
+					case "DeviceStatus":
 						toolStripStatusLabelPortSettings.Text = _backend.StatusLabel;
 						break;
 
@@ -686,7 +679,7 @@ namespace HyperToken_WinForms_GUI
 
 		public void UpdatePortState()
 		{
-			switch (_backend.portState)
+			switch (_backend.PortState)
 			{
 				case PortState.Open:
 					toolStripButtonConnect.Text = Resources.Text_Disconnect;
@@ -700,7 +693,7 @@ namespace HyperToken_WinForms_GUI
 					break;
 
 				case PortState.Error:
-					_backend.portState = PortState.Closed;
+					_backend.PortState = PortState.Closed;
 					toolStripButtonConnect.ForeColor = Color.Red;
 					break;
 			}
@@ -708,9 +701,9 @@ namespace HyperToken_WinForms_GUI
 
 		private void UpdateLoggingState()
 		{
-			logger.Trace("Logging set to {0}", _backend.loggingState);
+			logger.Trace("Logging set to {0}", _backend.LoggingState);
 
-			switch (_backend.loggingState)
+			switch (_backend.LoggingState)
 			{
 				case LoggingState.Disabled:
 
@@ -729,14 +722,14 @@ namespace HyperToken_WinForms_GUI
 		private void ToggleLogging(object sender, System.EventArgs e)
 		{
 			logger.Trace("Toggle logging");
-			_backend.loggingState = _backend.loggingState == LoggingState.Disabled ? LoggingState.Enabled : LoggingState.Disabled;
+			_backend.LoggingState = _backend.LoggingState == LoggingState.Disabled ? LoggingState.Enabled : LoggingState.Disabled;
 		}
 
 		private void UpdateEchoState()
 		{
-			logger.Trace("Echo set to {0}", _backend.echoState);
+			logger.Trace("Echo set to {0}", _backend.EchoState);
 
-			switch (_backend.echoState)
+			switch (_backend.EchoState)
 			{
 				case EchoState.Disabled:
 					toolStripStatusLabelLocalEcho.Text = Resources.Text_Echo_Off;
@@ -750,13 +743,13 @@ namespace HyperToken_WinForms_GUI
 
 		public void UpdateCOMPort()
 		{
-			dropDownCOMPort.Text = _backend.COMPort;
+			dropDownCOMPort.Text = _backend.CurrentDevice;
 
 			foreach (ToolStripMenuItem item in menuItemCOMPort.DropDownItems)
-				item.Checked = item.Text == _backend.COMPort;
+				item.Checked = item.Text == _backend.CurrentDevice;
 
 			foreach (ToolStripMenuItem item in dropDownCOMPort.DropDownItems)
-				item.Checked = item.Text == _backend.COMPort;
+				item.Checked = item.Text == _backend.CurrentDevice;
 		}
 
 		public void UpdateBaudRate()
@@ -766,13 +759,13 @@ namespace HyperToken_WinForms_GUI
 
 			// TODO Throw an error. Also, rejigger this shit.
 
-			dropDownBaud.Text = _backend.baud.ToString(CultureInfo.InvariantCulture) + Resources.Text_Baud;
+			dropDownBaud.Text = _backend.Baud.ToString(CultureInfo.InvariantCulture) + Resources.Text_Baud;
 
 			foreach (ToolStripMenuItem item in menuItemBaud.DropDownItems)
-				item.Checked = item.Text == _backend.baud.ToString(CultureInfo.InvariantCulture);
+				item.Checked = item.Text == _backend.Baud.ToString(CultureInfo.InvariantCulture);
 
 			foreach (ToolStripMenuItem item in dropDownBaud.DropDownItems)
-				item.Checked = item.Text == _backend.baud.ToString(CultureInfo.InvariantCulture);
+				item.Checked = item.Text == _backend.Baud.ToString(CultureInfo.InvariantCulture);
 		}
 
 		// TODO this is gross, fix it.
@@ -781,26 +774,26 @@ namespace HyperToken_WinForms_GUI
 			if (menuItemDataBits == null)
 				return;
 
-			logger.Trace("Setting dataBits to {0}", _backend.dataBits);
+			logger.Trace("Setting dataBits to {0}", _backend.DataBits);
 
 			foreach (ToolStripMenuItem item in menuItemDataBits.DropDownItems)
-				item.Checked = item.Text == _backend.dataBits.ToString();
+				item.Checked = item.Text == _backend.DataBits.ToString();
 		}
 
 		public void UpdateFlowControl()
 		{
-			logger.Trace("Setting flow control to {0}", _backend.flowControl);
+			logger.Trace("Setting flow control to {0}", _backend.FlowControl);
 
 			foreach (ToolStripMenuItem item in menuItemFlowControl.DropDownItems)
-				item.Checked = item.Text == _backend.flowControl.GetDescription<FlowControl>();
+				item.Checked = item.Text == _backend.FlowControl.GetDescription<FlowControl>();
 		}
 
 		public void UpdateParity()
 		{
-			logger.Trace("Setting parity to {0}", _backend.parity);
+			logger.Trace("Setting parity to {0}", _backend.Parity);
 
 			foreach (ToolStripMenuItem item in menuItemParity.DropDownItems)
-				item.Checked = item.Text == _backend.parity.ToString();
+				item.Checked = item.Text == _backend.Parity.ToString();
 		}
 	}
 }

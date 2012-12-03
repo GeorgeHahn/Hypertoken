@@ -61,7 +61,7 @@ namespace HyperToken_Avalon_GUI
 
 		private void OnCOMPortChanged()
 		{
-			logger.Debug("COMPort setting to {0}", COMPort);
+			logger.Debug("currentDevice setting to {0}", COMPort);
 		}
 
 		public int baud { get; set; }
@@ -84,7 +84,7 @@ namespace HyperToken_Avalon_GUI
 		{
 			get
 			{
-				//return _backend.serialPorts);
+				//return _backend.devices);
 				return null;
 			}
 			set { } // Empty to allow WPF binding
@@ -143,7 +143,7 @@ namespace HyperToken_Avalon_GUI
 			MainWindow window = new MainWindow();
 			window.viewModel = this;
 
-			Changed("serialPorts");
+			Changed("devices");
 
 			app.Run(window);
 		}

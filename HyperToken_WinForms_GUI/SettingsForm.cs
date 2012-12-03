@@ -46,7 +46,7 @@ namespace HyperToken_WinForms_GUI
 				case Settings.FlowControl:
 					return "FlowControl";
 				case Settings.COMPort:
-					return "COMPort";
+					return "currentDevice";
 				case Settings.BaudRate:
 					return "BaudRate";
 				case Settings.SettingsHandler:

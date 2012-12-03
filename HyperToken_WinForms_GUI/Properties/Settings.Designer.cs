@@ -28,10 +28,10 @@ namespace HyperToken_WinForms_GUI.Properties {
         [global::System.Configuration.DefaultSettingValueAttribute("COM1")]
         public string COMPort {
             get {
-                return ((string)(this["COMPort"]));
+                return ((string)(this["currentDevice"]));
             }
             set {
-                this["COMPort"] = value;
+                this["currentDevice"] = value;
             }
         }
         

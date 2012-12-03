@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO.Ports;
 using System.Linq;
-using System.Text;
 using NLog;
 using Terminal_Interface;
 using Terminal_Interface.Events;
@@ -31,7 +30,7 @@ namespace Terminal
 			Settings.SettingChanged += OnSettingChanged;
 
 			Settings.Set("port", "COM1");
-			Settings.Set("baud", 115200);
+			Settings.Set("Baud", 115200);
 			Settings.Set("stopbits", StopBits.One);
 			Settings.Set("databits", 8);
 			Settings.Set("parity", Parity.None);
@@ -47,7 +46,7 @@ namespace Terminal
 					_port.PortName = (string)value;
 					break;
 
-				case "baud":
+				case "Baud":
 					_port.BaudRate = (int)value;
 					break;
 
@@ -178,7 +177,7 @@ namespace Terminal
 			}
 		}
 
-		public IEnumerable<string> ListAvailable()
+		public IEnumerable<string> ListAvailableDevices()
 		{
 			return SerialPort.GetPortNames().AsEnumerable();
 		}
@@ -191,13 +190,13 @@ namespace Terminal
 			}
 		}
 
-		public string Name
+		public string DeviceName
 		{
 			get { return _port.PortName; }
 			set { _port.PortName = value; }
 		}
 
-		public string StatusLabel
+		public string DeviceStatus
 		{
 			get
 			{
