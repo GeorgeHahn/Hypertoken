@@ -9,9 +9,9 @@ namespace Terminal
 {
 	internal class InitableRunner
 	{
-		private IInitable _initable;
+		private readonly IInitable _initable;
 
-		private static Logger logger = LogManager.GetCurrentClassLogger();
+		private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
 		public InitableRunner(IInitable initable)
 		{
