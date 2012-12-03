@@ -26,39 +26,12 @@ namespace Terminal_Interface
 
 		void TrimLines(int trimTo); // TODO stopgap measure to trim lines
 
-		void SetBackend(IBackend backend);
+		void SetBackend(ISerialBackend backend);
 
 		// Required (?) events
 		event SendFileEventHandler OnSendFile;
 
 		event OnKeyPressedEventHandler OnKeyPressed;
-
-		// New API
-		string Title { get; set; }
-
-		string LoggingFilePath { get; set; }
-
-		LoggingState loggingState { get; set; }
-
-		EchoState echoState { get; set; }
-
-		PortState portState { get; set; }
-
-		FileSendState fileSendState { get; set; }
-
-		string COMPort { get; set; }
-
-		int baud { get; set; }
-
-		StopBits stopBits { get; set; }
-
-		int dataBits { get; set; }
-
-		FlowControl flowControl { get; set; }
-
-		Parity parity { get; set; }
-
-		string[] serialPorts { get; }
 
 		// Old API
 

@@ -57,20 +57,9 @@ namespace HyperToken_WinForms_GUI
 			this.IOBox.Font = new Font(fontList[fontList.Length - 1], 10.0f, FontStyle.Regular, GraphicsUnit.Point, (byte)0);
 		}
 
-		#region ITerminal
-
-		public string Title { get; set; }
-
-		private void OnTitleChanged()
-		{
-			this.Text = Title;
-		}
-
-		public PortState portState { get; set; }
-
 		public void OnportStateChanged()
 		{
-			switch (portState)
+			switch (_backend.portState)
 			{
 				case PortState.Open:
 					toolStripButtonConnect.Text = Resources.Text_Disconnect;
@@ -84,21 +73,17 @@ namespace HyperToken_WinForms_GUI
 					break;
 
 				case PortState.Error:
-					portState = PortState.Closed;
+					_backend.portState = PortState.Closed;
 					toolStripButtonConnect.ForeColor = Color.Red;
 					break;
 			}
 		}
 
-		public string LoggingFilePath { get; set; }
-
-		public LoggingState loggingState { get; set; }
-
-		private void OnloggingStateChanged()
+		private void UpdateLoggingState()
 		{
-			logger.Trace("Logging set to {0}", loggingState);
+			logger.Trace("Logging set to {0}", _backend.loggingState);
 
-			switch (loggingState)
+			switch (_backend.loggingState)
 			{
 				case LoggingState.Disabled:
 					toolStripLoggingEnabled.Text = Resources.Text_Logging_Disabled;
@@ -115,16 +100,14 @@ namespace HyperToken_WinForms_GUI
 		private void ToggleLogging(object sender, System.EventArgs e)
 		{
 			logger.Trace("Toggle logging");
-			loggingState = loggingState == LoggingState.Disabled ? LoggingState.Enabled : LoggingState.Disabled;
+			_backend.loggingState = _backend.loggingState == LoggingState.Disabled ? LoggingState.Enabled : LoggingState.Disabled;
 		}
 
-		public EchoState echoState { get; set; }
-
-		private void OnechoStateChanged()
+		private void UpdateEchoState()
 		{
-			logger.Trace("Echo set to {0}", echoState);
+			logger.Trace("Echo set to {0}", _backend.echoState);
 
-			switch (echoState)
+			switch (_backend.echoState)
 			{
 				case EchoState.Disabled:
 					toolStripStatusLabelLocalEcho.Text = Resources.Text_Echo_Off;
@@ -136,24 +119,18 @@ namespace HyperToken_WinForms_GUI
 			}
 		}
 
-		public FileSendState fileSendState { get; set; }
-
 		#region COM port settings handlers
-
-		public string COMPort { get; set; }
 
 		public void OnCOMPortChanged()
 		{
-			dropDownCOMPort.Text = COMPort;
+			dropDownCOMPort.Text = _backend.COMPort;
 
 			foreach (ToolStripMenuItem item in menuItemCOMPort.DropDownItems)
-				item.Checked = item.Text == COMPort;
+				item.Checked = item.Text == _backend.COMPort;
 
 			foreach (ToolStripMenuItem item in dropDownCOMPort.DropDownItems)
-				item.Checked = item.Text == COMPort;
+				item.Checked = item.Text == _backend.COMPort;
 		}
-
-		public int baud { get; set; }
 
 		public void OnbaudChanged()
 		{
@@ -162,16 +139,14 @@ namespace HyperToken_WinForms_GUI
 
 			// TODO Throw an error. Also, rejigger this shit.
 
-			dropDownBaud.Text = baud.ToString(CultureInfo.InvariantCulture) + Resources.Text_Baud;
+			dropDownBaud.Text = _backend.baud.ToString(CultureInfo.InvariantCulture) + Resources.Text_Baud;
 
 			foreach (ToolStripMenuItem item in menuItemBaud.DropDownItems)
-				item.Checked = item.Text == baud.ToString(CultureInfo.InvariantCulture);
+				item.Checked = item.Text == _backend.baud.ToString(CultureInfo.InvariantCulture);
 
 			foreach (ToolStripMenuItem item in dropDownBaud.DropDownItems)
-				item.Checked = item.Text == baud.ToString(CultureInfo.InvariantCulture);
+				item.Checked = item.Text == _backend.baud.ToString(CultureInfo.InvariantCulture);
 		}
-
-		public StopBits stopBits { get; set; }
 
 		public void OnstopBitsChanged()
 		{
@@ -180,11 +155,11 @@ namespace HyperToken_WinForms_GUI
 
 			// TODO fix this.
 
-			logger.Trace("Changing stopBits to {0}", stopBits);
+			logger.Trace("Changing stopBits to {0}", _backend.stopBits);
 
 			foreach (ToolStripMenuItem item in menuItemStopBits.DropDownItems)
 			{
-				if (item.Text == stopBits.GetDescription<StopBits>())
+				if (item.Text == _backend.stopBits.GetDescription<StopBits>())
 					item.Checked = true;
 				else
 					item.Checked = false;
@@ -193,8 +168,6 @@ namespace HyperToken_WinForms_GUI
 			UpdateSerialStatusLabel();
 		}
 
-		public int dataBits { get; set; }
-
 		public void OndataBitsChanged()
 		{
 			if (menuItemDataBits == null)
@@ -202,47 +175,37 @@ namespace HyperToken_WinForms_GUI
 
 			// TODO this is gross, fix it.
 
-			logger.Trace("Setting dataBits to {0}", dataBits);
+			logger.Trace("Setting dataBits to {0}", _backend.dataBits);
 
 			foreach (ToolStripMenuItem item in menuItemDataBits.DropDownItems)
-				item.Checked = item.Text == dataBits.ToString();
+				item.Checked = item.Text == _backend.dataBits.ToString();
 
 			UpdateSerialStatusLabel();
 		}
 
-		public FlowControl flowControl { get; set; }
-
 		public void OnflowControlChanged()
 		{
-			logger.Trace("Setting flow control to {0}", flowControl);
+			logger.Trace("Setting flow control to {0}", _backend.flowControl);
 
 			foreach (ToolStripMenuItem item in menuItemFlowControl.DropDownItems)
-				item.Checked = item.Text == flowControl.GetDescription<FlowControl>();
+				item.Checked = item.Text == _backend.flowControl.GetDescription<FlowControl>();
 
 			//Change the port flow control
 		}
 
-		public Parity parity { get; set; }
-
 		public void OnparityChanged()
 		{
-			logger.Trace("Setting parity to {0}", parity);
+			logger.Trace("Setting parity to {0}", _backend.parity);
 
 			foreach (ToolStripMenuItem item in menuItemParity.DropDownItems)
-				item.Checked = item.Text == parity.ToString();
+				item.Checked = item.Text == _backend.parity.ToString();
 
 			UpdateSerialStatusLabel();
 		}
 
-		#endregion COM port settings handlers
-
-		public string[] serialPorts { get; private set; }
-
-		public bool connected { get; set; }
-
 		public string GetLoggingFilePath()
 		{
-			if (selectLoggingFileDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+			if (selectLoggingFileDialog.ShowDialog() == DialogResult.OK)
 				return selectLoggingFileDialog.FileName;
 
 			throw new FileSelectionCanceledException();
@@ -324,9 +287,9 @@ namespace HyperToken_WinForms_GUI
 			}));
 		}
 
-		private IBackend _backend;
+		private ISerialBackend _backend;
 
-		public void SetBackend(IBackend backend)
+		public void SetBackend(ISerialBackend backend)
 		{
 			logger.Trace("Set backend");
 			_backend = backend;
@@ -340,7 +303,7 @@ namespace HyperToken_WinForms_GUI
 
 		public event SaveSessionEventHandler OnSaveSession;
 
-		#endregion ITerminal
+		#endregion COM port settings handlers
 
 		// MenuItem handler
 		private void SetLoggingFile(object sender, EventArgs e)
@@ -420,14 +383,14 @@ namespace HyperToken_WinForms_GUI
 		private void ToggleConnection(object sender, EventArgs e)
 		{
 			logger.Trace("ToggleConnection");
-			portState = portState == PortState.Open ? PortState.Closed : PortState.Open;
+			_backend.portState = _backend.portState == PortState.Open ? PortState.Closed : PortState.Open;
 		}
 
 		//Toggle echo
 		private void ToggleEcho(object sender, EventArgs e)
 		{
 			logger.Trace("Toggle Echo");
-			echoState = echoState == EchoState.Enabled ? EchoState.Disabled : EchoState.Enabled;
+			_backend.echoState = _backend.echoState == EchoState.Enabled ? EchoState.Disabled : EchoState.Enabled;
 		}
 
 		// Why both of these? - they catch from different controls
@@ -480,7 +443,7 @@ namespace HyperToken_WinForms_GUI
 
 		private void SelectCOMPort(object sender, ToolStripItemClickedEventArgs e)
 		{
-			COMPort = e.ClickedItem.Text;
+			_backend.COMPort = e.ClickedItem.Text;
 		}
 
 		private void SaveEntireSessionToolStripMenuItemClick(object sender, EventArgs e)
@@ -641,23 +604,23 @@ namespace HyperToken_WinForms_GUI
 					switch (value.ToLower())
 					{
 						case "even":
-							parity = Parity.Even;
+							_backend.parity = Parity.Even;
 							break;
 
 						case "odd":
-							parity = Parity.Odd;
+							_backend.parity = Parity.Odd;
 							break;
 
 						case "none":
-							parity = Parity.None;
+							_backend.parity = Parity.None;
 							break;
 
 						case "mark":
-							parity = Parity.Mark;
+							_backend.parity = Parity.Mark;
 							break;
 
 						case "space":
-							parity = Parity.Space;
+							_backend.parity = Parity.Space;
 							break;
 					}
 					break;
@@ -666,50 +629,50 @@ namespace HyperToken_WinForms_GUI
 					switch ((int)(double.Parse(value) * 10))
 					{
 						case 10:
-							stopBits = StopBits.One;
+							_backend.stopBits = StopBits.One;
 							break;
 
 						case 15:
-							stopBits = StopBits.OnePointFive;
+							_backend.stopBits = StopBits.OnePointFive;
 							break;
 
 						case 20:
-							stopBits = StopBits.Two;
+							_backend.stopBits = StopBits.Two;
 							break;
 					}
 					break;
 
 				case "Data Bits": //Int
-					dataBits = int.Parse(value);
+					_backend.dataBits = int.Parse(value);
 					break;
 
 				case "Flow Control": //String
 					switch (value)
 					{
 						case "None":
-							flowControl = FlowControl.None;
+							_backend.flowControl = FlowControl.None;
 							break;
 
 						case "Request To Send":
-							flowControl = FlowControl.RequestToSend;
+							_backend.flowControl = FlowControl.RequestToSend;
 							break;
 
 						case "Xon/Xoff":
-							flowControl = FlowControl.XOnXOff;
+							_backend.flowControl = FlowControl.XOnXOff;
 							break;
 
 						case "RTS + Xon/Xoff":
-							flowControl = FlowControl.RequestToSendXOnXOff;
+							_backend.flowControl = FlowControl.RequestToSendXOnXOff;
 							break;
 
 						default:
-							flowControl = FlowControl.None;
+							_backend.flowControl = FlowControl.None;
 							break;
 					}
 					break;
 
 				case "BaudRate": //Int
-					baud = int.Parse(value);
+					_backend.baud = int.Parse(value);
 					break;
 			}
 		}
@@ -800,9 +763,9 @@ namespace HyperToken_WinForms_GUI
 		private void UpdateSerialStatusLabel()
 		{
 			toolStripStatusLabelPortSettings.Text =
-				dataBits.ToString() + ';' +
-				parity.ToString()[0] + ';' +
-				stopBits.GetDescription<StopBits>();
+				_backend.dataBits.ToString() + ';' +
+				_backend.parity.ToString()[0] + ';' +
+				_backend.stopBits.GetDescription<StopBits>();
 		}
 
 		#region Private variables
@@ -824,7 +787,7 @@ namespace HyperToken_WinForms_GUI
 		/// </summary>
 		public enum MenuType { menu, dropdown, combobox };
 
-		public ToolStripItem[][] baudRates;
+		//public ToolStripItem[][] baudRates;
 
 		#endregion Private variables
 
@@ -833,5 +796,106 @@ namespace HyperToken_WinForms_GUI
 		public event PropertyChangedEventHandler PropertyChanged;
 
 		#endregion Implementation of INotifyPropertyChanged
+
+		private void BackendOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
+		{
+			logger.Warn("VersionShim setting {0}", propertyChangedEventArgs.PropertyName);
+
+			switch (propertyChangedEventArgs.PropertyName)
+			{
+				case "Title":
+					break;
+
+				case "LoggingFilePath":
+
+					//TerminalOnSetLoggingPath(null, new SetLoggingPathEventArgs(_backend.LoggingFilePath));
+					break;
+
+				case "loggingState":
+
+					//SetLoggingState(_backend.loggingState);
+					break;
+
+				case "echoState":
+
+					//SetEchoState(_backend.echoState);
+					break;
+
+				case "portState":
+
+					//SetPortConnection(_backend.portState);
+					break;
+
+				case "fileSendState":
+					break;
+
+				case "COMPort":
+
+					//SetCOMPort(_backend.COMPort);
+					break;
+
+				case "baud":
+					SetBaudRate(_backend.baud);
+					break;
+
+				case "stopBits":
+					SetStopBits(_backend.stopBits);
+					break;
+
+				case "dataBits":
+					SetDataBits(_backend.dataBits);
+					break;
+
+				case "flowControl":
+					SetFlowControl(_backend.flowControl);
+					break;
+
+				case "parity":
+					SetParity(_backend.parity);
+					break;
+
+				case "serialPorts":
+					break;
+
+				case "connected":
+
+					break;
+			}
+		}
+
+		private void SetDataBits(int p)
+		{
+			logger.Trace("Databits set to {0}", p);
+
+			// TODO handle databits menu change
+		}
+
+		private void SetStopBits(Terminal_Interface.Enums.StopBits stopBits)
+		{
+			logger.Trace("Stopbits set to {0}", stopBits);
+
+			// TODO handle stopbits menu check change
+		}
+
+		private void SetFlowControl(Terminal_Interface.Enums.FlowControl flowControl)
+		{
+			logger.Trace("FlowControl set to {0}", flowControl);
+
+			// TODO handle flow control menu change
+		}
+
+		private void SetBaudRate(int baudrate)
+		{
+			logger.Trace("Baud set to {0}", baudrate);
+
+			// TODO handle baud menu change
+		}
+
+		private void SetParity(Terminal_Interface.Enums.Parity parity)
+		{
+			logger.Trace("Parity being set to {0}", parity);
+
+			// TODO handle parity menu change
+		}
 	}
 }

@@ -20,7 +20,5 @@ namespace Terminal_Interface
 		void Open();
 
 		bool IsOpen { get; }
-
-		ISettings Settings { get; }
 	}
 }

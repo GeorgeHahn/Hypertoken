@@ -20,6 +20,11 @@ namespace HyperToken_Avalon_GUI
 			this._backend = backend;
 		}
 
+		public void SetBackend(ISerialBackend backend)
+		{
+			this._backend = backend;
+		}
+
 		public event SendFileEventHandler OnSendFile;
 
 		public event SetLoggingPathEventHandler OnSetLoggingPath;

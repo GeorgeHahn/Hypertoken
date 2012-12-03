@@ -10,11 +10,11 @@ namespace Terminal
 	internal class TerminalRunner
 	{
 		private readonly ITerminal _terminal;
-		private readonly IBackend _backend;
+		private readonly ISerialBackend _backend;
 
 		private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-		public TerminalRunner(ITerminal terminal, IBackend backend)
+		public TerminalRunner(ITerminal terminal, ISerialBackend backend)
 		{
 			logger.Trace("TerminalRunner created");
 			_backend = backend;

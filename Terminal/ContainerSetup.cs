@@ -23,9 +23,10 @@ namespace Terminal
 			// Serial port wiring
 			builder.RegisterType<SerialPortDataHandler>().As<IDataReader>();
 			builder.RegisterType<SerialPortDataHandler>().As<IDataWriter>();
+			builder.RegisterType<SerialPortDataHandler>().As<IDataDevice>();
 
 			// Backend wiring
-			builder.RegisterType<Backend>().As<IBackend>();
+			builder.RegisterType<Backend>().As<ISerialBackend>();
 
 			// Application wiring
 			builder.RegisterType<TerminalRunner>();

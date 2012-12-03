@@ -9,7 +9,7 @@ using Terminal_Interface.Events;
 
 namespace Terminal
 {
-	public class SerialPortDataHandler : IDataReader, IDataWriter
+	public class SerialPortDataHandler : IDataDevice
 	{
 		private readonly SerialPort _port;
 		private readonly byte[] _receiveBuffer;
