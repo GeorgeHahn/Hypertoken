@@ -1,4 +1,7 @@
-﻿namespace HyperToken_WinForms_GUI
+﻿using System;
+using CustomControls;
+
+namespace HyperToken_WinForms_GUI
 {
 	partial class MainForm
 	{
@@ -458,7 +461,7 @@
 			this.fileSendPane1.Size = new System.Drawing.Size(179, 317);
 			this.fileSendPane1.TabIndex = 4;
 			this.fileSendPane1.Visible = false;
-			this.fileSendPane1.OnSend += new CustomControls.FileSendPane.OnFileSendEventHandler(this.fileSendPane1_OnSend);
+			this.fileSendPane1.OnSend += new CustomControls.FileSendPane.OnFileSendEventHandler(FileSendPaneSend);
 			// 
 			// ConnectionStatusLabel
 			// 
@@ -610,6 +613,7 @@
 			this.PerformLayout();
 
 		}
+
 
 		#endregion Windows Form Designer generated code
 

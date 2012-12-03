@@ -18,8 +18,6 @@ namespace Terminal_Interface
 
 		string Title { get; set; }
 
-		void SetDevice(ISerialPort device);
-
 		event SaveSessionEventHandler OnSaveSession;
 	}
 }

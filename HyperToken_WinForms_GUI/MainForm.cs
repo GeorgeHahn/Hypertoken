@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Globalization;
 using System.Windows.Forms;
+using CustomControls;
 using HyperToken_WinForms_GUI.Helpers;
 using HyperToken_WinForms_GUI.Properties;
 using NLog;
@@ -30,17 +31,29 @@ namespace HyperToken_WinForms_GUI
 
 		private readonly ILogger _logger;
 
+		private readonly IFileSender _fileSender;
+
 		private ISerialPort _dataDevice;
 
 		private List<int> _baudRateVals;
 
-		public MainForm(IAboutBox aboutBox, ILogger logger, IEchoer echoer)
+		public MainForm(IAboutBox aboutBox, ILogger logger, IEchoer echoer, IFileSender fileSender, ISerialPort dataDevice)
 		{
 			_aboutBox = aboutBox;
 			_logger = logger;
 			_echoer = echoer;
+			_fileSender = fileSender;
+			_dataDevice = dataDevice;
+
+			_dataDevice.PropertyChanged += DataDeviceOnPropertyChanged;
+			_dataDevice.DataReceived += DataDeviceOnDataReceived;
+
 			MainForm.logger.Trace("Mainform object created");
 		}
+
+		public MainForm(IAboutBox aboutBox, ISerialPort dataDevice)
+			: this(aboutBox, null, null, null, dataDevice)
+		{ }
 
 		public event SaveSessionEventHandler OnSaveSession;
 
@@ -187,14 +200,6 @@ namespace HyperToken_WinForms_GUI
 		{
 			Initialize();
 			Application.Run(this);
-		}
-
-		public void SetDevice(ISerialPort device)
-		{
-			logger.Trace("Set device");
-			_dataDevice = device;
-			_dataDevice.PropertyChanged += DataDeviceOnPropertyChanged;
-			_dataDevice.DataReceived += DataDeviceOnDataReceived;
 		}
 
 		public void UpdateBaudRate()
@@ -687,6 +692,16 @@ namespace HyperToken_WinForms_GUI
 					MenuItemToggleLogging.Checked = true;
 					break;
 			}
+		}
+
+		private void SetLoggingFile(object sender, EventArgs e)
+		{
+			throw new NotImplementedException();
+		}
+
+		private void FileSendPaneSend(object sender, EventArgs eventArgs, FileSendPane.SerialSendArgs serialSendArgs)
+		{
+			throw new NotImplementedException();
 		}
 	}
 }
