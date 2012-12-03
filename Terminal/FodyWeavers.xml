@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Weavers>
-  <PropertyChanged />
-  <Anotar />
-  <Stamp />
+	<PropertyChanged />
+	<!-- <Anotar /> -->
+	<Stamp />
 </Weavers>
