@@ -84,7 +84,8 @@ namespace HyperToken_Avalon_GUI
 		{
 			get
 			{
-				return _backend.GetSerialPorts();
+				//return _backend.serialPorts);
+				return null;
 			}
 			set { } // Empty to allow WPF binding
 		}

@@ -178,11 +178,33 @@ namespace Terminal
 			}
 		}
 
+		public IEnumerable<string> ListAvailable()
+		{
+			return SerialPort.GetPortNames().AsEnumerable();
+		}
+
 		public bool IsOpen
 		{
 			get
 			{
 				return _port.IsOpen;
+			}
+		}
+
+		public string Name
+		{
+			get { return _port.PortName; }
+			set { _port.PortName = value; }
+		}
+
+		public string StatusLabel
+		{
+			get
+			{
+				return string.Format("{0};{1};{2}",
+					_port.DataBits,
+					_port.Parity.ToString()[0],
+					(float)((int)_port.StopBits + 1) / 2);
 			}
 		}
 

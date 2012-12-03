@@ -9,8 +9,6 @@ namespace Terminal_Interface
 {
 	public interface IBackend : INotifyPropertyChanged
 	{
-		string[] GetSerialPorts();
-
 		void KeyPressed(char c);
 
 		void Shutdown();
@@ -44,5 +42,7 @@ namespace Terminal_Interface
 		Parity parity { get; set; }
 
 		string[] serialPorts { get; }
+
+		string StatusLabel { get; set; }
 	}
 }

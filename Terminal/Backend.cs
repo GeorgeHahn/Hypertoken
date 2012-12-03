@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.IO;
 using System.IO.Ports;
+using System.Linq;
 using System.Threading;
 using Bugsense.WPF;
 using HyperToken_WinForms_GUI.Helpers;
@@ -116,16 +117,15 @@ namespace Terminal
 
 		public string COMPort
 		{
-			get
-			{
-				return "PORT 5";
+			get { return _comms.Name; }
+			set { _comms.Name = value; }
+		}
 
-				// return comms portname?
-			}
-			set
-			{
-				//comms portName = value;
-			}
+		public string StatusLabel { get; set; }
+
+		private void UpdateStatusLabel()
+		{
+			StatusLabel = _comms.StatusLabel;
 		}
 
 		#region Logging
@@ -382,14 +382,6 @@ namespace Terminal
 
 		#region Implementation of IBackend
 
-		public string[] GetSerialPorts()
-		{
-			logger.Trace("Serial ports listed");
-			string[] ports = SerialPort.GetPortNames();
-			logger.Debug("{0} ports available", ports.Length);
-			return ports;
-		}
-
 		public void KeyPressed(char c)
 		{
 			SendChar(c);
@@ -397,18 +389,51 @@ namespace Terminal
 
 		#endregion Implementation of IBackend
 
-		public event PropertyChangedEventHandler PropertyChanged;
-
 		public int baud { get; set; }
-
-		public StopBits stopBits { get; set; }
-
-		public int dataBits { get; set; }
 
 		public FlowControl flowControl { get; set; }
 
-		public Parity parity { get; set; }
+		private Parity _parity;
 
-		public string[] serialPorts { get; private set; }
+		public Parity parity
+		{
+			get { return _parity; }
+			set
+			{
+				_parity = value;
+				UpdateStatusLabel();
+			}
+		}
+
+		private int _dataBits;
+
+		public int dataBits
+		{
+			get { return _dataBits; }
+			set
+			{
+				_dataBits = value;
+				UpdateStatusLabel();
+			}
+		}
+
+		private StopBits _stopBits;
+
+		public StopBits stopBits
+		{
+			get { return _stopBits; }
+			set
+			{
+				_stopBits = value;
+				UpdateStatusLabel();
+			}
+		}
+
+		public string[] serialPorts
+		{
+			get { return _comms.ListAvailable().ToArray(); }
+		}
+
+		public event PropertyChangedEventHandler PropertyChanged;
 	}
 }

@@ -57,151 +57,7 @@ namespace HyperToken_WinForms_GUI
 			this.IOBox.Font = new Font(fontList[fontList.Length - 1], 10.0f, FontStyle.Regular, GraphicsUnit.Point, (byte)0);
 		}
 
-		public void OnportStateChanged()
-		{
-			switch (_backend.portState)
-			{
-				case PortState.Open:
-					toolStripButtonConnect.Text = Resources.Text_Disconnect;
-					toolStripButtonConnect.Image = Resources.disconnected;
-					toolStripButtonConnect.ForeColor = SystemColors.ControlText;
-					break;
-
-				case PortState.Closed:
-					toolStripButtonConnect.Text = Resources.Text_Connect;
-					toolStripButtonConnect.Image = Resources.connected;
-					break;
-
-				case PortState.Error:
-					_backend.portState = PortState.Closed;
-					toolStripButtonConnect.ForeColor = Color.Red;
-					break;
-			}
-		}
-
-		private void UpdateLoggingState()
-		{
-			logger.Trace("Logging set to {0}", _backend.loggingState);
-
-			switch (_backend.loggingState)
-			{
-				case LoggingState.Disabled:
-					toolStripLoggingEnabled.Text = Resources.Text_Logging_Disabled;
-					MenuItemToggleLogging.Checked = false;
-					break;
-
-				case LoggingState.Enabled:
-					toolStripLoggingEnabled.Text = Resources.Text_Logging_Enabled;
-					MenuItemToggleLogging.Checked = true;
-					break;
-			}
-		}
-
-		private void ToggleLogging(object sender, System.EventArgs e)
-		{
-			logger.Trace("Toggle logging");
-			_backend.loggingState = _backend.loggingState == LoggingState.Disabled ? LoggingState.Enabled : LoggingState.Disabled;
-		}
-
-		private void UpdateEchoState()
-		{
-			logger.Trace("Echo set to {0}", _backend.echoState);
-
-			switch (_backend.echoState)
-			{
-				case EchoState.Disabled:
-					toolStripStatusLabelLocalEcho.Text = Resources.Text_Echo_Off;
-					break;
-
-				case EchoState.Enabled:
-					toolStripStatusLabelLocalEcho.Text = Resources.Text_Echo_On;
-					break;
-			}
-		}
-
 		#region COM port settings handlers
-
-		public void OnCOMPortChanged()
-		{
-			dropDownCOMPort.Text = _backend.COMPort;
-
-			foreach (ToolStripMenuItem item in menuItemCOMPort.DropDownItems)
-				item.Checked = item.Text == _backend.COMPort;
-
-			foreach (ToolStripMenuItem item in dropDownCOMPort.DropDownItems)
-				item.Checked = item.Text == _backend.COMPort;
-		}
-
-		public void OnbaudChanged()
-		{
-			if (dropDownBaud == null)
-				return;
-
-			// TODO Throw an error. Also, rejigger this shit.
-
-			dropDownBaud.Text = _backend.baud.ToString(CultureInfo.InvariantCulture) + Resources.Text_Baud;
-
-			foreach (ToolStripMenuItem item in menuItemBaud.DropDownItems)
-				item.Checked = item.Text == _backend.baud.ToString(CultureInfo.InvariantCulture);
-
-			foreach (ToolStripMenuItem item in dropDownBaud.DropDownItems)
-				item.Checked = item.Text == _backend.baud.ToString(CultureInfo.InvariantCulture);
-		}
-
-		public void OnstopBitsChanged()
-		{
-			if (menuItemStopBits == null)
-				return;
-
-			// TODO fix this.
-
-			logger.Trace("Changing stopBits to {0}", _backend.stopBits);
-
-			foreach (ToolStripMenuItem item in menuItemStopBits.DropDownItems)
-			{
-				if (item.Text == _backend.stopBits.GetDescription<StopBits>())
-					item.Checked = true;
-				else
-					item.Checked = false;
-			}
-
-			UpdateSerialStatusLabel();
-		}
-
-		public void OndataBitsChanged()
-		{
-			if (menuItemDataBits == null)
-				return;
-
-			// TODO this is gross, fix it.
-
-			logger.Trace("Setting dataBits to {0}", _backend.dataBits);
-
-			foreach (ToolStripMenuItem item in menuItemDataBits.DropDownItems)
-				item.Checked = item.Text == _backend.dataBits.ToString();
-
-			UpdateSerialStatusLabel();
-		}
-
-		public void OnflowControlChanged()
-		{
-			logger.Trace("Setting flow control to {0}", _backend.flowControl);
-
-			foreach (ToolStripMenuItem item in menuItemFlowControl.DropDownItems)
-				item.Checked = item.Text == _backend.flowControl.GetDescription<FlowControl>();
-
-			//Change the port flow control
-		}
-
-		public void OnparityChanged()
-		{
-			logger.Trace("Setting parity to {0}", _backend.parity);
-
-			foreach (ToolStripMenuItem item in menuItemParity.DropDownItems)
-				item.Checked = item.Text == _backend.parity.ToString();
-
-			UpdateSerialStatusLabel();
-		}
 
 		public string GetLoggingFilePath()
 		{
@@ -311,11 +167,10 @@ namespace HyperToken_WinForms_GUI
 		{
 			try
 			{
-				if (OnSetLoggingPath != null)
-				{
-					SetLoggingPathEventArgs loggingPath = new SetLoggingPathEventArgs(GetLoggingFilePath());
-					OnSetLoggingPath(this, loggingPath);
-				}
+				if (OnSetLoggingPath == null) return;
+
+				var loggingPath = new SetLoggingPathEventArgs(GetLoggingFilePath());
+				OnSetLoggingPath(this, loggingPath);
 			}
 			catch (FileSelectionCanceledException)
 			{
@@ -340,7 +195,6 @@ namespace HyperToken_WinForms_GUI
 		public void Run()
 		{
 			Initialize();
-			BugSense.SendException(new Exception("Test - 3"));
 			Application.Run(this);
 		}
 
@@ -366,18 +220,13 @@ namespace HyperToken_WinForms_GUI
 			if (System.Diagnostics.Debugger.IsAttached)
 				saveEntireSessionToolStripMenuItem.Visible = true;
 
-			UpdateBaudRates();
+			CreateMenuFrom(dropDownBaud, baudRateVals, "BaudRate", ChangeCOMParam);
+			CreateMenuFrom(menuItemBaud, baudRateVals, "BaudRate", ChangeCOMParam);
 			fileSendLoadingCircle.Alignment = ToolStripItemAlignment.Right;
 
 			SetupFileSendSpinnerSpokes();
 
 			logger.Warn("MainForm initialization complete");
-		}
-
-		private void UpdateBaudRates()
-		{
-			CreateMenuFrom(dropDownBaud, baudRateVals, "BaudRate", ChangeCOMParam);
-			CreateMenuFrom(menuItemBaud, baudRateVals, "BaudRate", ChangeCOMParam);
 		}
 
 		//Toggle connected
@@ -567,10 +416,6 @@ namespace HyperToken_WinForms_GUI
 
 		#endregion Initialization
 
-		private void Uninitialize(object sender, FormClosingEventArgs e)
-		{
-		}
-
 		#region Event Handlers
 
 		// TODO FIXME AAH THIS IS YUCK. REWRITE.
@@ -582,6 +427,7 @@ namespace HyperToken_WinForms_GUI
 		// TODO This is terrifying
 		public void ChangeCOMParam(object sender, EventArgs e)
 		{
+			logger.Warn("Hit hideous code.");
 			string param = null;
 			string value = null;
 
@@ -681,7 +527,7 @@ namespace HyperToken_WinForms_GUI
 		//List all COM ports
 		private void UpdateCOMPorts(object sender, EventArgs e)
 		{
-			string[] ports = _backend.GetSerialPorts();
+			string[] ports = _backend.serialPorts;
 
 			if (ports == null)
 			{
@@ -695,7 +541,7 @@ namespace HyperToken_WinForms_GUI
 			{
 				ToolStripDropDownItem menu = sender as ToolStripDropDownItem;
 				menu.DropDownItems.Clear();
-				foreach (string port in ports)
+				foreach (var port in ports)
 				{
 					menu.DropDownItems.Add(port);
 				}
@@ -761,142 +607,200 @@ namespace HyperToken_WinForms_GUI
 
 		#endregion Event Handlers
 
-		private void UpdateSerialStatusLabel()
-		{
-			toolStripStatusLabelPortSettings.Text =
-				_backend.dataBits.ToString() + ';' +
-				_backend.parity.ToString()[0] + ';' +
-				_backend.stopBits.GetDescription<StopBits>();
-		}
-
-		#region Private variables
-
-		private static Logger logger = LogManager.GetCurrentClassLogger();
-
-		/// <summary>
-		/// About box instance
-		/// </summary>
-		private AboutBox formAbout;
-
-		/// <summary>
-		/// Contains all lines received so far
-		/// </summary>
-		//private List<string> allLines = new List<string>(100000);
-
-		/// <summary>
-		/// Various menu types for the CreateMenuFrom function
-		/// </summary>
-		public enum MenuType { menu, dropdown, combobox };
-
-		//public ToolStripItem[][] baudRates;
-
-		#endregion Private variables
-
-		#region Implementation of INotifyPropertyChanged
+		private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
 		public event PropertyChangedEventHandler PropertyChanged;
-
-		#endregion Implementation of INotifyPropertyChanged
 
 		private void BackendOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
 		{
 			logger.Warn("VersionShim setting {0}", propertyChangedEventArgs.PropertyName);
 
-			switch (propertyChangedEventArgs.PropertyName)
+			try
 			{
-				case "Title":
+				switch (propertyChangedEventArgs.PropertyName)
+				{
+					case "Title":
+						this.Text = _backend.Title;
+						break;
+
+					case "COMPort":
+						UpdateCOMPort();
+						break;
+
+					case "portState":
+						UpdatePortState();
+						break;
+
+					case "baud":
+						UpdateBaudRate();
+						break;
+
+					case "loggingState":
+						UpdateLoggingState();
+						break;
+
+					case "echoState":
+						UpdateEchoState();
+						break;
+
+					case "stopBits":
+						logger.Trace("Changing stopBits to {0}", _backend.stopBits);
+
+						if (menuItemStopBits == null)
+						{
+							logger.Error("menuItemStopBits == null");
+							return;
+						}
+
+						foreach (ToolStripMenuItem item in menuItemStopBits.DropDownItems)
+							item.Checked = item.Text == _backend.stopBits.GetDescription<StopBits>();
+
+						break;
+
+					case "dataBits":
+						UpdateDataBits();
+						break;
+
+					case "flowControl":
+						UpdateFlowControl();
+						break;
+
+					case "parity":
+						UpdateParity();
+						break;
+
+					case "StatusLabel":
+						toolStripStatusLabelPortSettings.Text = _backend.StatusLabel;
+						break;
+
+					default:
+						logger.Error("Unhandled - {0}", propertyChangedEventArgs.PropertyName);
+						break;
+				}
+			}
+			catch (NullReferenceException e)
+			{
+				logger.Error("Error: {0}", e.Message);
+			}
+		}
+
+		public void UpdatePortState()
+		{
+			switch (_backend.portState)
+			{
+				case PortState.Open:
+					toolStripButtonConnect.Text = Resources.Text_Disconnect;
+					toolStripButtonConnect.Image = Resources.disconnected;
+					toolStripButtonConnect.ForeColor = SystemColors.ControlText;
 					break;
 
-				case "LoggingFilePath":
-
-					//TerminalOnSetLoggingPath(null, new SetLoggingPathEventArgs(_backend.LoggingFilePath));
+				case PortState.Closed:
+					toolStripButtonConnect.Text = Resources.Text_Connect;
+					toolStripButtonConnect.Image = Resources.connected;
 					break;
 
-				case "loggingState":
-
-					//SetLoggingState(_backend.loggingState);
-					break;
-
-				case "echoState":
-
-					//SetEchoState(_backend.echoState);
-					break;
-
-				case "portState":
-
-					//SetPortConnection(_backend.portState);
-					break;
-
-				case "fileSendState":
-					break;
-
-				case "COMPort":
-
-					//SetCOMPort(_backend.COMPort);
-					break;
-
-				case "baud":
-					SetBaudRate(_backend.baud);
-					break;
-
-				case "stopBits":
-					SetStopBits(_backend.stopBits);
-					break;
-
-				case "dataBits":
-					SetDataBits(_backend.dataBits);
-					break;
-
-				case "flowControl":
-					SetFlowControl(_backend.flowControl);
-					break;
-
-				case "parity":
-					SetParity(_backend.parity);
-					break;
-
-				case "serialPorts":
-					break;
-
-				case "connected":
-
+				case PortState.Error:
+					_backend.portState = PortState.Closed;
+					toolStripButtonConnect.ForeColor = Color.Red;
 					break;
 			}
 		}
 
-		private void SetDataBits(int p)
+		private void UpdateLoggingState()
 		{
-			logger.Trace("Databits set to {0}", p);
+			logger.Trace("Logging set to {0}", _backend.loggingState);
 
-			// TODO handle databits menu change
+			switch (_backend.loggingState)
+			{
+				case LoggingState.Disabled:
+
+					toolStripLoggingEnabled.Text = Resources.Text_Logging_Disabled;
+					MenuItemToggleLogging.Checked = false;
+					break;
+
+				case LoggingState.Enabled:
+
+					toolStripLoggingEnabled.Text = Resources.Text_Logging_Enabled;
+					MenuItemToggleLogging.Checked = true;
+					break;
+			}
 		}
 
-		private void SetStopBits(Terminal_Interface.Enums.StopBits stopBits)
+		private void ToggleLogging(object sender, System.EventArgs e)
 		{
-			logger.Trace("Stopbits set to {0}", stopBits);
-
-			// TODO handle stopbits menu check change
+			logger.Trace("Toggle logging");
+			_backend.loggingState = _backend.loggingState == LoggingState.Disabled ? LoggingState.Enabled : LoggingState.Disabled;
 		}
 
-		private void SetFlowControl(Terminal_Interface.Enums.FlowControl flowControl)
+		private void UpdateEchoState()
 		{
-			logger.Trace("FlowControl set to {0}", flowControl);
+			logger.Trace("Echo set to {0}", _backend.echoState);
 
-			// TODO handle flow control menu change
+			switch (_backend.echoState)
+			{
+				case EchoState.Disabled:
+					toolStripStatusLabelLocalEcho.Text = Resources.Text_Echo_Off;
+					break;
+
+				case EchoState.Enabled:
+					toolStripStatusLabelLocalEcho.Text = Resources.Text_Echo_On;
+					break;
+			}
 		}
 
-		private void SetBaudRate(int baudrate)
+		public void UpdateCOMPort()
 		{
-			logger.Trace("Baud set to {0}", baudrate);
+			dropDownCOMPort.Text = _backend.COMPort;
 
-			// TODO handle baud menu change
+			foreach (ToolStripMenuItem item in menuItemCOMPort.DropDownItems)
+				item.Checked = item.Text == _backend.COMPort;
+
+			foreach (ToolStripMenuItem item in dropDownCOMPort.DropDownItems)
+				item.Checked = item.Text == _backend.COMPort;
 		}
 
-		private void SetParity(Terminal_Interface.Enums.Parity parity)
+		public void UpdateBaudRate()
 		{
-			logger.Trace("Parity being set to {0}", parity);
+			if (dropDownBaud == null)
+				return;
 
-			// TODO handle parity menu change
+			// TODO Throw an error. Also, rejigger this shit.
+
+			dropDownBaud.Text = _backend.baud.ToString(CultureInfo.InvariantCulture) + Resources.Text_Baud;
+
+			foreach (ToolStripMenuItem item in menuItemBaud.DropDownItems)
+				item.Checked = item.Text == _backend.baud.ToString(CultureInfo.InvariantCulture);
+
+			foreach (ToolStripMenuItem item in dropDownBaud.DropDownItems)
+				item.Checked = item.Text == _backend.baud.ToString(CultureInfo.InvariantCulture);
+		}
+
+		// TODO this is gross, fix it.
+		public void UpdateDataBits()
+		{
+			if (menuItemDataBits == null)
+				return;
+
+			logger.Trace("Setting dataBits to {0}", _backend.dataBits);
+
+			foreach (ToolStripMenuItem item in menuItemDataBits.DropDownItems)
+				item.Checked = item.Text == _backend.dataBits.ToString();
+		}
+
+		public void UpdateFlowControl()
+		{
+			logger.Trace("Setting flow control to {0}", _backend.flowControl);
+
+			foreach (ToolStripMenuItem item in menuItemFlowControl.DropDownItems)
+				item.Checked = item.Text == _backend.flowControl.GetDescription<FlowControl>();
+		}
+
+		public void UpdateParity()
+		{
+			logger.Trace("Setting parity to {0}", _backend.parity);
+
+			foreach (ToolStripMenuItem item in menuItemParity.DropDownItems)
+				item.Checked = item.Text == _backend.parity.ToString();
 		}
 	}
 }

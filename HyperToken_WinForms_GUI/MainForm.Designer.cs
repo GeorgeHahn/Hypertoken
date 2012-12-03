@@ -598,7 +598,6 @@
 			this.MinimumSize = new System.Drawing.Size(358, 300);
 			this.Name = "MainForm";
 			this.Text = "Hypertoken";
-			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Uninitialize);
 			this.DragEnter += new System.Windows.Forms.DragEventHandler(this.SendDroppedText);
 			this.DragOver += new System.Windows.Forms.DragEventHandler(this.SendDroppedText);
 			this.menuStrip1.ResumeLayout(false);
