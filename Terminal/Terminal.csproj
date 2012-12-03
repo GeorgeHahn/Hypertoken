@@ -83,7 +83,6 @@
     <None Include="FodyWeavers.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Backend.cs" />
     <Compile Include="ContainerSetup.cs" />
     <Compile Include="SettingsDictionary.cs" />
     <Compile Include="Helpers\HighResolutionSleep.cs" />

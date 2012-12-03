@@ -14,13 +14,18 @@ namespace Terminal
 	{
 		private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
+		public static string GetVersion()
+		{
+			return System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
+		}
+
 		[STAThread]
 		private static void Main()
 		{
 			//try
 			//{
 			logger.Trace("Initialize BugSense");
-			BugSense.Init("9eacbe2e", Backend.GetVersion(), "http://www.bugsense.com/api/errors");
+			BugSense.Init("9eacbe2e", GetVersion(), "http://www.bugsense.com/api/errors");
 			AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
 
 			logger.Trace("Initializing advanced JIT");

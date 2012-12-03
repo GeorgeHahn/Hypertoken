@@ -26,7 +26,9 @@ namespace Terminal_Interface
 
 		void TrimLines(int trimTo); // TODO stopgap measure to trim lines
 
-		void SetBackend(ISerialBackend backend);
+		string Title { get; set; }
+
+		void SetDevice(ISerialPort device);
 
 		// Required (?) events
 		event SendFileEventHandler OnSendFile;

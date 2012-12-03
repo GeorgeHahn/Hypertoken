@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO.Ports;
 using System.Linq;
 using NLog;
 using Terminal_Interface;
+using Terminal_Interface.Enums;
 using Terminal_Interface.Events;
+using Parity = System.IO.Ports.Parity;
+using StopBits = System.IO.Ports.StopBits;
 
 namespace Terminal
 {
-	public class SerialPortDataHandler : IDataDevice
+	public class SerialPortDataHandler : ISerialPort
 	{
 		private readonly SerialPort _port;
 		private readonly byte[] _receiveBuffer;
@@ -29,12 +33,12 @@ namespace Terminal
 
 			Settings.SettingChanged += OnSettingChanged;
 
-			Settings.Set("port", "COM1");
-			Settings.Set("Baud", 115200);
-			Settings.Set("stopbits", StopBits.One);
-			Settings.Set("databits", 8);
-			Settings.Set("parity", Parity.None);
-			Settings.Set("handshake", Handshake.None);
+			_port.PortName = "COM1";
+			_port.BaudRate = 115200;
+			_port.DataBits = 8;
+			_port.StopBits = System.IO.Ports.StopBits.One;
+			_port.Parity = System.IO.Ports.Parity.None;
+			_port.Handshake = Handshake.None;
 		}
 
 		private void OnSettingChanged(object sender, SettingChangedEventArgs settingChangedEventArgs)
@@ -133,8 +137,6 @@ namespace Terminal
 
 		public int Write(byte[] data)
 		{
-			verifyPortOpen();
-
 			int length = data.Length;
 			if (length > _port.WriteBufferSize)
 				length = _port.WriteBufferSize;
@@ -145,16 +147,12 @@ namespace Terminal
 
 		public int Write(byte data)
 		{
-			verifyPortOpen();
-
 			_port.Write(new byte[] { data }, 0, 1);
 			return 1;
 		}
 
 		public int Write(string data)
 		{
-			verifyPortOpen();
-
 			// TODO handle long string sending
 
 			_port.WriteLine(data);
@@ -163,18 +161,8 @@ namespace Terminal
 
 		public int Write(char data)
 		{
-			verifyPortOpen();
-
 			_port.Write(new[] { data }, 0, 1);
 			return 1;
-		}
-
-		private void verifyPortOpen()
-		{
-			if (!_port.IsOpen)
-			{
-				_port.Open();
-			}
 		}
 
 		public IEnumerable<string> ListAvailableDevices()
@@ -207,6 +195,21 @@ namespace Terminal
 			}
 		}
 
+		public deviceType DeviceType { get; private set; }
+
+		public PortState PortState { get; set; }
+
+		public string StatusLabel { get; set; }
+
+		public string[] Devices { get; private set; }
+
+		public string CurrentDevice { get; set; }
+
+		public void KeyPressed(char c)
+		{
+			_port.Write(new char[] { c }, 0, 1);
+		}
+
 		public void Close()
 		{
 			_port.Close();
@@ -216,5 +219,17 @@ namespace Terminal
 		{
 			_port.Open();
 		}
+
+		public event PropertyChangedEventHandler PropertyChanged;
+
+		public int Baud { get; set; }
+
+		public Terminal_Interface.Enums.StopBits StopBits { get; set; }
+
+		public int DataBits { get; set; }
+
+		public FlowControl FlowControl { get; set; }
+
+		public Terminal_Interface.Enums.Parity Parity { get; set; }
 	}
 }

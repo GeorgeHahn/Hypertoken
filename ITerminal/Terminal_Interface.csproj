@@ -78,7 +78,6 @@
     <Compile Include="Events\ToggleConnectionEventArgs.cs" />
     <Compile Include="Exceptions\FileSelectionCanceledException.cs" />
     <Compile Include="IAboutBox.cs" />
-    <Compile Include="IBackend.cs" />
     <Compile Include="IDataDevice.cs" />
     <Compile Include="IDataReader.cs" />
     <Compile Include="IDataWriter.cs" />

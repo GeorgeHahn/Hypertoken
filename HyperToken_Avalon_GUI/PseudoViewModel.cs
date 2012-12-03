@@ -8,19 +8,19 @@ namespace HyperToken_Avalon_GUI
 {
 	public class PseudoViewModel : ITerminal, INotifyPropertyChanged
 	{
-		private IBackend _backend;
+		private ISerialPort _backend;
 
 		public void TrimLines(int trimTo)
 		{
 			throw new System.NotImplementedException();
 		}
 
-		public void SetBackend(IBackend backend)
-		{
-			this._backend = backend;
-		}
+		//public void SetBackend(IDataDevice backend)
+		//{
+		//	this._backend = backend;
+		//}
 
-		public void SetBackend(ISerialBackend backend)
+		public void SetBackend(ISerialPort backend)
 		{
 			this._backend = backend;
 		}
