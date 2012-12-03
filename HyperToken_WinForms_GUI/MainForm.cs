@@ -155,8 +155,6 @@ namespace HyperToken_WinForms_GUI
 
 		public event SetLoggingPathEventHandler OnSetLoggingPath;
 
-		public event OnKeyPressedEventHandler OnKeyPressed;
-
 		public event SaveSessionEventHandler OnSaveSession;
 
 		#endregion COM port settings handlers
@@ -275,12 +273,7 @@ namespace HyperToken_WinForms_GUI
 		{
 			e.Handled = true;
 
-			if (OnKeyPressed != null)
-			{
-				OnKeyPressedEventArgs ev = new OnKeyPressedEventArgs();
-				ev.KeyChar = e.KeyChar;
-				OnKeyPressed(this, ev);
-			}
+			_serialPort.Write(e.KeyChar);
 		}
 
 		// Why both of these?
@@ -290,12 +283,7 @@ namespace HyperToken_WinForms_GUI
 
 			if (e.KeyValue == 0x0A) // Newline
 			{
-				if (OnKeyPressed != null)
-				{
-					OnKeyPressedEventArgs ev = new OnKeyPressedEventArgs();
-					ev.KeyChar = (char)10;
-					OnKeyPressed(this, ev);
-				}
+				_serialPort.Write((byte)0x0A);
 			}
 		}
 

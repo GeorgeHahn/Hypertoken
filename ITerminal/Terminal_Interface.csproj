@@ -69,13 +69,10 @@
     <Compile Include="Enums\PortState.cs" />
     <Compile Include="Enums\StopBits.cs" />
     <Compile Include="Events\DataReceivedEventArgs.cs" />
-    <Compile Include="Events\OnKeyPressedEventArgs.cs" />
     <Compile Include="Events\OnSettingChangedEventArgs.cs" />
     <Compile Include="Events\SaveSessionEventArgs.cs" />
     <Compile Include="Events\SendFileEventArgs.cs" />
-    <Compile Include="Events\SerialPortListEventArgs.cs" />
     <Compile Include="Events\SetLoggingPathEventArgs.cs" />
-    <Compile Include="Events\ToggleConnectionEventArgs.cs" />
     <Compile Include="Exceptions\FileSelectionCanceledException.cs" />
     <Compile Include="IAboutBox.cs" />
     <Compile Include="IDataDevice.cs" />

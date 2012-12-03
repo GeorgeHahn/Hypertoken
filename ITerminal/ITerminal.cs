@@ -8,8 +8,6 @@ namespace Terminal_Interface
 
 	public delegate void SetLoggingPathEventHandler(object sender, SetLoggingPathEventArgs e);
 
-	public delegate void OnKeyPressedEventHandler(object sender, OnKeyPressedEventArgs e);
-
 	public delegate void SaveSessionEventHandler(object sender, SaveSessionEventArgs e);
 
 	//TODO Add dropped file event
@@ -32,8 +30,6 @@ namespace Terminal_Interface
 
 		// Required (?) events
 		event SendFileEventHandler OnSendFile;
-
-		event OnKeyPressedEventHandler OnKeyPressed;
 
 		// Old API
 
