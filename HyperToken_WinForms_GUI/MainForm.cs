@@ -293,6 +293,7 @@ namespace HyperToken_WinForms_GUI
 		{
 			logger.Trace("Set backend");
 			_backend = backend;
+			_backend.PropertyChanged += BackendOnPropertyChanged;
 		}
 
 		public event SendFileEventHandler OnSendFile;

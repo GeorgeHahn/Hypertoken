@@ -6,6 +6,7 @@ using System.Threading;
 using Bugsense.WPF;
 using HyperToken_WinForms_GUI.Helpers;
 using NLog;
+using PropertyChanged;
 using Terminal_Interface;
 using Terminal_Interface.Enums;
 using Terminal_Interface.Events;
@@ -15,7 +16,7 @@ using StopBits = Terminal_Interface.Enums.StopBits;
 
 namespace Terminal
 {
-	public class Backend : ISerialBackend
+	public class Backend : ISerialBackend, INotifyPropertyChanged
 	{
 		private IDataDevice _comms;
 
