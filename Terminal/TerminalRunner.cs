@@ -9,10 +9,10 @@ namespace Terminal
 {
 	internal class TerminalRunner
 	{
-		private ITerminal _terminal;
-		private IBackend _backend;
+		private readonly ITerminal _terminal;
+		private readonly IBackend _backend;
 
-		private static Logger logger = LogManager.GetCurrentClassLogger();
+		private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
 		public TerminalRunner(ITerminal terminal, IBackend backend)
 		{
