@@ -30,7 +30,7 @@ namespace HyperToken_WinForms_GUI
 
 		private readonly ILogger _logger;
 
-		private ISerialPort _serialPort;
+		private ISerialPort _dataDevice;
 
 		private List<int> _baudRateVals;
 
@@ -39,7 +39,7 @@ namespace HyperToken_WinForms_GUI
 			_aboutBox = aboutBox;
 			_logger = logger;
 			_echoer = echoer;
-			this.logger.Trace("Mainform object created");
+			MainForm.logger.Trace("Mainform object created");
 		}
 
 		public event SaveSessionEventHandler OnSaveSession;
@@ -76,6 +76,12 @@ namespace HyperToken_WinForms_GUI
 					   }));
 		}
 
+		// TODO FIXME AAH THIS IS YUCK. REWRITE.
+		private void HandleCOMParamChange(object sender, ToolStripItemClickedEventArgs e)
+		{
+			ChangeCOMParam(new string[2] { ((ToolStripItem)sender).Text, e.ClickedItem.Text }, null);
+		}
+
 		// TODO This is terrifying
 		public void ChangeCOMParam(object sender, EventArgs e)
 		{
@@ -83,10 +89,11 @@ namespace HyperToken_WinForms_GUI
 			string param = null;
 			string value = null;
 
-			if (sender is ToolStripMenuItem)
+			var menuItem = sender as ToolStripMenuItem;
+			if (menuItem is ToolStripMenuItem)
 			{
-				param = ((ToolStripMenuItem)sender).Name;
-				value = ((ToolStripMenuItem)sender).Text;
+				param = menuItem.Name;
+				value = menuItem.Text;
 			}
 			else
 				if (sender is string[])
@@ -103,23 +110,23 @@ namespace HyperToken_WinForms_GUI
 					switch (value.ToLower())
 					{
 						case "even":
-							_serialPort.Parity = Parity.Even;
+							_dataDevice.Parity = Parity.Even;
 							break;
 
 						case "odd":
-							_serialPort.Parity = Parity.Odd;
+							_dataDevice.Parity = Parity.Odd;
 							break;
 
 						case "none":
-							_serialPort.Parity = Parity.None;
+							_dataDevice.Parity = Parity.None;
 							break;
 
 						case "mark":
-							_serialPort.Parity = Parity.Mark;
+							_dataDevice.Parity = Parity.Mark;
 							break;
 
 						case "space":
-							_serialPort.Parity = Parity.Space;
+							_dataDevice.Parity = Parity.Space;
 							break;
 					}
 					break;
@@ -128,50 +135,50 @@ namespace HyperToken_WinForms_GUI
 					switch ((int)(double.Parse(value) * 10))
 					{
 						case 10:
-							_serialPort.StopBits = StopBits.One;
+							_dataDevice.StopBits = StopBits.One;
 							break;
 
 						case 15:
-							_serialPort.StopBits = StopBits.OnePointFive;
+							_dataDevice.StopBits = StopBits.OnePointFive;
 							break;
 
 						case 20:
-							_serialPort.StopBits = StopBits.Two;
+							_dataDevice.StopBits = StopBits.Two;
 							break;
 					}
 					break;
 
 				case "Data Bits": //Int
-					_serialPort.DataBits = int.Parse(value);
+					_dataDevice.DataBits = int.Parse(value);
 					break;
 
 				case "Flow Control": //String
 					switch (value)
 					{
 						case "None":
-							_serialPort.FlowControl = FlowControl.None;
+							_dataDevice.FlowControl = FlowControl.None;
 							break;
 
 						case "Request To Send":
-							_serialPort.FlowControl = FlowControl.RequestToSend;
+							_dataDevice.FlowControl = FlowControl.RequestToSend;
 							break;
 
 						case "Xon/Xoff":
-							_serialPort.FlowControl = FlowControl.XOnXOff;
+							_dataDevice.FlowControl = FlowControl.XOnXOff;
 							break;
 
 						case "RTS + Xon/Xoff":
-							_serialPort.FlowControl = FlowControl.RequestToSendXOnXOff;
+							_dataDevice.FlowControl = FlowControl.RequestToSendXOnXOff;
 							break;
 
 						default:
-							_serialPort.FlowControl = FlowControl.None;
+							_dataDevice.FlowControl = FlowControl.None;
 							break;
 					}
 					break;
 
 				case "BaudRate": //Int
-					_serialPort.Baud = int.Parse(value);
+					_dataDevice.Baud = int.Parse(value);
 					break;
 			}
 		}
@@ -185,9 +192,9 @@ namespace HyperToken_WinForms_GUI
 		public void SetDevice(ISerialPort device)
 		{
 			logger.Trace("Set device");
-			_serialPort = device;
-			_serialPort.PropertyChanged += SerialPortOnPropertyChanged;
-			_serialPort.DataReceived += SerialPortOnDataReceived;
+			_dataDevice = device;
+			_dataDevice.PropertyChanged += DataDeviceOnPropertyChanged;
+			_dataDevice.DataReceived += DataDeviceOnDataReceived;
 		}
 
 		public void UpdateBaudRate()
@@ -197,24 +204,24 @@ namespace HyperToken_WinForms_GUI
 
 			// TODO Throw an error. Also, rejigger this shit.
 
-			dropDownBaud.Text = _serialPort.Baud.ToString(CultureInfo.InvariantCulture) + Resources.Text_Baud;
+			dropDownBaud.Text = _dataDevice.Baud.ToString(CultureInfo.InvariantCulture) + Resources.Text_Baud;
 
 			foreach (ToolStripMenuItem item in menuItemBaud.DropDownItems)
-				item.Checked = item.Text == _serialPort.Baud.ToString(CultureInfo.InvariantCulture);
+				item.Checked = item.Text == _dataDevice.Baud.ToString(CultureInfo.InvariantCulture);
 
 			foreach (ToolStripMenuItem item in dropDownBaud.DropDownItems)
-				item.Checked = item.Text == _serialPort.Baud.ToString(CultureInfo.InvariantCulture);
+				item.Checked = item.Text == _dataDevice.Baud.ToString(CultureInfo.InvariantCulture);
 		}
 
 		public void UpdateCOMPort()
 		{
-			dropDownCOMPort.Text = _serialPort.DeviceName;
+			dropDownCOMPort.Text = _dataDevice.DeviceName;
 
 			foreach (ToolStripMenuItem item in menuItemCOMPort.DropDownItems)
-				item.Checked = item.Text == _serialPort.DeviceName;
+				item.Checked = item.Text == _dataDevice.DeviceName;
 
 			foreach (ToolStripMenuItem item in dropDownCOMPort.DropDownItems)
-				item.Checked = item.Text == _serialPort.DeviceName;
+				item.Checked = item.Text == _dataDevice.DeviceName;
 		}
 
 		// TODO this is gross, fix it.
@@ -223,31 +230,31 @@ namespace HyperToken_WinForms_GUI
 			if (menuItemDataBits == null)
 				return;
 
-			logger.Trace("Setting dataBits to {0}", _serialPort.DataBits);
+			logger.Trace("Setting dataBits to {0}", _dataDevice.DataBits);
 
 			foreach (ToolStripMenuItem item in menuItemDataBits.DropDownItems)
-				item.Checked = item.Text == _serialPort.DataBits.ToString();
+				item.Checked = item.Text == _dataDevice.DataBits.ToString();
 		}
 
 		public void UpdateFlowControl()
 		{
-			logger.Trace("Setting flow control to {0}", _serialPort.FlowControl);
+			logger.Trace("Setting flow control to {0}", _dataDevice.FlowControl);
 
 			foreach (ToolStripMenuItem item in menuItemFlowControl.DropDownItems)
-				item.Checked = item.Text == _serialPort.FlowControl.GetDescription<FlowControl>();
+				item.Checked = item.Text == _dataDevice.FlowControl.GetDescription<FlowControl>();
 		}
 
 		public void UpdateParity()
 		{
-			logger.Trace("Setting parity to {0}", _serialPort.Parity);
+			logger.Trace("Setting parity to {0}", _dataDevice.Parity);
 
 			foreach (ToolStripMenuItem item in menuItemParity.DropDownItems)
-				item.Checked = item.Text == _serialPort.Parity.ToString();
+				item.Checked = item.Text == _dataDevice.Parity.ToString();
 		}
 
 		public void UpdatePortState()
 		{
-			switch (_serialPort.PortState)
+			switch (_dataDevice.PortState)
 			{
 				case PortState.Open:
 					toolStripButtonConnect.Text = Resources.Text_Disconnect;
@@ -261,7 +268,7 @@ namespace HyperToken_WinForms_GUI
 					break;
 
 				case PortState.Error:
-					_serialPort.PortState = PortState.Closed;
+					_dataDevice.PortState = PortState.Closed;
 					toolStripButtonConnect.ForeColor = Color.Red;
 					break;
 			}
@@ -281,7 +288,7 @@ namespace HyperToken_WinForms_GUI
 			if (values == null)
 				return;
 
-			logger.Trace("Creating menu \"" + name + '"');
+			logger.Trace("Creating menu {0}", name);
 
 			var items = new List<ToolStripItem>();
 
@@ -305,12 +312,6 @@ namespace HyperToken_WinForms_GUI
 			Application.Exit();
 		}
 
-		// TODO FIXME AAH THIS IS YUCK. REWRITE.
-		private void HandleCOMParamChange(object sender, ToolStripItemClickedEventArgs e)
-		{
-			ChangeCOMParam(new string[2] { ((ToolStripItem)sender).Text, e.ClickedItem.Text }, null);
-		}
-
 		// Why both of these?
 		private void HandleKeyPress(object sender, KeyEventArgs e)
 		{
@@ -318,7 +319,7 @@ namespace HyperToken_WinForms_GUI
 
 			if (e.KeyValue == 0x0A) // Newline
 			{
-				_serialPort.Write((byte)0x0A);
+				_dataDevice.Write((byte)0x0A);
 			}
 		}
 
@@ -424,7 +425,7 @@ namespace HyperToken_WinForms_GUI
 
 		private void SelectCOMPort(object sender, ToolStripItemClickedEventArgs e)
 		{
-			_serialPort.DeviceName = e.ClickedItem.Text;
+			_dataDevice.DeviceName = e.ClickedItem.Text;
 		}
 
 		//TODO Fix SendDroppedText
@@ -441,15 +442,15 @@ namespace HyperToken_WinForms_GUI
 		{
 			e.Handled = true;
 
-			_serialPort.Write(e.KeyChar);
+			_dataDevice.Write(e.KeyChar);
 		}
 
-		private void SerialPortOnDataReceived(object sender, DataReceivedEventArgs dataReceivedEventArgs)
+		private void DataDeviceOnDataReceived(object sender, DataReceivedEventArgs dataReceivedEventArgs)
 		{
 			AddLine(dataReceivedEventArgs.Data);
 		}
 
-		private void SerialPortOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
+		private void DataDeviceOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
 		{
 			logger.Warn("BindingShim setting {0}", propertyChangedEventArgs.PropertyName);
 
@@ -478,7 +479,7 @@ namespace HyperToken_WinForms_GUI
 						break;
 
 					case "StopBits":
-						logger.Trace("Changing stopBits to {0}", _serialPort.StopBits);
+						logger.Trace("Changing stopBits to {0}", _dataDevice.StopBits);
 
 						if (menuItemStopBits == null)
 						{
@@ -487,7 +488,7 @@ namespace HyperToken_WinForms_GUI
 						}
 
 						foreach (ToolStripMenuItem item in menuItemStopBits.DropDownItems)
-							item.Checked = item.Text == _serialPort.StopBits.GetDescription<StopBits>();
+							item.Checked = item.Text == _dataDevice.StopBits.GetDescription<StopBits>();
 
 						break;
 
@@ -504,7 +505,7 @@ namespace HyperToken_WinForms_GUI
 						break;
 
 					case "DeviceStatus":
-						toolStripStatusLabelPortSettings.Text = _serialPort.DeviceStatus;
+						toolStripStatusLabelPortSettings.Text = _dataDevice.DeviceStatus;
 						break;
 
 					default:
@@ -583,7 +584,7 @@ namespace HyperToken_WinForms_GUI
 		private void ToggleConnection(object sender, EventArgs e)
 		{
 			logger.Trace("ToggleConnection");
-			_serialPort.PortState = _serialPort.PortState == PortState.Open ? PortState.Closed : PortState.Open;
+			_dataDevice.PortState = _dataDevice.PortState == PortState.Open ? PortState.Closed : PortState.Open;
 		}
 
 		private void ToggleEcho(object sender, EventArgs e)
@@ -607,7 +608,7 @@ namespace HyperToken_WinForms_GUI
 		//List all COM ports
 		private void UpdateCOMPorts(object sender, EventArgs e)
 		{
-			string[] ports = _serialPort.Devices;
+			string[] ports = _dataDevice.Devices;
 
 			if (ports == null)
 			{
