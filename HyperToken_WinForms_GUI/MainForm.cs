@@ -11,7 +11,6 @@ using NLog;
 using Terminal_Interface;
 using Terminal_Interface.Enums;
 using Terminal_Interface.Events;
-using Terminal_Interface.Exceptions;
 
 // TODO tweak garbage collection
 // TODO Custom Baud setting
@@ -23,67 +22,44 @@ namespace HyperToken_WinForms_GUI
 {
 	public partial class MainForm : Form, ITerminal, INotifyPropertyChanged
 	{
-		#region Initialization
+		private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-		private void SetMonospacedFont()
+		private readonly IAboutBox _aboutBox;
+
+		private readonly IEchoer _echoer;
+
+		private readonly ILogger _logger;
+
+		private ISerialPort _serialPort;
+
+		private List<int> _baudRateVals;
+
+		public MainForm(IAboutBox aboutBox, ILogger logger, IEchoer echoer)
 		{
-			// TODO Install Inconsolata (license?),  Deja Vu Sans Mono (public domain!), or Droid Sans Mono (Apache)
-			// Deja Vu Sans Mono: http://dejavu-fonts.org/wiki/index.php?title=Main_Page
-
-			// The lower indices should be preferred fonts. Higher indices should be generic fonts.
-			string[] fontList = new string[] { "Consolas", "Inconsolata", "Deja Vu Sans Mono", "Lucida Console", "Courier New", "Courier" };
-
-			foreach (string font in fontList)
-			{
-				Font test = new System.Drawing.Font(font, 9.5F, System.Drawing.FontStyle.Regular, GraphicsUnit.Point, (byte)(0));
-
-				if (test.Name == font)
-				{
-					// Got a font on our list
-					this.IOBox.Font = test;
-					logger.Info("Picked font: {0}", test.Name);
-					return;
-				}
-			}
-
-			// No fonts in the list were available, pick the most generic font from the list and allow the system to pick a fallback
-			this.IOBox.Font = new Font(fontList[fontList.Length - 1], 10.0f, FontStyle.Regular, GraphicsUnit.Point, (byte)0);
+			_aboutBox = aboutBox;
+			_logger = logger;
+			_echoer = echoer;
+			this.logger.Trace("Mainform object created");
 		}
 
-		#region COM port settings handlers
+		public event SaveSessionEventHandler OnSaveSession;
 
-		public string GetLoggingFilePath()
-		{
-			if (selectLoggingFileDialog.ShowDialog() == DialogResult.OK)
-				return selectLoggingFileDialog.FileName;
-
-			throw new FileSelectionCanceledException();
-		}
-
-		public void TrimLines(int trimTo)
-		{
-			Invoke(new MethodInvoker(
-					   () =>
-					   {
-						   logger.Info("Trimming lines; current count: {0}", IOBox.Lines.Length);
-						   if (IOBox.Lines.Length <= trimTo)
-							   return;
-
-						   string[] newLines = new string[trimTo];
-
-						   Array.Copy(IOBox.Lines, IOBox.Lines.Length - trimTo, newLines, 0, newLines.Length);
-						   IOBox.Lines = newLines;
-
-						   IOBox.Text = string.Join(Environment.NewLine, IOBox.Lines); // TODO is this necessary?
-
-						   logger.Info("After trim, lines: {0}", IOBox.Lines.Length);
-					   }));
-		}
+		public event PropertyChangedEventHandler PropertyChanged;
 
 		public string Title
 		{
 			get { return Text; }
 			set { Text = value; }
+		}
+
+		public static string GetVersion()
+		{
+			return System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
+		}
+
+		public void AddChar(char c)
+		{
+			Invoke(new MethodInvoker(() => IOBox.AppendText(c.ToString(CultureInfo.InvariantCulture))));
 		}
 
 		public void AddLine(string line)
@@ -98,345 +74,6 @@ namespace HyperToken_WinForms_GUI
 						   }
 						   IOBox.AppendText(line);
 					   }));
-		}
-
-		public void AddChar(char c)
-		{
-			Invoke(new MethodInvoker(() => IOBox.AppendText(c.ToString(CultureInfo.InvariantCulture))));
-		}
-
-		public void SetFileSendState(FileSendState state)
-		{
-			Color circleColor = Color.Empty;
-			bool circleVisible = false;
-			bool circleActive = false;
-
-			switch (state)
-			{
-				case FileSendState.Error:
-					circleColor = Color.Red;
-					circleVisible = true;
-					break;
-
-				case FileSendState.Hidden:
-					break;
-
-				case FileSendState.InProgress:
-					circleColor = SystemColors.HotTrack;
-					circleVisible = true;
-					circleActive = true;
-					break;
-
-				case FileSendState.Success:
-					circleColor = Color.Lime;
-					circleVisible = true;
-					break;
-			}
-
-			Invoke(new MethodInvoker(delegate
-			{
-				fileSendLoadingCircle.LoadingCircleControl.Color = circleColor;
-				fileSendLoadingCircle.Visible = circleVisible;
-				fileSendLoadingCircle.LoadingCircleControl.Active = circleActive;
-				fileSendLoadingCircle.LoadingCircleControl.Refresh();
-			}));
-		}
-
-		private ISerialPort _serialPort;
-
-		public void SetDevice(ISerialPort device)
-		{
-			logger.Trace("Set device");
-			_serialPort = device;
-			_serialPort.PropertyChanged += SerialPortOnPropertyChanged;
-		}
-
-		public event SendFileEventHandler OnSendFile;
-
-		public event SetLoggingPathEventHandler OnSetLoggingPath;
-
-		public event SaveSessionEventHandler OnSaveSession;
-
-		#endregion COM port settings handlers
-
-		// MenuItem handler
-		private void SetLoggingFile(object sender, EventArgs e)
-		{
-			try
-			{
-				if (OnSetLoggingPath == null) return;
-
-				var loggingPath = new SetLoggingPathEventArgs(GetLoggingFilePath());
-				OnSetLoggingPath(this, loggingPath);
-			}
-			catch (FileSelectionCanceledException)
-			{
-			}
-		}
-
-		private void fileSendPane1_OnSend(object sender, EventArgs e, CustomControls.FileSendPane.SerialSendArgs a)
-		{
-			SerialSendBytes(a);
-		}
-
-		private void SerialSendBytes(CustomControls.FileSendPane.SerialSendArgs a)
-		{
-			if (a.data == null)
-				return;
-
-			SendFileEventArgs e = new SendFileEventArgs(a.data, a.LineDelay, a.CharDelay);
-			if (OnSendFile != null)
-				OnSendFile(this, e);
-		}
-
-		public void Run()
-		{
-			Initialize();
-			Application.Run(this);
-		}
-
-		private IAboutBox _aboutBox;
-
-		private List<int> baudRateVals;
-
-		public MainForm(IAboutBox aboutBox)
-		{
-			_aboutBox = aboutBox;
-			logger.Trace("Mainform object created");
-		}
-
-		private void Initialize()
-		{
-			logger.Trace("Initializing MainForm");
-			InitializeComponent();
-
-			baudRateVals = new List<int>(new[] { 110, 300, 1200, 2400, 4800, 9600, 19200, 38400, 57600, 115200, 230400, 460800, 921600 });
-
-			SetMonospacedFont();
-
-			if (System.Diagnostics.Debugger.IsAttached)
-				saveEntireSessionToolStripMenuItem.Visible = true;
-
-			CreateMenuFrom(dropDownBaud, baudRateVals, "BaudRate", ChangeCOMParam);
-			CreateMenuFrom(menuItemBaud, baudRateVals, "BaudRate", ChangeCOMParam);
-			fileSendLoadingCircle.Alignment = ToolStripItemAlignment.Right;
-
-			SetupFileSendSpinnerSpokes();
-
-			ShowVersionInformation();
-
-			logger.Warn("MainForm initialization complete");
-		}
-
-		public static string GetVersion()
-		{
-			return System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
-		}
-
-		private void ShowVersionInformation()
-		{
-			logger.Warn("Version {0}", GetVersion());
-
-			Title = "HyperToken";
-
-#if DEBUG
-			Title += " [Debug]";
-
-			logger.Warn("Debug version");
-#endif
-
-			Title += " (" + GetVersion() + ')';
-
-			if (System.Diagnostics.Debugger.IsAttached)
-			{
-				logger.Warn("Debugger attached");
-				Title += " [Debugger attached]";
-			}
-		}
-
-		private void ToggleConnection(object sender, EventArgs e)
-		{
-			logger.Trace("ToggleConnection");
-			_serialPort.PortState = _serialPort.PortState == PortState.Open ? PortState.Closed : PortState.Open;
-		}
-
-		private IEchoer _echoer;
-
-		private void ToggleEcho(object sender, EventArgs e)
-		{
-			logger.Trace("Toggle Echo");
-			_echoer.EchoState = _echoer.EchoState == EchoState.Enabled ? EchoState.Disabled : EchoState.Enabled;
-		}
-
-		// Why both of these? - they catch from different controls
-		private void SendKey(object sender, KeyPressEventArgs e) //Key press handler
-		{
-			e.Handled = true;
-
-			_serialPort.Write(e.KeyChar);
-		}
-
-		// Why both of these?
-		private void HandleKeyPress(object sender, KeyEventArgs e)
-		{
-			e.Handled = true;
-
-			if (e.KeyValue == 0x0A) // Newline
-			{
-				_serialPort.Write((byte)0x0A);
-			}
-		}
-
-		//Show file send pane
-		private void toolStripButtonSendFile_Click(object sender, EventArgs e)
-		{
-			fileSendPane1.Visible = !fileSendPane1.Visible;
-		}
-
-		//Initialize application shutdown
-		private void Exit(object sender, EventArgs e)
-		{
-			logger.Info("Menu click: Exit");
-			Application.Exit();
-		}
-
-		//Show about form
-		private void ShowAboutForm(object sender, EventArgs e)
-		{
-			_aboutBox.Open();
-		}
-
-		private void SelectCOMPort(object sender, ToolStripItemClickedEventArgs e)
-		{
-			_serialPort.DeviceName = e.ClickedItem.Text;
-		}
-
-		private void SaveEntireSessionToolStripMenuItemClick(object sender, EventArgs e)
-		{
-			SaveSession();
-		}
-
-		private bool SaveSession()
-		{
-			logger.Info("Saving session");
-			var save = new SaveFileDialog
-									  {
-										  AddExtension = true,
-										  AutoUpgradeEnabled = true,
-										  Filter =
-											  Resources.MainForm_SaveSession_Text_files + "|*.txt|" +
-											  Resources.MainForm_SaveSession_All_files + "|*.*",
-										  FilterIndex = 0,
-										  OverwritePrompt = true,
-										  Title = Resources.MainForm_SaveSession_Save_Session,
-										  ValidateNames = true
-									  };
-
-			if (save.ShowDialog() == DialogResult.OK)
-			{
-				if (!string.IsNullOrEmpty(save.FileName))
-				{
-					if (OnSaveSession != null)
-					{
-						SaveSessionEventArgs ev = new SaveSessionEventArgs();
-						ev.FileName = save.FileName;
-						ev.SessionData = IOBox.Text;
-						OnSaveSession(this, ev);
-						logger.Debug("Session saved");
-						return true;
-					}
-					logger.Warn("OnSaveSession event has no handlers");
-				}
-				else
-					logger.Error("Filename null or empty");
-			}
-			else
-				logger.Debug("User canceled");
-
-			logger.Warn("Session not saved");
-			return false;
-		}
-
-		private void newToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			logger.Trace("User clicked menu item: New");
-			DialogResult result = MessageBox.Show("Would you like to save current session?", Resources.MainForm_SaveSession_Save_Session, MessageBoxButtons.YesNoCancel);
-
-			if (result == DialogResult.Cancel)
-			{
-				logger.Trace("User canceled");
-				return;
-			}
-
-			if (result == DialogResult.No)
-			{
-				logger.Debug("User cleared session");
-				IOBox.Clear();
-				return;
-			}
-
-			if (result == DialogResult.Yes)
-			{
-				logger.Debug("User saved session");
-				if (SaveSession())
-				{
-					IOBox.Clear();
-					logger.Trace("Session cleared");
-				}
-				else
-					logger.Debug("Session not cleared");
-			}
-		}
-
-		/// <summary>
-		/// Populates a menu with items
-		/// </summary>
-		/// <param name="items">Reference to the finished items</param>
-		/// <param name="values">One item will be generated for each value</param>
-		/// <param name="parentMenu">Parent menu for the items</param>
-		/// <param name="name">DeviceName property for each item</param>
-		/// <param name="clickHandler">OnClick event for each item</param>
-		/// <returns>Success</returns>
-		private void CreateMenuFrom(ToolStripDropDownItem parentMenu, IEnumerable values, string name, EventHandler clickHandler)
-		{
-			if (values == null)
-				return;
-
-			logger.Trace("Creating menu \"" + name + '"');
-
-			var items = new List<ToolStripItem>();
-
-			foreach (var value in values)
-			{
-				ToolStripItem temp = new ToolStripMenuItem();
-				temp.Name = name;
-				temp.Size = new Size(152, 22);
-				temp.Click += clickHandler;
-				temp.Text = value.ToString();
-				items.Add(temp);
-			}
-
-			parentMenu.DropDownItems.AddRange(items.ToArray());
-		}
-
-		private void SetupFileSendSpinnerSpokes()
-		{
-			fileSendLoadingCircle.LoadingCircleControl.InnerCircleRadius = 3;
-			fileSendLoadingCircle.LoadingCircleControl.OuterCircleRadius = 6;
-			fileSendLoadingCircle.LoadingCircleControl.NumberSpoke = 8;
-			fileSendLoadingCircle.LoadingCircleControl.SpokeThickness = 2;
-			fileSendLoadingCircle.LoadingCircleControl.RotationSpeed = 100;
-			fileSendLoadingCircle.LoadingCircleControl.Color = SystemColors.HotTrack;
-		}
-
-		#endregion Initialization
-
-		#region Event Handlers
-
-		// TODO FIXME AAH THIS IS YUCK. REWRITE.
-		private void HandleCOMParamChange(object sender, ToolStripItemClickedEventArgs e)
-		{
-			ChangeCOMParam(new string[2] { ((ToolStripItem)sender).Text, e.ClickedItem.Text }, null);
 		}
 
 		// TODO This is terrifying
@@ -539,28 +176,255 @@ namespace HyperToken_WinForms_GUI
 			}
 		}
 
-		//List all COM ports
-		private void UpdateCOMPorts(object sender, EventArgs e)
+		public void Run()
 		{
-			string[] ports = _serialPort.Devices;
+			Initialize();
+			Application.Run(this);
+		}
 
-			if (ports == null)
+		public void SetDevice(ISerialPort device)
+		{
+			logger.Trace("Set device");
+			_serialPort = device;
+			_serialPort.PropertyChanged += SerialPortOnPropertyChanged;
+			_serialPort.DataReceived += SerialPortOnDataReceived;
+		}
+
+		public void UpdateBaudRate()
+		{
+			if (dropDownBaud == null)
+				return;
+
+			// TODO Throw an error. Also, rejigger this shit.
+
+			dropDownBaud.Text = _serialPort.Baud.ToString(CultureInfo.InvariantCulture) + Resources.Text_Baud;
+
+			foreach (ToolStripMenuItem item in menuItemBaud.DropDownItems)
+				item.Checked = item.Text == _serialPort.Baud.ToString(CultureInfo.InvariantCulture);
+
+			foreach (ToolStripMenuItem item in dropDownBaud.DropDownItems)
+				item.Checked = item.Text == _serialPort.Baud.ToString(CultureInfo.InvariantCulture);
+		}
+
+		public void UpdateCOMPort()
+		{
+			dropDownCOMPort.Text = _serialPort.DeviceName;
+
+			foreach (ToolStripMenuItem item in menuItemCOMPort.DropDownItems)
+				item.Checked = item.Text == _serialPort.DeviceName;
+
+			foreach (ToolStripMenuItem item in dropDownCOMPort.DropDownItems)
+				item.Checked = item.Text == _serialPort.DeviceName;
+		}
+
+		// TODO this is gross, fix it.
+		public void UpdateDataBits()
+		{
+			if (menuItemDataBits == null)
+				return;
+
+			logger.Trace("Setting dataBits to {0}", _serialPort.DataBits);
+
+			foreach (ToolStripMenuItem item in menuItemDataBits.DropDownItems)
+				item.Checked = item.Text == _serialPort.DataBits.ToString();
+		}
+
+		public void UpdateFlowControl()
+		{
+			logger.Trace("Setting flow control to {0}", _serialPort.FlowControl);
+
+			foreach (ToolStripMenuItem item in menuItemFlowControl.DropDownItems)
+				item.Checked = item.Text == _serialPort.FlowControl.GetDescription<FlowControl>();
+		}
+
+		public void UpdateParity()
+		{
+			logger.Trace("Setting parity to {0}", _serialPort.Parity);
+
+			foreach (ToolStripMenuItem item in menuItemParity.DropDownItems)
+				item.Checked = item.Text == _serialPort.Parity.ToString();
+		}
+
+		public void UpdatePortState()
+		{
+			switch (_serialPort.PortState)
 			{
-				logger.Error("No serial ports to list");
-				logger.Fatal("TODO We should handle this more gracefully");
-				logger.Fatal("Show a 'No serial ports found' item");
+				case PortState.Open:
+					toolStripButtonConnect.Text = Resources.Text_Disconnect;
+					toolStripButtonConnect.Image = Resources.disconnected;
+					toolStripButtonConnect.ForeColor = SystemColors.ControlText;
+					break;
+
+				case PortState.Closed:
+					toolStripButtonConnect.Text = Resources.Text_Connect;
+					toolStripButtonConnect.Image = Resources.connected;
+					break;
+
+				case PortState.Error:
+					_serialPort.PortState = PortState.Closed;
+					toolStripButtonConnect.ForeColor = Color.Red;
+					break;
+			}
+		}
+
+		/// <summary>
+		/// Populates a menu with items
+		/// </summary>
+		/// <param name="items">Reference to the finished items</param>
+		/// <param name="values">One item will be generated for each value</param>
+		/// <param name="parentMenu">Parent menu for the items</param>
+		/// <param name="name">DeviceName property for each item</param>
+		/// <param name="clickHandler">OnClick event for each item</param>
+		/// <returns>Success</returns>
+		private void CreateMenuFrom(ToolStripDropDownItem parentMenu, IEnumerable values, string name, EventHandler clickHandler)
+		{
+			if (values == null)
+				return;
+
+			logger.Trace("Creating menu \"" + name + '"');
+
+			var items = new List<ToolStripItem>();
+
+			foreach (var value in values)
+			{
+				ToolStripItem temp = new ToolStripMenuItem();
+				temp.Name = name;
+				temp.Size = new Size(152, 22);
+				temp.Click += clickHandler;
+				temp.Text = value.ToString();
+				items.Add(temp);
+			}
+
+			parentMenu.DropDownItems.AddRange(items.ToArray());
+		}
+
+		//Initialize application shutdown
+		private void Exit(object sender, EventArgs e)
+		{
+			logger.Info("Menu click: Exit");
+			Application.Exit();
+		}
+
+		// TODO FIXME AAH THIS IS YUCK. REWRITE.
+		private void HandleCOMParamChange(object sender, ToolStripItemClickedEventArgs e)
+		{
+			ChangeCOMParam(new string[2] { ((ToolStripItem)sender).Text, e.ClickedItem.Text }, null);
+		}
+
+		// Why both of these?
+		private void HandleKeyPress(object sender, KeyEventArgs e)
+		{
+			e.Handled = true;
+
+			if (e.KeyValue == 0x0A) // Newline
+			{
+				_serialPort.Write((byte)0x0A);
+			}
+		}
+
+		private void Initialize()
+		{
+			logger.Trace("Initializing MainForm");
+			InitializeComponent();
+
+			_baudRateVals = new List<int>(new[] { 110, 300, 1200, 2400, 4800, 9600, 19200, 38400, 57600, 115200, 230400, 460800, 921600 });
+
+			SetMonospacedFont();
+
+			if (System.Diagnostics.Debugger.IsAttached)
+				saveEntireSessionToolStripMenuItem.Visible = true;
+
+			CreateMenuFrom(dropDownBaud, _baudRateVals, "BaudRate", ChangeCOMParam);
+			CreateMenuFrom(menuItemBaud, _baudRateVals, "BaudRate", ChangeCOMParam);
+			fileSendLoadingCircle.Alignment = ToolStripItemAlignment.Right;
+
+			SetupFileSendSpinnerSpokes();
+
+			ShowVersionInformation();
+
+			logger.Warn("MainForm initialization complete");
+		}
+
+		private void newToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			logger.Trace("User clicked menu item: New");
+			DialogResult result = MessageBox.Show("Would you like to save current session?", Resources.MainForm_SaveSession_Save_Session, MessageBoxButtons.YesNoCancel);
+
+			if (result == DialogResult.Cancel)
+			{
+				logger.Trace("User canceled");
 				return;
 			}
 
-			if (sender is ToolStripDropDownItem)
+			if (result == DialogResult.No)
 			{
-				ToolStripDropDownItem menu = sender as ToolStripDropDownItem;
-				menu.DropDownItems.Clear();
-				foreach (var port in ports)
-				{
-					menu.DropDownItems.Add(port);
-				}
+				logger.Debug("User cleared session");
+				IOBox.Clear();
+				return;
 			}
+
+			if (result == DialogResult.Yes)
+			{
+				logger.Debug("User saved session");
+				if (SaveSession())
+				{
+					IOBox.Clear();
+					logger.Trace("Session cleared");
+				}
+				else
+					logger.Debug("Session not cleared");
+			}
+		}
+
+		private void SaveEntireSessionToolStripMenuItemClick(object sender, EventArgs e)
+		{
+			SaveSession();
+		}
+
+		private bool SaveSession()
+		{
+			logger.Info("Saving session");
+			var save = new SaveFileDialog
+									  {
+										  AddExtension = true,
+										  AutoUpgradeEnabled = true,
+										  Filter =
+											  Resources.MainForm_SaveSession_Text_files + "|*.txt|" +
+											  Resources.MainForm_SaveSession_All_files + "|*.*",
+										  FilterIndex = 0,
+										  OverwritePrompt = true,
+										  Title = Resources.MainForm_SaveSession_Save_Session,
+										  ValidateNames = true
+									  };
+
+			if (save.ShowDialog() == DialogResult.OK)
+			{
+				if (!string.IsNullOrEmpty(save.FileName))
+				{
+					if (OnSaveSession != null)
+					{
+						SaveSessionEventArgs ev = new SaveSessionEventArgs();
+						ev.FileName = save.FileName;
+						ev.SessionData = IOBox.Text;
+						OnSaveSession(this, ev);
+						logger.Debug("Session saved");
+						return true;
+					}
+					logger.Warn("OnSaveSession event has no handlers");
+				}
+				else
+					logger.Error("Filename null or empty");
+			}
+			else
+				logger.Debug("User canceled");
+
+			logger.Warn("Session not saved");
+			return false;
+		}
+
+		private void SelectCOMPort(object sender, ToolStripItemClickedEventArgs e)
+		{
+			_serialPort.DeviceName = e.ClickedItem.Text;
 		}
 
 		//TODO Fix SendDroppedText
@@ -570,61 +434,20 @@ namespace HyperToken_WinForms_GUI
 
 			if (e.Effect != DragDropEffects.None)
 				return;
-
-			//Handle file drops
-			//if (e.Data.GetDataPresent(System.Windows.Forms.DataFormats.FileDrop))
-			//{
-			//    //LogLine("File dropped onto application");
-			//    String[] files = (String[])e.Data.GetData(System.Windows.Forms.DataFormats.FileDrop);
-			//    fileSendPane1.SendFile(files[0]);
-			//    e.Effect = DragDropEffects.Copy;
-			//}
-			//else
-			//    //Handle raw text drops
-			//    if (e.Data.GetDataPresent(System.Windows.Forms.DataFormats.Text))
-			//    {
-			//        //LogLine("Text dropped onto application");
-			//        String data = (String)e.Data.GetData(System.Windows.Forms.DataFormats.StringFormat);
-			//        System.Text.ASCIIEncoding encoding = new System.Text.ASCIIEncoding();
-
-			//        fileSendPane1.SendData(encoding.GetBytes(data), "Dropped text");
-			//        e.Effect = DragDropEffects.Copy;
-			//    }
 		}
 
-		#region Pretend buttons for status bar
-
-		private void PretendClick(object sender, MouseEventArgs e)
+		// Why both of these? - they catch from different controls
+		private void SendKey(object sender, KeyPressEventArgs e) //Key press handler
 		{
-			if (sender is ToolStripStatusLabel)
-				((ToolStripStatusLabel)sender).BorderStyle = Border3DStyle.SunkenInner;
+			e.Handled = true;
+
+			_serialPort.Write(e.KeyChar);
 		}
 
-		private void PretendRelease(object sender, MouseEventArgs e)
+		private void SerialPortOnDataReceived(object sender, DataReceivedEventArgs dataReceivedEventArgs)
 		{
-			if (sender is ToolStripStatusLabel)
-				((ToolStripStatusLabel)sender).BorderStyle = Border3DStyle.Flat;
+			AddLine(dataReceivedEventArgs.Data);
 		}
-
-		private void PretendLeave(object sender, EventArgs e)
-		{
-			if (sender is ToolStripStatusLabel)
-				((ToolStripStatusLabel)sender).BorderStyle = Border3DStyle.Flat;
-		}
-
-		private void PretendEnter(object sender, EventArgs e)
-		{
-			if (sender is ToolStripStatusLabel)
-				((ToolStripStatusLabel)sender).BorderStyle = Border3DStyle.RaisedInner;
-		}
-
-		#endregion Pretend buttons for status bar
-
-		#endregion Event Handlers
-
-		private static readonly Logger logger = LogManager.GetCurrentClassLogger();
-
-		public event PropertyChangedEventHandler PropertyChanged;
 
 		private void SerialPortOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
 		{
@@ -695,46 +518,78 @@ namespace HyperToken_WinForms_GUI
 			}
 		}
 
-		public void UpdatePortState()
+		private void SetMonospacedFont()
 		{
-			switch (_serialPort.PortState)
+			// TODO Install Inconsolata (license?),  Deja Vu Sans Mono (public domain!), or Droid Sans Mono (Apache)
+			// Deja Vu Sans Mono: http://dejavu-fonts.org/wiki/index.php?title=Main_Page
+
+			// The lower indices should be preferred fonts. Higher indices should be generic fonts.
+			string[] fontList = new string[] { "Consolas", "Inconsolata", "Deja Vu Sans Mono", "Lucida Console", "Courier New", "Courier" };
+
+			foreach (string font in fontList)
 			{
-				case PortState.Open:
-					toolStripButtonConnect.Text = Resources.Text_Disconnect;
-					toolStripButtonConnect.Image = Resources.disconnected;
-					toolStripButtonConnect.ForeColor = SystemColors.ControlText;
-					break;
+				Font test = new System.Drawing.Font(font, 9.5F, System.Drawing.FontStyle.Regular, GraphicsUnit.Point, 0);
 
-				case PortState.Closed:
-					toolStripButtonConnect.Text = Resources.Text_Connect;
-					toolStripButtonConnect.Image = Resources.connected;
-					break;
+				if (test.Name == font)
+				{
+					// Got a font on our list
+					IOBox.Font = test;
+					logger.Info("Picked font: {0}", test.Name);
+					return;
+				}
+			}
 
-				case PortState.Error:
-					_serialPort.PortState = PortState.Closed;
-					toolStripButtonConnect.ForeColor = Color.Red;
-					break;
+			// No fonts in the list were available, pick the most generic font from the list and allow the system to pick a fallback
+			this.IOBox.Font = new Font(fontList[fontList.Length - 1], 10.0f, FontStyle.Regular, GraphicsUnit.Point, 0);
+		}
+
+		private void SetupFileSendSpinnerSpokes()
+		{
+			fileSendLoadingCircle.LoadingCircleControl.InnerCircleRadius = 3;
+			fileSendLoadingCircle.LoadingCircleControl.OuterCircleRadius = 6;
+			fileSendLoadingCircle.LoadingCircleControl.NumberSpoke = 8;
+			fileSendLoadingCircle.LoadingCircleControl.SpokeThickness = 2;
+			fileSendLoadingCircle.LoadingCircleControl.RotationSpeed = 100;
+			fileSendLoadingCircle.LoadingCircleControl.Color = SystemColors.HotTrack;
+		}
+
+		//Show about form
+		private void ShowAboutForm(object sender, EventArgs e)
+		{
+			_aboutBox.Open();
+		}
+
+		private void ShowVersionInformation()
+		{
+			logger.Warn("Version {0}", GetVersion());
+
+			Title = "HyperToken";
+
+#if DEBUG
+			Title += " [Debug]";
+
+			logger.Warn("Debug version");
+#endif
+
+			Title += " (" + GetVersion() + ')';
+
+			if (System.Diagnostics.Debugger.IsAttached)
+			{
+				logger.Warn("Debugger attached");
+				Title += " [Debugger attached]";
 			}
 		}
 
-		private ILogger _logger;
-
-		private void UpdateLoggingState()
+		private void ToggleConnection(object sender, EventArgs e)
 		{
-			logger.Trace("Logging set to {0}", _logger.LoggingState);
+			logger.Trace("ToggleConnection");
+			_serialPort.PortState = _serialPort.PortState == PortState.Open ? PortState.Closed : PortState.Open;
+		}
 
-			switch (_logger.LoggingState)
-			{
-				case LoggingState.Disabled:
-					toolStripLoggingEnabled.Text = Resources.Text_Logging_Disabled;
-					MenuItemToggleLogging.Checked = false;
-					break;
-
-				case LoggingState.Enabled:
-					toolStripLoggingEnabled.Text = Resources.Text_Logging_Enabled;
-					MenuItemToggleLogging.Checked = true;
-					break;
-			}
+		private void ToggleEcho(object sender, EventArgs e)
+		{
+			logger.Trace("Toggle Echo");
+			_echoer.EchoState = _echoer.EchoState == EchoState.Enabled ? EchoState.Disabled : EchoState.Enabled;
 		}
 
 		private void ToggleLogging(object sender, System.EventArgs e)
@@ -742,6 +597,62 @@ namespace HyperToken_WinForms_GUI
 			logger.Trace("Toggle logging");
 			_logger.LoggingState = _logger.LoggingState == LoggingState.Disabled ? LoggingState.Enabled : LoggingState.Disabled;
 		}
+
+		//Show file send pane
+		private void toolStripButtonSendFile_Click(object sender, EventArgs e)
+		{
+			fileSendPane1.Visible = !fileSendPane1.Visible;
+		}
+
+		//List all COM ports
+		private void UpdateCOMPorts(object sender, EventArgs e)
+		{
+			string[] ports = _serialPort.Devices;
+
+			if (ports == null)
+			{
+				logger.Error("No serial ports to list");
+				logger.Fatal("TODO We should handle this more gracefully");
+				logger.Fatal("Show a 'No serial ports found' item");
+				return;
+			}
+
+			if (sender is ToolStripDropDownItem)
+			{
+				var menu = sender as ToolStripDropDownItem;
+				menu.DropDownItems.Clear();
+				foreach (var port in ports)
+					menu.DropDownItems.Add(port);
+			}
+		}
+
+		#region Pretend buttons for status bar
+
+		private void PretendClick(object sender, MouseEventArgs e)
+		{
+			if (sender is ToolStripStatusLabel)
+				((ToolStripStatusLabel)sender).BorderStyle = Border3DStyle.SunkenInner;
+		}
+
+		private void PretendEnter(object sender, EventArgs e)
+		{
+			if (sender is ToolStripStatusLabel)
+				((ToolStripStatusLabel)sender).BorderStyle = Border3DStyle.RaisedInner;
+		}
+
+		private void PretendLeave(object sender, EventArgs e)
+		{
+			if (sender is ToolStripStatusLabel)
+				((ToolStripStatusLabel)sender).BorderStyle = Border3DStyle.Flat;
+		}
+
+		private void PretendRelease(object sender, MouseEventArgs e)
+		{
+			if (sender is ToolStripStatusLabel)
+				((ToolStripStatusLabel)sender).BorderStyle = Border3DStyle.Flat;
+		}
+
+		#endregion Pretend buttons for status bar
 
 		private void UpdateEchoState()
 		{
@@ -759,59 +670,22 @@ namespace HyperToken_WinForms_GUI
 			}
 		}
 
-		public void UpdateCOMPort()
+		private void UpdateLoggingState()
 		{
-			dropDownCOMPort.Text = _serialPort.DeviceName;
+			logger.Trace("Logging set to {0}", _logger.LoggingState);
 
-			foreach (ToolStripMenuItem item in menuItemCOMPort.DropDownItems)
-				item.Checked = item.Text == _serialPort.DeviceName;
+			switch (_logger.LoggingState)
+			{
+				case LoggingState.Disabled:
+					toolStripLoggingEnabled.Text = Resources.Text_Logging_Disabled;
+					MenuItemToggleLogging.Checked = false;
+					break;
 
-			foreach (ToolStripMenuItem item in dropDownCOMPort.DropDownItems)
-				item.Checked = item.Text == _serialPort.DeviceName;
-		}
-
-		public void UpdateBaudRate()
-		{
-			if (dropDownBaud == null)
-				return;
-
-			// TODO Throw an error. Also, rejigger this shit.
-
-			dropDownBaud.Text = _serialPort.Baud.ToString(CultureInfo.InvariantCulture) + Resources.Text_Baud;
-
-			foreach (ToolStripMenuItem item in menuItemBaud.DropDownItems)
-				item.Checked = item.Text == _serialPort.Baud.ToString(CultureInfo.InvariantCulture);
-
-			foreach (ToolStripMenuItem item in dropDownBaud.DropDownItems)
-				item.Checked = item.Text == _serialPort.Baud.ToString(CultureInfo.InvariantCulture);
-		}
-
-		// TODO this is gross, fix it.
-		public void UpdateDataBits()
-		{
-			if (menuItemDataBits == null)
-				return;
-
-			logger.Trace("Setting dataBits to {0}", _serialPort.DataBits);
-
-			foreach (ToolStripMenuItem item in menuItemDataBits.DropDownItems)
-				item.Checked = item.Text == _serialPort.DataBits.ToString();
-		}
-
-		public void UpdateFlowControl()
-		{
-			logger.Trace("Setting flow control to {0}", _serialPort.FlowControl);
-
-			foreach (ToolStripMenuItem item in menuItemFlowControl.DropDownItems)
-				item.Checked = item.Text == _serialPort.FlowControl.GetDescription<FlowControl>();
-		}
-
-		public void UpdateParity()
-		{
-			logger.Trace("Setting parity to {0}", _serialPort.Parity);
-
-			foreach (ToolStripMenuItem item in menuItemParity.DropDownItems)
-				item.Checked = item.Text == _serialPort.Parity.ToString();
+				case LoggingState.Enabled:
+					toolStripLoggingEnabled.Text = Resources.Text_Logging_Enabled;
+					MenuItemToggleLogging.Checked = true;
+					break;
+			}
 		}
 	}
 }

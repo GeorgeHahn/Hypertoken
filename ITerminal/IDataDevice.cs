@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using Terminal_Interface.Enums;
+using Terminal_Interface.Events;
 
 namespace Terminal_Interface
 {
