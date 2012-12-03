@@ -10,21 +10,21 @@ namespace Terminal
 	internal class TerminalRunner
 	{
 		private readonly ITerminal _terminal;
-		private readonly ISerialPort _backend;
+		private readonly ISerialPort _dataDevice;
 
 		private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-		public TerminalRunner(ITerminal terminal, ISerialPort backend)
+		public TerminalRunner(ITerminal terminal, ISerialPort dataDevice)
 		{
 			logger.Trace("TerminalRunner created");
-			_backend = backend;
+			_dataDevice = dataDevice;
 			_terminal = terminal;
 		}
 
 		public void Run()
 		{
 			logger.Trace("Running terminal");
-			_terminal.SetDevice(_backend);
+			_terminal.SetDevice(_dataDevice);
 			_terminal.Run();
 
 			logger.Info("Application shutting down");
