@@ -31,7 +31,8 @@ namespace Terminal
 			IContainer container = containerSetup.BuildContainer();
 
 			logger.Trace("Running ITerminal");
-			container.Resolve<InitableRunner>().Init();
+			if (container.IsRegistered<InitableRunner>())
+				container.Resolve<InitableRunner>().Init();
 			container.Resolve<TerminalRunner>().Run();
 
 			//}
