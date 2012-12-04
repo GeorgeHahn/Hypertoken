@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using System.Windows.Forms;
+using Anotar;
 using Terminal_Interface;
 
 namespace HyperToken_WinForms_GUI
@@ -9,6 +10,7 @@ namespace HyperToken_WinForms_GUI
 	{
 		public AboutBox()
 		{
+			Log.Debug("AboutBox constructor");
 			InitializeComponent();
 			Text = String.Format("About {0}", AssemblyTitle);
 			labelProductName.Text = AssemblyProduct;
@@ -27,7 +29,7 @@ namespace HyperToken_WinForms_GUI
 				if (infoAttrib == null)
 					continue;
 
-				textBoxDescription.AppendText(string.Format("{0} = {1}\n", name.Name, infoAttrib.InformationalVersion));
+				textBoxDescription.AppendText(string.Format("\t{0}\n", infoAttrib.InformationalVersion));
 			}
 
 			//textBoxDescription.Text = Assembly.GetExecutingAssembly().GetName().Version;
