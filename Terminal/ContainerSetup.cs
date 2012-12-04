@@ -21,8 +21,9 @@ namespace Terminal
 			builder.RegisterType<HyperToken_WinForms_GUI.AboutBox>().As<IAboutBox>();
 
 			// Serial port wiring
-			//builder.RegisterType<SerialPortDataHandler>().As<ISerialPort>();
-			builder.RegisterType<HIDDataHandler>().As<ISerialPort>();
+			builder.RegisterType<SerialPortDataHandler>().As<ISerialPort>();
+
+			//builder.RegisterType<HIDDataHandler>().As<ISerialPort>();
 
 			// Logger wiring
 			builder.RegisterType<FileLogger>().As<ILogger>();

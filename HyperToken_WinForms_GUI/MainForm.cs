@@ -73,6 +73,37 @@ namespace HyperToken_WinForms_GUI
 			set { Text = value; }
 		}
 
+		private void Initialize()
+		{
+			logger.Trace("Initializing MainForm");
+			InitializeComponent();
+
+			_baudRateVals = new List<int>(new[] { 110, 300, 1200, 2400, 4800, 9600, 19200, 38400, 57600, 115200, 230400, 460800, 921600 });
+
+			SetMonospacedFont();
+
+			if (System.Diagnostics.Debugger.IsAttached)
+				saveEntireSessionToolStripMenuItem.Visible = true;
+
+			CreateMenuFrom(dropDownBaud, _baudRateVals, "BaudRate", ChangeCOMParam);
+			CreateMenuFrom(menuItemBaud, _baudRateVals, "BaudRate", ChangeCOMParam);
+			fileSendLoadingCircle.Alignment = ToolStripItemAlignment.Right;
+
+			IOBox.WordWrap = false;
+
+			SetupFileSendSpinnerSpokes();
+
+			ShowVersionInformation();
+
+			logger.Warn("MainForm initialization complete");
+		}
+
+		public void Run()
+		{
+			Initialize();
+			Application.Run(this);
+		}
+
 		public static string GetVersion()
 		{
 			return System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
@@ -204,12 +235,6 @@ namespace HyperToken_WinForms_GUI
 			}
 		}
 
-		public void Run()
-		{
-			Initialize();
-			Application.Run(this);
-		}
-
 		public void UpdateBaudRate()
 		{
 			if (dropDownBaud == null)
@@ -334,29 +359,6 @@ namespace HyperToken_WinForms_GUI
 			{
 				_dataDevice.Write((byte)0x0A);
 			}
-		}
-
-		private void Initialize()
-		{
-			logger.Trace("Initializing MainForm");
-			InitializeComponent();
-
-			_baudRateVals = new List<int>(new[] { 110, 300, 1200, 2400, 4800, 9600, 19200, 38400, 57600, 115200, 230400, 460800, 921600 });
-
-			SetMonospacedFont();
-
-			if (System.Diagnostics.Debugger.IsAttached)
-				saveEntireSessionToolStripMenuItem.Visible = true;
-
-			CreateMenuFrom(dropDownBaud, _baudRateVals, "BaudRate", ChangeCOMParam);
-			CreateMenuFrom(menuItemBaud, _baudRateVals, "BaudRate", ChangeCOMParam);
-			fileSendLoadingCircle.Alignment = ToolStripItemAlignment.Right;
-
-			SetupFileSendSpinnerSpokes();
-
-			ShowVersionInformation();
-
-			logger.Warn("MainForm initialization complete");
 		}
 
 		private void newToolStripMenuItem_Click(object sender, EventArgs e)
