@@ -207,10 +207,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\SciLexer.dll">
+    <None Include="SciLexer.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\SciLexer64.dll">
+    <None Include="SciLexer64.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Resources\FileSend.png" />
