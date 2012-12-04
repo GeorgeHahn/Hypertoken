@@ -89,7 +89,7 @@ namespace HyperToken_WinForms_GUI
 			CreateMenuFrom(menuItemBaud, _baudRateVals, "BaudRate", ChangeCOMParam);
 			fileSendLoadingCircle.Alignment = ToolStripItemAlignment.Right;
 
-			IOBox.WordWrap = false;
+			//IOBox.WordWrap = false;
 
 			SetupFileSendSpinnerSpokes();
 
@@ -119,11 +119,11 @@ namespace HyperToken_WinForms_GUI
 			Invoke(new MethodInvoker(
 					   () =>
 					   {
-						   if (!Focused)
-						   {
-							   IOBox.Select(IOBox.Text.Length, 0);
-							   IOBox.ScrollToCaret();
-						   }
+						   //if (!Focused)
+						   //{
+						   //	IOBox.Select(IOBox.Text.Length, 0);
+						   //	IOBox.ScrollToCaret();
+						   //}
 						   IOBox.AppendText(line);
 					   }));
 		}
@@ -375,7 +375,10 @@ namespace HyperToken_WinForms_GUI
 			if (result == DialogResult.No)
 			{
 				logger.Debug("User cleared session");
-				IOBox.Clear();
+
+				logger.Fatal("JKLOL.");
+
+				//IOBox.Clear();
 				return;
 			}
 
@@ -384,7 +387,8 @@ namespace HyperToken_WinForms_GUI
 				logger.Debug("User saved session");
 				if (SaveSession())
 				{
-					IOBox.Clear();
+					//IOBox.Clear();
+					logger.Fatal("JKLOL.");
 					logger.Trace("Session cleared");
 				}
 				else

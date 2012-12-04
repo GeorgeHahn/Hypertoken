@@ -1,5 +1,6 @@
 ﻿using System;
 using CustomControls;
+using ScintillaNET;
 
 namespace HyperToken_WinForms_GUI
 {
@@ -74,7 +75,8 @@ namespace HyperToken_WinForms_GUI
 			this.LeftToolStripPanel = new System.Windows.Forms.ToolStripPanel();
 			this.ContentPanel = new System.Windows.Forms.ToolStripContentPanel();
 			this.selectLoggingFileDialog = new System.Windows.Forms.SaveFileDialog();
-			this.IOBox = new System.Windows.Forms.RichTextBox();
+			//this.IOBox = new System.Windows.Forms.RichTextBox();
+			this.IOBox = new Scintilla();
 			this.toolStrip1 = new ToolStripEx();
 			this.toolStripButtonConnect = new System.Windows.Forms.ToolStripButton();
 			this.toolStripButtonSendFile = new System.Windows.Forms.ToolStripButton();
@@ -409,14 +411,17 @@ namespace HyperToken_WinForms_GUI
 			// 
 			// IOBox
 			// 
+
+
+
 			this.IOBox.AcceptsTab = true;
-			this.IOBox.DetectUrls = false;
+			//this.IOBox.DetectUrls = false;
 			this.IOBox.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.IOBox.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.IOBox.ImeMode = System.Windows.Forms.ImeMode.Disable;
 			this.IOBox.Location = new System.Drawing.Point(0, 49);
 			this.IOBox.Name = "IOBox";
-			this.IOBox.ShortcutsEnabled = false;
+			//this.IOBox.ShortcutsEnabled = false;
 			this.IOBox.Size = new System.Drawing.Size(491, 317);
 			this.IOBox.TabIndex = 3;
 			this.IOBox.Text = "";
@@ -634,7 +639,8 @@ namespace HyperToken_WinForms_GUI
 		private System.Windows.Forms.ToolStripMenuItem menuItemFlowControl;
 		private System.Windows.Forms.ToolStripMenuItem menuItemLineDelay;
 		private System.Windows.Forms.ToolStripMenuItem menuItemCharacterDelay;
-		private System.Windows.Forms.RichTextBox IOBox;
+		//private System.Windows.Forms.RichTextBox IOBox;
+		private Scintilla IOBox;
 		private CustomControls.FileSendPane fileSendPane1;
 		private System.Windows.Forms.ToolStripPanel BottomToolStripPanel;
 		private System.Windows.Forms.ToolStripPanel TopToolStripPanel;

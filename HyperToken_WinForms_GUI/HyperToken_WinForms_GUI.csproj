@@ -207,6 +207,12 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\SciLexer.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\SciLexer64.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Resources\FileSend.png" />
     <None Include="Resources\connect.gif" />
     <None Include="Resources\Disconnected.gif" />
