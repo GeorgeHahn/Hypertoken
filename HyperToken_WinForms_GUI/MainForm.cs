@@ -91,6 +91,10 @@ namespace HyperToken_WinForms_GUI
 
 			//IOBox.WordWrap = false;
 
+			IOBox.Caret.IsSticky = true;
+
+			//IOBox.Caret.LineNumber
+
 			SetupFileSendSpinnerSpokes();
 
 			ShowVersionInformation();
@@ -119,12 +123,18 @@ namespace HyperToken_WinForms_GUI
 			Invoke(new MethodInvoker(
 					   () =>
 					   {
+						   IOBox.AppendText(line);
+
 						   //if (!Focused)
 						   //{
 						   //	IOBox.Select(IOBox.Text.Length, 0);
 						   //	IOBox.ScrollToCaret();
 						   //}
-						   IOBox.AppendText(line);
+
+						   //IOBox.DirectMessage(2169, (IntPtr)null, (IntPtr)null);
+						   //IOBox.Caret.EnsureVisible();
+
+						   IOBox.Scrolling.ScrollBy(0, IOBox.Lines.Count);
 					   }));
 		}
 
