@@ -46,7 +46,7 @@ namespace Terminal_Interface
 		int ReportLength { get; set; }
 	}
 
-	public interface ILogger
+	public interface ILogger : IDataWriter
 	{
 		string LoggingFilePath { get; set; }
 

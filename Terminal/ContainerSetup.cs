@@ -23,6 +23,9 @@ namespace Terminal
 			// Serial port wiring
 			builder.RegisterType<SerialPortDataHandler>().As<ISerialPort>();
 
+			// Logger wiring
+			builder.RegisterType<FileLogger>().As<ILogger>();
+
 			// Application wiring
 			builder.RegisterType<TerminalRunner>();
 			builder.RegisterType<InitableRunner>();

@@ -577,10 +577,10 @@ namespace HyperToken_WinForms_GUI
 			logger.Warn("Debug version");
 #endif
 
-			Title += " (" + GetVersion() + ')';
-
 			if (System.Diagnostics.Debugger.IsAttached)
 			{
+				Title += " (" + GetVersion() + ')';
+
 				logger.Warn("Debugger attached");
 				Title += " [Debugger attached]";
 			}
