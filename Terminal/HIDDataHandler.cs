@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.IO.Ports;
 using System.Linq;
 using Anotar;
+using HidLibrary;
 using NLog;
 using Terminal_Interface;
 using Terminal_Interface.Enums;
@@ -11,7 +11,7 @@ using Terminal_Interface.Events;
 
 namespace Terminal
 {
-	public class HIDDataHandler : IDataDevice
+	public class HIDDataHandler : ISerialPort
 	{
 		public HIDDataHandler()
 		{
@@ -21,7 +21,11 @@ namespace Terminal
 
 		public IEnumerable<string> ListAvailableDevices()
 		{
-			throw new NotImplementedException();
+			var devices = HidDevices.Enumerate();
+			List<string> names = new List<string>();
+			foreach (HidDevice device in devices)
+				names.Add(device.Attributes.VendorHexId + "," + device.Attributes.ProductHexId);
+			return names.AsEnumerable();
 		}
 
 		public string DeviceName
@@ -60,7 +64,10 @@ namespace Terminal
 
 		public string[] Devices
 		{
-			get { throw new NotImplementedException(); }
+			get
+			{
+				return ListAvailableDevices().ToArray();
+			}
 		}
 
 		public void KeyPressed(char c)
@@ -105,5 +112,97 @@ namespace Terminal
 		public event PropertyChangedEventHandler PropertyChanged;
 
 		#endregion INotifyPropertyChanged Members
+
+		// TODO remove below
+		// TODO remove below
+		// TODO remove below
+		// TODO remove below
+		// TODO remove below
+		// TODO remove below
+		// TODO remove below
+		// TODO remove below
+		// TODO remove below
+		// TODO remove below
+		// TODO remove below
+		// TODO remove below
+		// TODO remove below
+		// TODO remove below
+		// TODO remove below
+		// TODO remove below
+		// TODO remove below
+		// TODO remove below
+		// TODO remove below
+		// TODO remove below
+		// TODO remove below
+		// TODO remove below
+		// TODO remove below
+		// TODO remove below
+		// TODO remove below
+		// TODO remove below
+		// TODO remove below
+
+		#region ISerialPort Members
+
+		public int Baud
+		{
+			get
+			{
+				throw new NotImplementedException();
+			}
+			set
+			{
+				throw new NotImplementedException();
+			}
+		}
+
+		public StopBits StopBits
+		{
+			get
+			{
+				throw new NotImplementedException();
+			}
+			set
+			{
+				throw new NotImplementedException();
+			}
+		}
+
+		public int DataBits
+		{
+			get
+			{
+				throw new NotImplementedException();
+			}
+			set
+			{
+				throw new NotImplementedException();
+			}
+		}
+
+		public FlowControl FlowControl
+		{
+			get
+			{
+				throw new NotImplementedException();
+			}
+			set
+			{
+				throw new NotImplementedException();
+			}
+		}
+
+		public Parity Parity
+		{
+			get
+			{
+				throw new NotImplementedException();
+			}
+			set
+			{
+				throw new NotImplementedException();
+			}
+		}
+
+		#endregion ISerialPort Members
 	}
 }
