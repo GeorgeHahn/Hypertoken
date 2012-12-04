@@ -81,7 +81,6 @@ namespace HyperToken_WinForms_GUI
 			this.ConnectionStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
 			this.dropDownCOMPort = new System.Windows.Forms.ToolStripDropDownButton();
 			this.dropDownBaud = new System.Windows.Forms.ToolStripDropDownButton();
-			this.toolStripLoggingEnabled = new PretendStatusbarButton();
 			this.toolStripStatusLabelLocalEcho = new PretendStatusbarButton();
 			this.statusStrip = new StatusStripEx();
 			this.toolStripStatusLabelPortSettings = new System.Windows.Forms.ToolStripStatusLabel();
@@ -463,17 +462,6 @@ namespace HyperToken_WinForms_GUI
 			this.dropDownBaud.Size = new System.Drawing.Size(86, 22);
 			this.dropDownBaud.Text = "115200 Baud";
 			// 
-			// toolStripLoggingEnabled
-			// 
-			this.toolStripLoggingEnabled.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top)
-						| System.Windows.Forms.ToolStripStatusLabelBorderSides.Right)
-						| System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
-			this.toolStripLoggingEnabled.Name = "toolStripLoggingEnabled";
-			this.toolStripLoggingEnabled.Size = new System.Drawing.Size(103, 19);
-			this.toolStripLoggingEnabled.Text = "Logging Disabled";
-			this.toolStripLoggingEnabled.ToolTipText = "Doubleclick to toggle";
-			//this.toolStripLoggingEnabled.Click += new System.EventHandler(this.ToggleLogging);
-			// 
 			// toolStripStatusLabelLocalEcho
 			// 
 			this.toolStripStatusLabelLocalEcho.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top)
@@ -493,7 +481,6 @@ namespace HyperToken_WinForms_GUI
             this.dropDownCOMPort,
             this.dropDownBaud,
             this.toolStripStatusLabelPortSettings,
-            this.toolStripLoggingEnabled,
             this.toolStripStatusLabelLocalEcho,
             this.fileSendLoadingCircle});
 			this.statusStrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
@@ -607,7 +594,6 @@ namespace HyperToken_WinForms_GUI
 		private System.Windows.Forms.ToolStripStatusLabel ConnectionStatusLabel;
 		public System.Windows.Forms.ToolStripDropDownButton dropDownCOMPort;
 		public System.Windows.Forms.ToolStripDropDownButton dropDownBaud;
-		private PretendStatusbarButton toolStripLoggingEnabled;
 		private PretendStatusbarButton toolStripStatusLabelLocalEcho;
 		private MenuStripEx menuStrip1;
 		private ToolStripEx toolStrip1;

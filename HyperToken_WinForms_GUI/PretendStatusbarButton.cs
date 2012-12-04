@@ -17,6 +17,10 @@ namespace HyperToken_WinForms_GUI
 
 			MouseEnter += PretendEnter;
 			MouseLeave += PretendLeave;
+
+			BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top)
+						| System.Windows.Forms.ToolStripStatusLabelBorderSides.Right)
+						| System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
 		}
 
 		public PretendStatusbarButton(string text, Image image, EventHandler onClick)
@@ -39,28 +43,24 @@ namespace HyperToken_WinForms_GUI
 			: this(null, null, null, null)
 		{ }
 
-		private static void PretendClick(object sender, MouseEventArgs e)
+		private void PretendClick(object sender, MouseEventArgs e)
 		{
-			if (sender is ToolStripStatusLabel)
-				((ToolStripStatusLabel)sender).BorderStyle = Border3DStyle.SunkenInner;
+			BorderStyle = Border3DStyle.SunkenInner;
 		}
 
-		private static void PretendEnter(object sender, EventArgs e)
+		private void PretendEnter(object sender, EventArgs e)
 		{
-			if (sender is ToolStripStatusLabel)
-				((ToolStripStatusLabel)sender).BorderStyle = Border3DStyle.RaisedInner;
+			BorderStyle = Border3DStyle.RaisedInner;
 		}
 
-		private static void PretendLeave(object sender, EventArgs e)
+		private void PretendLeave(object sender, EventArgs e)
 		{
-			if (sender is ToolStripStatusLabel)
-				((ToolStripStatusLabel)sender).BorderStyle = Border3DStyle.Flat;
+			BorderStyle = Border3DStyle.Flat;
 		}
 
-		private static void PretendRelease(object sender, MouseEventArgs e)
+		private void PretendRelease(object sender, MouseEventArgs e)
 		{
-			if (sender is ToolStripStatusLabel)
-				((ToolStripStatusLabel)sender).BorderStyle = Border3DStyle.Flat;
+			BorderStyle = Border3DStyle.Flat;
 		}
 	}
 }

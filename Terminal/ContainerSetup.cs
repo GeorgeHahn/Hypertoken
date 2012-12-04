@@ -28,10 +28,11 @@ namespace Terminal
 			//builder.RegisterType<HIDDataHandler>().As<ISerialPort>();
 
 			// GUI Extensions
-			builder.RegisterType<LoggingGui>().As<IMainMenuExtension>();
+			builder.RegisterType<LoggingGui>().As<IMainMenuExtension>().SingleInstance();
+			builder.RegisterType<LoggingGui>().As<IStatusbarExtension>().SingleInstance();
 
 			// Logger wiring
-			builder.RegisterType<FileLogger>().As<ILogger>();
+			builder.RegisterType<FileLogger>().As<ILogger>().SingleInstance();
 
 			// Application wiring
 			builder.RegisterType<TerminalRunner>();

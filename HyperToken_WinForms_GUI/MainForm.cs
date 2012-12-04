@@ -39,9 +39,11 @@ namespace HyperToken_WinForms_GUI
 
 		private IMainMenuExtension _menuExtension;
 
+		private IStatusbarExtension _statusbarExtension;
+
 		private List<int> _baudRateVals;
 
-		public MainForm(IAboutBox aboutBox, ILogger logger, IEchoer echoer, IFileSender fileSender, ISerialPort dataDevice, IMainMenuExtension menuExtension)
+		public MainForm(IAboutBox aboutBox, ILogger logger, IEchoer echoer, IFileSender fileSender, ISerialPort dataDevice, IMainMenuExtension menuExtension, IStatusbarExtension statusbarExtension)
 		{
 			_aboutBox = aboutBox;
 			_logger = logger;
@@ -49,6 +51,7 @@ namespace HyperToken_WinForms_GUI
 			_fileSender = fileSender;
 			_dataDevice = dataDevice;
 			_menuExtension = menuExtension;
+			_statusbarExtension = statusbarExtension;
 
 			_dataDevice.PropertyChanged += DataDeviceOnPropertyChanged;
 			_dataDevice.DataReceived += DataDeviceOnDataReceived;
@@ -56,12 +59,12 @@ namespace HyperToken_WinForms_GUI
 			MainForm.logger.Trace("Mainform object created");
 		}
 
-		public MainForm(IAboutBox aboutBox, ISerialPort dataDevice, ILogger logger, IMainMenuExtension menuExtension)
-			: this(aboutBox, logger, null, null, dataDevice, menuExtension)
+		public MainForm(IAboutBox aboutBox, ISerialPort dataDevice, ILogger logger, IMainMenuExtension menuExtension, IStatusbarExtension statusbarExtension)
+			: this(aboutBox, logger, null, null, dataDevice, menuExtension, statusbarExtension)
 		{ }
 
-		public MainForm(IAboutBox aboutBox, ISerialPort dataDevice, IMainMenuExtension menuExtension)
-			: this(aboutBox, null, null, null, dataDevice, menuExtension)
+		public MainForm(IAboutBox aboutBox, ISerialPort dataDevice, IMainMenuExtension menuExtension, IStatusbarExtension statusbarExtension)
+			: this(aboutBox, null, null, null, dataDevice, menuExtension, statusbarExtension)
 		{ }
 
 		public event SaveSessionEventHandler OnSaveSession;
@@ -96,7 +99,11 @@ namespace HyperToken_WinForms_GUI
 
 			//IOBox.Caret.LineNumber
 
-			menuStrip1.Items.Add(_menuExtension.Menu);
+			if (_menuExtension != null)
+				menuStrip1.Items.Add(_menuExtension.Menu);
+
+			if (_statusbarExtension != null)
+				statusStrip.Items.Add(_statusbarExtension.StatusBarItem);
 
 			SetupFileSendSpinnerSpokes();
 

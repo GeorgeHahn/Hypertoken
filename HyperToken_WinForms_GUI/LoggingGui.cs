@@ -13,11 +13,12 @@ using Terminal_Interface.Exceptions;
 
 namespace HyperToken_WinForms_GUI
 {
-	public class LoggingGui : IMainMenuExtension
+	public class LoggingGui : IMainMenuExtension, IStatusbarExtension
 	{
 		private readonly ILogger _logger;
 
 		private ToolStripMenuItem _mainMenuItem;
+		private ToolStripStatusLabel _statusBarItem;
 		private readonly SaveFileDialog selectLoggingFileDialog;
 
 		public LoggingGui(ILogger logger)
@@ -43,12 +44,25 @@ namespace HyperToken_WinForms_GUI
 					_mainMenuItem = new ToolStripMenuItem("Logging");
 					_mainMenuItem.DropDownItems.AddRange(new ToolStripItem[]
 						    {
-							    new ToolStripMenuItem("Enable Logging", null, OnToggleLogging),
-							    new ToolStripMenuItem("Set Destination File", null, OnSetDestinationFile)
+							    new ToolStripMenuItem("Enable Logging", null, (s, a) => OnToggleLogging()),
+							    new ToolStripMenuItem("Set Destination File", null, (s, a) => OnSetDestinationFile())
 						    });
 				}
 
 				return _mainMenuItem;
+			}
+		}
+
+		public ToolStripStatusLabel StatusBarItem
+		{
+			get
+			{
+				if (_statusBarItem == null)
+				{
+					_statusBarItem = new PretendStatusbarButton(Resources.Text_Logging_Disabled, null, (s, a) => OnToggleLogging());
+				}
+
+				return _statusBarItem;
 			}
 		}
 
@@ -70,20 +84,18 @@ namespace HyperToken_WinForms_GUI
 			switch (_logger.LoggingState)
 			{
 				case LoggingState.Disabled:
-
-					//toolStripLoggingEnabled.Text = Resources.Text_Logging_Disabled;
+					_statusBarItem.Text = Resources.Text_Logging_Disabled;
 					((ToolStripMenuItem)(_mainMenuItem.DropDownItems[0])).Checked = false;
 					break;
 
 				case LoggingState.Enabled:
-
-					//toolStripLoggingEnabled.Text = Resources.Text_Logging_Enabled;
+					_statusBarItem.Text = Resources.Text_Logging_Enabled;
 					((ToolStripMenuItem)(_mainMenuItem.DropDownItems[0])).Checked = true;
 					break;
 			}
 		}
 
-		private void OnSetDestinationFile(object sender, EventArgs eventArgs)
+		private void OnSetDestinationFile()
 		{
 			GetLoggerFilePath();
 		}
@@ -109,7 +121,7 @@ namespace HyperToken_WinForms_GUI
 			}
 		}
 
-		private void OnToggleLogging(object sender, EventArgs eventArgs)
+		private void OnToggleLogging()
 		{
 			Log.Debug("Toggle logging");
 			if (_logger.LoggingFilePath == null)
