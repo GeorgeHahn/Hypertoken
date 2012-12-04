@@ -45,6 +45,7 @@ namespace Terminal
 			//{
 			//	logger.Fatal(e.Message);
 			//	BugSense.SendException(e);
+			//	MessageBox.Show(e.Message, "Unhandled exception");
 			//}
 		}
 
