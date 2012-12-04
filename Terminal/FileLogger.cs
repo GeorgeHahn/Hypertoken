@@ -1,7 +1,9 @@
 ﻿using System;
+using System.ComponentModel;
 using System.IO;
 using Anotar;
 using NLog;
+using Terminal.Annotations;
 using Terminal_Interface;
 using Terminal_Interface.Enums;
 
@@ -9,6 +11,7 @@ namespace Terminal
 {
 	public class FileLogger : ILogger
 	{
+		private StreamWriter _loggingStreamWriter;
 		private FileStream _loggingStream;
 		private string _loggingFilePath;
 
@@ -18,11 +21,12 @@ namespace Terminal
 
 		private void Open()
 		{
-			if (_loggingStream == null)
+			if (_loggingFilePath == null)
 				return;
 
 			Log.Debug("Creating new FileStream for _loggingStream");
 			_loggingStream = File.Open(_loggingFilePath, FileMode.Append, FileAccess.Write, FileShare.Read);
+			_loggingStreamWriter = new StreamWriter(_loggingStream);
 		}
 
 		private void Close()
@@ -30,8 +34,12 @@ namespace Terminal
 			if (_loggingStream == null)
 				return;
 
-			Log.Debug("Closing _loggingStream");
+			Log.Debug("Flushing _loggingStream");
+			_loggingStreamWriter.Flush();
+			_loggingStream.Flush();
 
+			Log.Debug("Closing _loggingStream");
+			_loggingStreamWriter.Close();
 			_loggingStream.Close();
 		}
 
@@ -63,12 +71,14 @@ namespace Terminal
 			}
 		}
 
+		// TODO implement proper return values or change to voids
 		public int Write(byte[] data)
 		{
 			if (LoggingState != LoggingState.Enabled)
 				return 0;
 
-			throw new System.NotImplementedException();
+			_loggingStreamWriter.Write(data);
+			return 0;
 		}
 
 		public int Write(byte data)
@@ -76,7 +86,8 @@ namespace Terminal
 			if (LoggingState != LoggingState.Enabled)
 				return 0;
 
-			throw new System.NotImplementedException();
+			_loggingStreamWriter.Write(data);
+			return 0;
 		}
 
 		public int Write(char data)
@@ -84,7 +95,8 @@ namespace Terminal
 			if (LoggingState != LoggingState.Enabled)
 				return 0;
 
-			throw new System.NotImplementedException();
+			_loggingStreamWriter.Write(data);
+			return 0;
 		}
 
 		public int Write(string data)
@@ -92,7 +104,10 @@ namespace Terminal
 			if (LoggingState != LoggingState.Enabled)
 				return 0;
 
-			throw new System.NotImplementedException();
+			_loggingStreamWriter.Write(data);
+			return 0;
 		}
+
+		public event PropertyChangedEventHandler PropertyChanged;
 	}
 }

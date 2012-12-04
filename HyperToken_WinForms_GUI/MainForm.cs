@@ -12,6 +12,7 @@ using NLog;
 using Terminal_Interface;
 using Terminal_Interface.Enums;
 using Terminal_Interface.Events;
+using Terminal_Interface.Exceptions;
 
 // TODO tweak garbage collection
 // TODO Custom Baud setting
@@ -48,8 +49,15 @@ namespace HyperToken_WinForms_GUI
 			_dataDevice.PropertyChanged += DataDeviceOnPropertyChanged;
 			_dataDevice.DataReceived += DataDeviceOnDataReceived;
 
+			if (logger != null)
+				logger.PropertyChanged += LoggerOnPropertyChanged;
+
 			MainForm.logger.Trace("Mainform object created");
 		}
+
+		public MainForm(IAboutBox aboutBox, ISerialPort dataDevice, ILogger logger)
+			: this(aboutBox, logger, null, null, dataDevice)
+		{ }
 
 		public MainForm(IAboutBox aboutBox, ISerialPort dataDevice)
 			: this(aboutBox, null, null, null, dataDevice)
@@ -453,6 +461,20 @@ namespace HyperToken_WinForms_GUI
 		private void DataDeviceOnDataReceived(object sender, DataReceivedEventArgs dataReceivedEventArgs)
 		{
 			AddLine(dataReceivedEventArgs.Data);
+			if (_logger != null)
+				if (_logger.LoggingState == LoggingState.Enabled)
+					_logger.Write(dataReceivedEventArgs.Data);
+		}
+
+		private void LoggerOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
+		{
+			logger.Warn("Logger binding shim fired for {0}", propertyChangedEventArgs.PropertyName);
+			switch (propertyChangedEventArgs.PropertyName)
+			{
+				case "LoggingState":
+					UpdateLoggingState();
+					break;
+			}
 		}
 
 		private void DataDeviceOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
@@ -473,10 +495,6 @@ namespace HyperToken_WinForms_GUI
 
 					case "Baud":
 						UpdateBaudRate();
-						break;
-
-					case "LoggingState":
-						UpdateLoggingState();
 						break;
 
 					case "EchoState":
@@ -598,9 +616,38 @@ namespace HyperToken_WinForms_GUI
 			_echoer.EchoState = _echoer.EchoState == EchoState.Enabled ? EchoState.Disabled : EchoState.Enabled;
 		}
 
+		private void SetLoggingFile(object sender, EventArgs e)
+		{
+			GetLoggerFilePath();
+		}
+
+		public string GetLoggingFilePath()
+		{
+			if (selectLoggingFileDialog.ShowDialog() == DialogResult.OK)
+				return selectLoggingFileDialog.FileName;
+
+			throw new FileSelectionCanceledException();
+		}
+
+		private bool GetLoggerFilePath()
+		{
+			try
+			{
+				_logger.LoggingFilePath = GetLoggingFilePath();
+				return true;
+			}
+			catch (FileSelectionCanceledException)
+			{
+				return false;
+			}
+		}
+
 		private void ToggleLogging(object sender, System.EventArgs e)
 		{
 			logger.Trace("Toggle logging");
+			if (_logger.LoggingFilePath == null)
+				if (!GetLoggerFilePath())
+					return;
 			_logger.LoggingState = _logger.LoggingState == LoggingState.Disabled ? LoggingState.Enabled : LoggingState.Disabled;
 		}
 
@@ -692,11 +739,6 @@ namespace HyperToken_WinForms_GUI
 					MenuItemToggleLogging.Checked = true;
 					break;
 			}
-		}
-
-		private void SetLoggingFile(object sender, EventArgs e)
-		{
-			throw new NotImplementedException();
 		}
 
 		private void FileSendPaneSend(object sender, EventArgs eventArgs, FileSendPane.SerialSendArgs serialSendArgs)
