@@ -128,6 +128,9 @@
     <Reference Include="PropertyChanged">
       <HintPath>..\packages\PropertyChanged.Fody.1.28.1.0\Lib\NET40\PropertyChanged.dll</HintPath>
     </Reference>
+    <Reference Include="ScintillaNET">
+      <HintPath>binaries\ScintillaNET.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
