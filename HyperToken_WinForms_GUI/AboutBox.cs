@@ -22,6 +22,12 @@ namespace HyperToken_WinForms_GUI
 			{
 				var name = assem.GetName();
 				textBoxDescription.AppendText(string.Format("{0}: {1}\n", name.Name, name.Version));
+
+				var infoAttrib = Attribute.GetCustomAttribute(assem, typeof(AssemblyInformationalVersionAttribute)) as AssemblyInformationalVersionAttribute;
+				if (infoAttrib == null)
+					continue;
+
+				textBoxDescription.AppendText(string.Format("{0} = {1}\n", name.Name, infoAttrib.InformationalVersion));
 			}
 
 			//textBoxDescription.Text = Assembly.GetExecutingAssembly().GetName().Version;
