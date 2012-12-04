@@ -9,6 +9,7 @@ using CustomControls;
 using HyperToken_WinForms_GUI.Helpers;
 using HyperToken_WinForms_GUI.Properties;
 using NLog;
+using Terminal_GUI_Interface;
 using Terminal_Interface;
 using Terminal_Interface.Enums;
 using Terminal_Interface.Events;
@@ -36,31 +37,31 @@ namespace HyperToken_WinForms_GUI
 
 		private ISerialPort _dataDevice;
 
+		private IMainMenuExtension _menuExtension;
+
 		private List<int> _baudRateVals;
 
-		public MainForm(IAboutBox aboutBox, ILogger logger, IEchoer echoer, IFileSender fileSender, ISerialPort dataDevice)
+		public MainForm(IAboutBox aboutBox, ILogger logger, IEchoer echoer, IFileSender fileSender, ISerialPort dataDevice, IMainMenuExtension menuExtension)
 		{
 			_aboutBox = aboutBox;
 			_logger = logger;
 			_echoer = echoer;
 			_fileSender = fileSender;
 			_dataDevice = dataDevice;
+			_menuExtension = menuExtension;
 
 			_dataDevice.PropertyChanged += DataDeviceOnPropertyChanged;
 			_dataDevice.DataReceived += DataDeviceOnDataReceived;
 
-			if (logger != null)
-				logger.PropertyChanged += LoggerOnPropertyChanged;
-
 			MainForm.logger.Trace("Mainform object created");
 		}
 
-		public MainForm(IAboutBox aboutBox, ISerialPort dataDevice, ILogger logger)
-			: this(aboutBox, logger, null, null, dataDevice)
+		public MainForm(IAboutBox aboutBox, ISerialPort dataDevice, ILogger logger, IMainMenuExtension menuExtension)
+			: this(aboutBox, logger, null, null, dataDevice, menuExtension)
 		{ }
 
-		public MainForm(IAboutBox aboutBox, ISerialPort dataDevice)
-			: this(aboutBox, null, null, null, dataDevice)
+		public MainForm(IAboutBox aboutBox, ISerialPort dataDevice, IMainMenuExtension menuExtension)
+			: this(aboutBox, null, null, null, dataDevice, menuExtension)
 		{ }
 
 		public event SaveSessionEventHandler OnSaveSession;
@@ -94,6 +95,8 @@ namespace HyperToken_WinForms_GUI
 			IOBox.Caret.IsSticky = true;
 
 			//IOBox.Caret.LineNumber
+
+			menuStrip1.Items.Add(_menuExtension.Menu);
 
 			SetupFileSendSpinnerSpokes();
 
@@ -458,7 +461,8 @@ namespace HyperToken_WinForms_GUI
 		}
 
 		//TODO Fix SendDroppedText
-		private void SendDroppedText(object sender, DragEventArgs e)//Drop handler
+		// Drop handler
+		private void SendDroppedText(object sender, DragEventArgs e)
 		{
 			//Serial send the dropped text
 
@@ -467,7 +471,8 @@ namespace HyperToken_WinForms_GUI
 		}
 
 		// Why both of these? - they catch from different controls
-		private void SendKey(object sender, KeyPressEventArgs e) //Key press handler
+		// Key press handler
+		private void SendKey(object sender, KeyPressEventArgs e)
 		{
 			e.Handled = true;
 
@@ -480,17 +485,6 @@ namespace HyperToken_WinForms_GUI
 			if (_logger != null)
 				if (_logger.LoggingState == LoggingState.Enabled)
 					_logger.Write(dataReceivedEventArgs.Data);
-		}
-
-		private void LoggerOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
-		{
-			logger.Warn("Logger binding shim fired for {0}", propertyChangedEventArgs.PropertyName);
-			switch (propertyChangedEventArgs.PropertyName)
-			{
-				case "LoggingState":
-					UpdateLoggingState();
-					break;
-			}
 		}
 
 		private void DataDeviceOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
@@ -632,41 +626,6 @@ namespace HyperToken_WinForms_GUI
 			_echoer.EchoState = _echoer.EchoState == EchoState.Enabled ? EchoState.Disabled : EchoState.Enabled;
 		}
 
-		private void SetLoggingFile(object sender, EventArgs e)
-		{
-			GetLoggerFilePath();
-		}
-
-		public string GetLoggingFilePath()
-		{
-			if (selectLoggingFileDialog.ShowDialog() == DialogResult.OK)
-				return selectLoggingFileDialog.FileName;
-
-			throw new FileSelectionCanceledException();
-		}
-
-		private bool GetLoggerFilePath()
-		{
-			try
-			{
-				_logger.LoggingFilePath = GetLoggingFilePath();
-				return true;
-			}
-			catch (FileSelectionCanceledException)
-			{
-				return false;
-			}
-		}
-
-		private void ToggleLogging(object sender, System.EventArgs e)
-		{
-			logger.Trace("Toggle logging");
-			if (_logger.LoggingFilePath == null)
-				if (!GetLoggerFilePath())
-					return;
-			_logger.LoggingState = _logger.LoggingState == LoggingState.Disabled ? LoggingState.Enabled : LoggingState.Disabled;
-		}
-
 		//Show file send pane
 		private void toolStripButtonSendFile_Click(object sender, EventArgs e)
 		{
@@ -695,34 +654,6 @@ namespace HyperToken_WinForms_GUI
 			}
 		}
 
-		#region Pretend buttons for status bar
-
-		private void PretendClick(object sender, MouseEventArgs e)
-		{
-			if (sender is ToolStripStatusLabel)
-				((ToolStripStatusLabel)sender).BorderStyle = Border3DStyle.SunkenInner;
-		}
-
-		private void PretendEnter(object sender, EventArgs e)
-		{
-			if (sender is ToolStripStatusLabel)
-				((ToolStripStatusLabel)sender).BorderStyle = Border3DStyle.RaisedInner;
-		}
-
-		private void PretendLeave(object sender, EventArgs e)
-		{
-			if (sender is ToolStripStatusLabel)
-				((ToolStripStatusLabel)sender).BorderStyle = Border3DStyle.Flat;
-		}
-
-		private void PretendRelease(object sender, MouseEventArgs e)
-		{
-			if (sender is ToolStripStatusLabel)
-				((ToolStripStatusLabel)sender).BorderStyle = Border3DStyle.Flat;
-		}
-
-		#endregion Pretend buttons for status bar
-
 		private void UpdateEchoState()
 		{
 			logger.Trace("Echo set to {0}", _echoer.EchoState);
@@ -735,24 +666,6 @@ namespace HyperToken_WinForms_GUI
 
 				case EchoState.Enabled:
 					toolStripStatusLabelLocalEcho.Text = Resources.Text_Echo_On;
-					break;
-			}
-		}
-
-		private void UpdateLoggingState()
-		{
-			logger.Trace("Logging set to {0}", _logger.LoggingState);
-
-			switch (_logger.LoggingState)
-			{
-				case LoggingState.Disabled:
-					toolStripLoggingEnabled.Text = Resources.Text_Logging_Disabled;
-					MenuItemToggleLogging.Checked = false;
-					break;
-
-				case LoggingState.Enabled:
-					toolStripLoggingEnabled.Text = Resources.Text_Logging_Enabled;
-					MenuItemToggleLogging.Checked = true;
 					break;
 			}
 		}

@@ -131,6 +131,10 @@
       <Project>{cdf84311-5363-4054-ad8b-74741cfd4418}</Project>
       <Name>Terminal_Interface</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Terminal_GUI_Interface\Terminal_GUI_Interface.csproj">
+      <Project>{867db553-9770-4fc6-be0b-abff3e734c96}</Project>
+      <Name>Terminal_GUI_Interface</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

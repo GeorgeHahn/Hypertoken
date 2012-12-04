@@ -38,9 +38,6 @@ namespace HyperToken_WinForms_GUI
 			this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.saveEntireSessionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.loggingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.MenuItemToggleLogging = new System.Windows.Forms.ToolStripMenuItem();
-			this.setDestinationFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.menuStrip1 = new MenuStripEx();
 			this.serialSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.menuItemCOMPort = new System.Windows.Forms.ToolStripMenuItem();
@@ -74,7 +71,7 @@ namespace HyperToken_WinForms_GUI
 			this.RightToolStripPanel = new System.Windows.Forms.ToolStripPanel();
 			this.LeftToolStripPanel = new System.Windows.Forms.ToolStripPanel();
 			this.ContentPanel = new System.Windows.Forms.ToolStripContentPanel();
-			this.selectLoggingFileDialog = new System.Windows.Forms.SaveFileDialog();
+			
 			//this.IOBox = new System.Windows.Forms.RichTextBox();
 			this.IOBox = new Scintilla();
 			this.toolStrip1 = new ToolStripEx();
@@ -84,8 +81,8 @@ namespace HyperToken_WinForms_GUI
 			this.ConnectionStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
 			this.dropDownCOMPort = new System.Windows.Forms.ToolStripDropDownButton();
 			this.dropDownBaud = new System.Windows.Forms.ToolStripDropDownButton();
-			this.toolStripLoggingEnabled = new System.Windows.Forms.ToolStripStatusLabel();
-			this.toolStripStatusLabelLocalEcho = new System.Windows.Forms.ToolStripStatusLabel();
+			this.toolStripLoggingEnabled = new PretendStatusbarButton();
+			this.toolStripStatusLabelLocalEcho = new PretendStatusbarButton();
 			this.statusStrip = new StatusStripEx();
 			this.toolStripStatusLabelPortSettings = new System.Windows.Forms.ToolStripStatusLabel();
 			this.fileSendLoadingCircle = new MRG.Controls.UI.LoadingCircleToolStripMenuItem();
@@ -127,35 +124,11 @@ namespace HyperToken_WinForms_GUI
 			this.exitToolStripMenuItem.Text = "Exit";
 			this.exitToolStripMenuItem.Click += new System.EventHandler(this.Exit);
 			// 
-			// loggingToolStripMenuItem
-			// 
-			this.loggingToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.MenuItemToggleLogging,
-            this.setDestinationFileToolStripMenuItem});
-			this.loggingToolStripMenuItem.Name = "loggingToolStripMenuItem";
-			this.loggingToolStripMenuItem.Size = new System.Drawing.Size(63, 20);
-			this.loggingToolStripMenuItem.Text = "Logging";
-			// 
-			// MenuItemToggleLogging
-			// 
-			this.MenuItemToggleLogging.Name = "MenuItemToggleLogging";
-			this.MenuItemToggleLogging.Size = new System.Drawing.Size(174, 22);
-			this.MenuItemToggleLogging.Text = "Enable Logging";
-			this.MenuItemToggleLogging.Click += new System.EventHandler(this.ToggleLogging);
-			// 
-			// setDestinationFileToolStripMenuItem
-			// 
-			this.setDestinationFileToolStripMenuItem.Name = "setDestinationFileToolStripMenuItem";
-			this.setDestinationFileToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
-			this.setDestinationFileToolStripMenuItem.Text = "Set Destination File";
-			this.setDestinationFileToolStripMenuItem.Click += new System.EventHandler(this.SetLoggingFile);
-			// 
 			// menuStrip1
 			// 
 			this.menuStrip1.ClickThrough = true;
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
-            this.loggingToolStripMenuItem,
             this.serialSettingsToolStripMenuItem,
             this.aboutToolStripMenuItem});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
@@ -402,13 +375,6 @@ namespace HyperToken_WinForms_GUI
 			// 
 			this.ContentPanel.Size = new System.Drawing.Size(125, 150);
 			// 
-			// selectLoggingFileDialog
-			// 
-			this.selectLoggingFileDialog.DefaultExt = "txt";
-			this.selectLoggingFileDialog.Filter = "Text files|*.txt|All files|*.*";
-			this.selectLoggingFileDialog.OverwritePrompt = false;
-			this.selectLoggingFileDialog.Title = "Select Logging File";
-			// 
 			// IOBox
 			// 
 
@@ -506,11 +472,7 @@ namespace HyperToken_WinForms_GUI
 			this.toolStripLoggingEnabled.Size = new System.Drawing.Size(103, 19);
 			this.toolStripLoggingEnabled.Text = "Logging Disabled";
 			this.toolStripLoggingEnabled.ToolTipText = "Doubleclick to toggle";
-			this.toolStripLoggingEnabled.Click += new System.EventHandler(this.ToggleLogging);
-			this.toolStripLoggingEnabled.MouseDown += new System.Windows.Forms.MouseEventHandler(this.PretendClick);
-			this.toolStripLoggingEnabled.MouseEnter += new System.EventHandler(this.PretendEnter);
-			this.toolStripLoggingEnabled.MouseLeave += new System.EventHandler(this.PretendLeave);
-			this.toolStripLoggingEnabled.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PretendRelease);
+			//this.toolStripLoggingEnabled.Click += new System.EventHandler(this.ToggleLogging);
 			// 
 			// toolStripStatusLabelLocalEcho
 			// 
@@ -522,10 +484,6 @@ namespace HyperToken_WinForms_GUI
 			this.toolStripStatusLabelLocalEcho.Text = "Echo Off";
 			this.toolStripStatusLabelLocalEcho.ToolTipText = "Click to toggle";
 			this.toolStripStatusLabelLocalEcho.Click += new System.EventHandler(this.ToggleEcho);
-			this.toolStripStatusLabelLocalEcho.MouseDown += new System.Windows.Forms.MouseEventHandler(this.PretendClick);
-			this.toolStripStatusLabelLocalEcho.MouseEnter += new System.EventHandler(this.PretendEnter);
-			this.toolStripStatusLabelLocalEcho.MouseLeave += new System.EventHandler(this.PretendLeave);
-			this.toolStripStatusLabelLocalEcho.MouseUp += new System.Windows.Forms.MouseEventHandler(this.PretendRelease);
 			// 
 			// statusStrip
 			// 
@@ -624,10 +582,6 @@ namespace HyperToken_WinForms_GUI
 
 		private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem loggingToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem MenuItemToggleLogging;
-		private System.Windows.Forms.ToolStripMenuItem setDestinationFileToolStripMenuItem;
-		private System.Windows.Forms.SaveFileDialog selectLoggingFileDialog;
 		private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem saveEntireSessionToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem serialSettingsToolStripMenuItem;
@@ -653,8 +607,8 @@ namespace HyperToken_WinForms_GUI
 		private System.Windows.Forms.ToolStripStatusLabel ConnectionStatusLabel;
 		public System.Windows.Forms.ToolStripDropDownButton dropDownCOMPort;
 		public System.Windows.Forms.ToolStripDropDownButton dropDownBaud;
-		private System.Windows.Forms.ToolStripStatusLabel toolStripLoggingEnabled;
-		private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelLocalEcho;
+		private PretendStatusbarButton toolStripLoggingEnabled;
+		private PretendStatusbarButton toolStripStatusLabelLocalEcho;
 		private MenuStripEx menuStrip1;
 		private ToolStripEx toolStrip1;
 		private StatusStripEx statusStrip;

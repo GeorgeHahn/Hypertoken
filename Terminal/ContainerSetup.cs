@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Autofac;
+using HyperToken_WinForms_GUI;
+using Terminal_GUI_Interface;
 using Terminal_Interface;
 
 namespace Terminal
@@ -24,6 +26,9 @@ namespace Terminal
 			builder.RegisterType<SerialPortDataHandler>().As<ISerialPort>();
 
 			//builder.RegisterType<HIDDataHandler>().As<ISerialPort>();
+
+			// GUI Extensions
+			builder.RegisterType<LoggingGui>().As<IMainMenuExtension>();
 
 			// Logger wiring
 			builder.RegisterType<FileLogger>().As<ILogger>();

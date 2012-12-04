@@ -17,8 +17,6 @@ namespace Terminal
 		{
 		}
 
-		#region IDataDevice Members
-
 		public IEnumerable<string> ListAvailableDevices()
 		{
 			var devices = HidDevices.Enumerate();
@@ -75,10 +73,6 @@ namespace Terminal
 			throw new NotImplementedException();
 		}
 
-		#endregion IDataDevice Members
-
-		#region IDataWriter Members
-
 		public int Write(byte[] data)
 		{
 			throw new NotImplementedException();
@@ -99,19 +93,9 @@ namespace Terminal
 			throw new NotImplementedException();
 		}
 
-		#endregion IDataWriter Members
-
-		#region IDataReader Members
-
 		public event DataReceivedEventHandler DataReceived;
 
-		#endregion IDataReader Members
-
-		#region INotifyPropertyChanged Members
-
 		public event PropertyChangedEventHandler PropertyChanged;
-
-		#endregion INotifyPropertyChanged Members
 
 		// TODO remove below
 		// TODO remove below
