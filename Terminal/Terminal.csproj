@@ -85,6 +85,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ContainerSetup.cs" />
+    <Compile Include="FileLogger.cs" />
     <Compile Include="SettingsDictionary.cs" />
     <Compile Include="Helpers\HighResolutionSleep.cs" />
     <Compile Include="InitableRunner.cs" />
