@@ -7,8 +7,6 @@ using NLog;
 using Terminal_Interface;
 using Terminal_Interface.Enums;
 using Terminal_Interface.Events;
-using Parity = System.IO.Ports.Parity;
-using StopBits = System.IO.Ports.StopBits;
 
 namespace Terminal
 {

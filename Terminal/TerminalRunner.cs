@@ -24,7 +24,6 @@ namespace Terminal
 		public void Run()
 		{
 			logger.Trace("Running terminal");
-			_terminal.SetDevice(_dataDevice);
 			_terminal.Run();
 
 			logger.Info("Application shutting down");
