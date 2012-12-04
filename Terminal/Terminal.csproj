@@ -86,14 +86,17 @@
   <ItemGroup>
     <Compile Include="ContainerSetup.cs" />
     <Compile Include="FileLogger.cs" />
+    <Compile Include="HIDDataHandler.cs" />
     <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="SerialPortDataHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="SettingsDictionary.cs" />
     <Compile Include="Helpers\HighResolutionSleep.cs" />
     <Compile Include="InitableRunner.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AdvancedJit.cs" />
-    <Compile Include="SerialPortDataHandler.cs" />
     <Compile Include="TerminalRunner.cs" />
   </ItemGroup>
   <ItemGroup>
