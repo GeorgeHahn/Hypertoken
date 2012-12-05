@@ -395,10 +395,7 @@ namespace HyperToken_WinForms_GUI
 			if (result == DialogResult.No)
 			{
 				logger.Debug("User cleared session");
-
-				logger.Fatal("JKLOL.");
-
-				//IOBox.Clear();
+				IOBox.Text = "";
 				return;
 			}
 
@@ -407,9 +404,8 @@ namespace HyperToken_WinForms_GUI
 				logger.Debug("User saved session");
 				if (SaveSession())
 				{
-					//IOBox.Clear();
-					logger.Fatal("JKLOL.");
 					logger.Trace("Session cleared");
+					IOBox.Text = "";
 				}
 				else
 					logger.Debug("Session not cleared");
