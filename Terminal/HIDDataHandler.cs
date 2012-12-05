@@ -30,7 +30,7 @@ namespace Terminal
 			List<string> names = new List<string>();
 			foreach (HidDevice device in devices)
 			{
-				names.Add(MangleDevicePath(device.DevicePath));
+				names.Add(MangleDevicePath(device.DevicePath + " " + device.Description));
 			}
 			return names.AsEnumerable();
 		}
