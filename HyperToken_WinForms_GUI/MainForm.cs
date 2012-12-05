@@ -37,21 +37,25 @@ namespace HyperToken_WinForms_GUI
 
 		private ISerialPort _dataDevice;
 
-		private IMainMenuExtension _menuExtension;
+		private IEnumerable<IMainMenuExtension> _menuExtensions;
 
-		private IStatusbarExtension _statusbarExtension;
+		private IEnumerable<IStatusbarExtension> _statusbarExtensions;
 
-		private List<int> _baudRateVals;
-
-		public MainForm(IAboutBox aboutBox, ILogger logger, IEchoer echoer, IFileSender fileSender, ISerialPort dataDevice, IMainMenuExtension menuExtension, IStatusbarExtension statusbarExtension)
+		public MainForm(IAboutBox aboutBox,
+						ILogger logger,
+						IEchoer echoer,
+						IFileSender fileSender,
+						ISerialPort dataDevice,
+						IEnumerable<IMainMenuExtension> menuExtensions,
+						IEnumerable<IStatusbarExtension> statusbarExtensions)
 		{
 			_aboutBox = aboutBox;
 			_logger = logger;
 			_echoer = echoer;
 			_fileSender = fileSender;
 			_dataDevice = dataDevice;
-			_menuExtension = menuExtension;
-			_statusbarExtension = statusbarExtension;
+			_menuExtensions = menuExtensions;
+			_statusbarExtensions = statusbarExtensions;
 
 			_dataDevice.PropertyChanged += DataDeviceOnPropertyChanged;
 			_dataDevice.DataReceived += DataDeviceOnDataReceived;
@@ -59,12 +63,12 @@ namespace HyperToken_WinForms_GUI
 			MainForm.logger.Trace("Mainform object created");
 		}
 
-		public MainForm(IAboutBox aboutBox, ISerialPort dataDevice, ILogger logger, IMainMenuExtension menuExtension, IStatusbarExtension statusbarExtension)
-			: this(aboutBox, logger, null, null, dataDevice, menuExtension, statusbarExtension)
+		public MainForm(IAboutBox aboutBox, ISerialPort dataDevice, ILogger logger, IEnumerable<IMainMenuExtension> menuExtensions, IEnumerable<IStatusbarExtension> statusbarExtensions)
+			: this(aboutBox, logger, null, null, dataDevice, menuExtensions, statusbarExtensions)
 		{ }
 
-		public MainForm(IAboutBox aboutBox, ISerialPort dataDevice, IMainMenuExtension menuExtension, IStatusbarExtension statusbarExtension)
-			: this(aboutBox, null, null, null, dataDevice, menuExtension, statusbarExtension)
+		public MainForm(IAboutBox aboutBox, ISerialPort dataDevice, IEnumerable<IMainMenuExtension> menuExtensions, IEnumerable<IStatusbarExtension> statusbarExtensions)
+			: this(aboutBox, null, null, null, dataDevice, menuExtensions, statusbarExtensions)
 		{ }
 
 		public event SaveSessionEventHandler OnSaveSession;
@@ -82,28 +86,20 @@ namespace HyperToken_WinForms_GUI
 			logger.Trace("Initializing MainForm");
 			InitializeComponent();
 
-			_baudRateVals = new List<int>(new[] { 110, 300, 1200, 2400, 4800, 9600, 19200, 38400, 57600, 115200, 230400, 460800, 921600 });
-
 			SetMonospacedFont();
 
 			if (System.Diagnostics.Debugger.IsAttached)
 				saveEntireSessionToolStripMenuItem.Visible = true;
 
-			CreateMenuFrom(dropDownBaud, _baudRateVals, "BaudRate", ChangeCOMParam);
-			CreateMenuFrom(menuItemBaud, _baudRateVals, "BaudRate", ChangeCOMParam);
 			fileSendLoadingCircle.Alignment = ToolStripItemAlignment.Right;
 
-			//IOBox.WordWrap = false;
+			if (_menuExtensions != null)
+				foreach (var mainMenuExtension in _menuExtensions)
+					menuStrip1.Items.Add(mainMenuExtension.Menu);
 
-			IOBox.Caret.IsSticky = true;
-
-			//IOBox.Caret.LineNumber
-
-			if (_menuExtension != null)
-				menuStrip1.Items.Add(_menuExtension.Menu);
-
-			if (_statusbarExtension != null)
-				statusStrip.Items.Add(_statusbarExtension.StatusBarItem);
+			if (_statusbarExtensions != null)
+				foreach (var statusbarExtension in _statusbarExtensions)
+					statusStrip.Items.Add(statusbarExtension.StatusBarItem);
 
 			SetupFileSendSpinnerSpokes();
 
@@ -134,180 +130,8 @@ namespace HyperToken_WinForms_GUI
 					   () =>
 					   {
 						   IOBox.AppendText(line);
-
-						   //if (!Focused)
-						   //{
-						   //	IOBox.Select(IOBox.Text.Length, 0);
-						   //	IOBox.ScrollToCaret();
-						   //}
-
-						   //IOBox.DirectMessage(2169, (IntPtr)null, (IntPtr)null);
-						   //IOBox.Caret.EnsureVisible();
-
 						   IOBox.Scrolling.ScrollBy(0, IOBox.Lines.Count);
 					   }));
-		}
-
-		// TODO FIXME AAH THIS IS YUCK. REWRITE.
-		private void HandleCOMParamChange(object sender, ToolStripItemClickedEventArgs e)
-		{
-			ChangeCOMParam(new string[2] { ((ToolStripItem)sender).Text, e.ClickedItem.Text }, null);
-		}
-
-		// TODO This is terrifying
-		public void ChangeCOMParam(object sender, EventArgs e)
-		{
-			logger.Warn("Hit hideous code.");
-			string param = null;
-			string value = null;
-
-			var menuItem = sender as ToolStripMenuItem;
-			if (menuItem is ToolStripMenuItem)
-			{
-				param = menuItem.Name;
-				value = menuItem.Text;
-			}
-			else
-				if (sender is string[])
-				{
-					param = ((string[])sender)[0];
-					value = ((string[])sender)[1];
-				}
-				else //Handle anything else that uses this function in the future
-					return;
-
-			switch (param)
-			{
-				case "Parity": //String
-					switch (value.ToLower())
-					{
-						case "even":
-							_dataDevice.Parity = Parity.Even;
-							break;
-
-						case "odd":
-							_dataDevice.Parity = Parity.Odd;
-							break;
-
-						case "none":
-							_dataDevice.Parity = Parity.None;
-							break;
-
-						case "mark":
-							_dataDevice.Parity = Parity.Mark;
-							break;
-
-						case "space":
-							_dataDevice.Parity = Parity.Space;
-							break;
-					}
-					break;
-
-				case "Stop Bits": //Double
-					switch ((int)(double.Parse(value) * 10))
-					{
-						case 10:
-							_dataDevice.StopBits = StopBits.One;
-							break;
-
-						case 15:
-							_dataDevice.StopBits = StopBits.OnePointFive;
-							break;
-
-						case 20:
-							_dataDevice.StopBits = StopBits.Two;
-							break;
-					}
-					break;
-
-				case "Data Bits": //Int
-					_dataDevice.DataBits = int.Parse(value);
-					break;
-
-				case "Flow Control": //String
-					switch (value)
-					{
-						case "None":
-							_dataDevice.FlowControl = FlowControl.None;
-							break;
-
-						case "Request To Send":
-							_dataDevice.FlowControl = FlowControl.RequestToSend;
-							break;
-
-						case "Xon/Xoff":
-							_dataDevice.FlowControl = FlowControl.XOnXOff;
-							break;
-
-						case "RTS + Xon/Xoff":
-							_dataDevice.FlowControl = FlowControl.RequestToSendXOnXOff;
-							break;
-
-						default:
-							_dataDevice.FlowControl = FlowControl.None;
-							break;
-					}
-					break;
-
-				case "BaudRate": //Int
-					_dataDevice.Baud = int.Parse(value);
-					break;
-			}
-		}
-
-		public void UpdateBaudRate()
-		{
-			if (dropDownBaud == null)
-				return;
-
-			// TODO Throw an error. Also, rejigger this shit.
-
-			dropDownBaud.Text = _dataDevice.Baud.ToString(CultureInfo.InvariantCulture) + Resources.Text_Baud;
-
-			foreach (ToolStripMenuItem item in menuItemBaud.DropDownItems)
-				item.Checked = item.Text == _dataDevice.Baud.ToString(CultureInfo.InvariantCulture);
-
-			foreach (ToolStripMenuItem item in dropDownBaud.DropDownItems)
-				item.Checked = item.Text == _dataDevice.Baud.ToString(CultureInfo.InvariantCulture);
-		}
-
-		public void UpdateCOMPort()
-		{
-			dropDownCOMPort.Text = _dataDevice.DeviceName;
-
-			foreach (ToolStripMenuItem item in menuItemCOMPort.DropDownItems)
-				item.Checked = item.Text == _dataDevice.DeviceName;
-
-			foreach (ToolStripMenuItem item in dropDownCOMPort.DropDownItems)
-				item.Checked = item.Text == _dataDevice.DeviceName;
-		}
-
-		// TODO this is gross, fix it.
-		public void UpdateDataBits()
-		{
-			if (menuItemDataBits == null)
-				return;
-
-			logger.Trace("Setting dataBits to {0}", _dataDevice.DataBits);
-
-			foreach (ToolStripMenuItem item in menuItemDataBits.DropDownItems)
-				item.Checked = item.Text == _dataDevice.DataBits.ToString();
-		}
-
-		public void UpdateFlowControl()
-		{
-			logger.Trace("Setting flow control to {0}", _dataDevice.FlowControl);
-
-			foreach (ToolStripMenuItem item in menuItemFlowControl.DropDownItems)
-				item.Checked = item.Text == _dataDevice.FlowControl.GetDescription<FlowControl>();
-		}
-
-		public void UpdateParity()
-		{
-			logger.Trace("Setting parity to {0}", _dataDevice.Parity);
-
-			foreach (ToolStripMenuItem item in menuItemParity.DropDownItems)
-				item.Checked = item.Text == _dataDevice.Parity.ToString();
 		}
 
 		public void UpdatePortState()
@@ -458,11 +282,6 @@ namespace HyperToken_WinForms_GUI
 			return false;
 		}
 
-		private void SelectCOMPort(object sender, ToolStripItemClickedEventArgs e)
-		{
-			_dataDevice.DeviceName = e.ClickedItem.Text;
-		}
-
 		//TODO Fix SendDroppedText
 		// Drop handler
 		private void SendDroppedText(object sender, DragEventArgs e)
@@ -492,86 +311,26 @@ namespace HyperToken_WinForms_GUI
 
 		private void DataDeviceOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
 		{
-			logger.Warn("BindingShim setting {0}", propertyChangedEventArgs.PropertyName);
-
-			try
-			{
-				switch (propertyChangedEventArgs.PropertyName)
-				{
-					case "DeviceName":
-						UpdateCOMPort();
-						break;
-
-					case "PortState":
-						UpdatePortState();
-						break;
-
-					case "Baud":
-						UpdateBaudRate();
-						break;
-
-					case "EchoState":
-						UpdateEchoState();
-						break;
-
-					case "StopBits":
-						logger.Trace("Changing stopBits to {0}", _dataDevice.StopBits);
-
-						if (menuItemStopBits == null)
-						{
-							logger.Error("menuItemStopBits == null");
-							return;
-						}
-
-						foreach (ToolStripMenuItem item in menuItemStopBits.DropDownItems)
-							item.Checked = item.Text == _dataDevice.StopBits.GetDescription<StopBits>();
-
-						break;
-
-					case "DataBits":
-						UpdateDataBits();
-						break;
-
-					case "FlowControl":
-						UpdateFlowControl();
-						break;
-
-					case "Parity":
-						UpdateParity();
-						break;
-
-					case "DeviceStatus":
-						toolStripStatusLabelPortSettings.Text = _dataDevice.DeviceStatus;
-						break;
-
-					default:
-						logger.Error("Unhandled - {0}", propertyChangedEventArgs.PropertyName);
-						break;
-				}
-			}
-			catch (NullReferenceException e)
-			{
-				logger.Error("Error: {0}", e.Message);
-			}
+			if (propertyChangedEventArgs.PropertyName == "PortState")
+				UpdatePortState();
 		}
 
+		// TODO Install Inconsolata (license?),  Deja Vu Sans Mono (public domain!), or Droid Sans Mono (Apache)
+		// Deja Vu Sans Mono: http://dejavu-fonts.org/wiki/index.php?title=Main_Page
 		private void SetMonospacedFont()
 		{
-			// TODO Install Inconsolata (license?),  Deja Vu Sans Mono (public domain!), or Droid Sans Mono (Apache)
-			// Deja Vu Sans Mono: http://dejavu-fonts.org/wiki/index.php?title=Main_Page
-
 			// The lower indices should be preferred fonts. Higher indices should be generic fonts.
-			string[] fontList = new string[] { "Consolas", "Inconsolata", "Deja Vu Sans Mono", "Lucida Console", "Courier New", "Courier" };
+			var fontList = new[] { "Consolas", "Inconsolata", "Deja Vu Sans Mono", "Lucida Console", "Courier New", "Courier" };
 
 			foreach (string font in fontList)
 			{
-				Font test = new System.Drawing.Font(font, 9.5F, System.Drawing.FontStyle.Regular, GraphicsUnit.Point, 0);
+				var thisFont = new Font(font, 9.5F, FontStyle.Regular, GraphicsUnit.Point, 0);
 
-				if (test.Name == font)
+				if (thisFont.Name == font)
 				{
 					// Got a font on our list
-					IOBox.Font = test;
-					logger.Info("Picked font: {0}", test.Name);
+					IOBox.Font = thisFont;
+					logger.Info("Picked font: {0}", thisFont.Name);
 					return;
 				}
 			}
@@ -623,54 +382,10 @@ namespace HyperToken_WinForms_GUI
 			_dataDevice.PortState = _dataDevice.PortState == PortState.Open ? PortState.Closed : PortState.Open;
 		}
 
-		private void ToggleEcho(object sender, EventArgs e)
-		{
-			logger.Trace("Toggle Echo");
-			_echoer.EchoState = _echoer.EchoState == EchoState.Enabled ? EchoState.Disabled : EchoState.Enabled;
-		}
-
 		//Show file send pane
 		private void toolStripButtonSendFile_Click(object sender, EventArgs e)
 		{
 			fileSendPane1.Visible = !fileSendPane1.Visible;
-		}
-
-		//List all COM ports
-		private void UpdateCOMPorts(object sender, EventArgs e)
-		{
-			string[] ports = _dataDevice.Devices;
-
-			if (ports == null)
-			{
-				logger.Error("No serial ports to list");
-				logger.Fatal("TODO We should handle this more gracefully");
-				logger.Fatal("Show a 'No serial ports found' item");
-				return;
-			}
-
-			if (sender is ToolStripDropDownItem)
-			{
-				var menu = sender as ToolStripDropDownItem;
-				menu.DropDownItems.Clear();
-				foreach (var port in ports)
-					menu.DropDownItems.Add(port);
-			}
-		}
-
-		private void UpdateEchoState()
-		{
-			logger.Trace("Echo set to {0}", _echoer.EchoState);
-
-			switch (_echoer.EchoState)
-			{
-				case EchoState.Disabled:
-					toolStripStatusLabelLocalEcho.Text = Resources.Text_Echo_Off;
-					break;
-
-				case EchoState.Enabled:
-					toolStripStatusLabelLocalEcho.Text = Resources.Text_Echo_On;
-					break;
-			}
 		}
 
 		private void FileSendPaneSend(object sender, EventArgs eventArgs, FileSendPane.SerialSendArgs serialSendArgs)

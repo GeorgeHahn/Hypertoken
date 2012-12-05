@@ -8,6 +8,6 @@ namespace Terminal_GUI_Interface
 {
 	public interface IStatusbarExtension
 	{
-		ToolStripStatusLabel StatusBarItem { get; }
+		ToolStripItem StatusBarItem { get; }
 	}
 }

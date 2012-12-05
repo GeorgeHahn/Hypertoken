@@ -23,13 +23,27 @@ namespace Terminal
 			builder.RegisterType<HyperToken_WinForms_GUI.AboutBox>().As<IAboutBox>();
 
 			// Serial port wiring
-			builder.RegisterType<SerialPortDataHandler>().As<ISerialPort>();
+			builder.RegisterType<SerialPortDataHandler>().As<ISerialPort>().SingleInstance();
 
 			//builder.RegisterType<HIDDataHandler>().As<ISerialPort>();
 
 			// GUI Extensions
 			builder.RegisterType<LoggingGui>().As<IMainMenuExtension>().SingleInstance();
 			builder.RegisterType<LoggingGui>().As<IStatusbarExtension>().SingleInstance();
+			builder.RegisterType<SerialMenu>().As<IMainMenuExtension>();
+			builder.RegisterType<SerialStatusbarPortMenu>().As<IStatusbarExtension>();
+			builder.RegisterType<SerialStatusbarStatusLabel>().As<IStatusbarExtension>();
+			builder.RegisterType<SerialStatusbarBaudMenu>().As<IStatusbarExtension>();
+
+			builder.RegisterType<SerialStatusbarPortMenu>();
+			builder.RegisterType<SerialStatusbarBaudMenu>();
+
+			builder.RegisterType<FlowControlMenu>().As<ISerialSettingsMenu>();
+			builder.RegisterType<BaudRateMenu>().As<ISerialSettingsMenu>();
+			builder.RegisterType<PortMenu>().As<ISerialSettingsMenu>();
+			builder.RegisterType<ParityMenu>().As<ISerialSettingsMenu>();
+			builder.RegisterType<StopBitsMenu>().As<ISerialSettingsMenu>();
+			builder.RegisterType<DataBitsMenu>().As<ISerialSettingsMenu>();
 
 			// Logger wiring
 			builder.RegisterType<FileLogger>().As<ILogger>().SingleInstance();

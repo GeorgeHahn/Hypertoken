@@ -39,32 +39,6 @@ namespace HyperToken_WinForms_GUI
 			this.saveEntireSessionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.menuStrip1 = new MenuStripEx();
-			this.serialSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.menuItemCOMPort = new System.Windows.Forms.ToolStripMenuItem();
-			this.noSerialPortsFoundToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.menuItemBaud = new System.Windows.Forms.ToolStripMenuItem();
-			this.menuItemDataBits = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripMenuItem();
-			this.menuItemParity = new System.Windows.Forms.ToolStripMenuItem();
-			this.evenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.oddToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.noneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.markToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.spaceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.menuItemStopBits = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripMenuItem6 = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripMenuItem7 = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripMenuItem8 = new System.Windows.Forms.ToolStripMenuItem();
-			this.menuItemFlowControl = new System.Windows.Forms.ToolStripMenuItem();
-			this.noneToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-			this.requestToSendToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.xonXoffToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.rTSXonXoffToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.menuItemLineDelay = new System.Windows.Forms.ToolStripMenuItem();
-			this.menuItemCharacterDelay = new System.Windows.Forms.ToolStripMenuItem();
 			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.BottomToolStripPanel = new System.Windows.Forms.ToolStripPanel();
 			this.TopToolStripPanel = new System.Windows.Forms.ToolStripPanel();
@@ -78,12 +52,7 @@ namespace HyperToken_WinForms_GUI
 			this.toolStripButtonConnect = new System.Windows.Forms.ToolStripButton();
 			this.toolStripButtonSendFile = new System.Windows.Forms.ToolStripButton();
 			this.fileSendPane1 = new CustomControls.FileSendPane();
-			this.ConnectionStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
-			this.dropDownCOMPort = new System.Windows.Forms.ToolStripDropDownButton();
-			this.dropDownBaud = new System.Windows.Forms.ToolStripDropDownButton();
-			this.toolStripStatusLabelLocalEcho = new PretendStatusbarButton();
 			this.statusStrip = new StatusStripEx();
-			this.toolStripStatusLabelPortSettings = new System.Windows.Forms.ToolStripStatusLabel();
 			this.fileSendLoadingCircle = new MRG.Controls.UI.LoadingCircleToolStripMenuItem();
 			this.vScrollBar1 = new System.Windows.Forms.VScrollBar();
 			this.menuStrip1.SuspendLayout();
@@ -128,208 +97,12 @@ namespace HyperToken_WinForms_GUI
 			this.menuStrip1.ClickThrough = true;
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
-            this.serialSettingsToolStripMenuItem,
             this.aboutToolStripMenuItem});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
 			this.menuStrip1.Size = new System.Drawing.Size(670, 24);
 			this.menuStrip1.TabIndex = 1;
 			this.menuStrip1.Text = "menuStrip";
-			// 
-			// serialSettingsToolStripMenuItem
-			// 
-			this.serialSettingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.menuItemCOMPort,
-            this.menuItemBaud,
-            this.menuItemDataBits,
-            this.menuItemParity,
-            this.menuItemStopBits,
-            this.menuItemFlowControl,
-            this.menuItemLineDelay,
-            this.menuItemCharacterDelay});
-			this.serialSettingsToolStripMenuItem.Name = "serialSettingsToolStripMenuItem";
-			this.serialSettingsToolStripMenuItem.Size = new System.Drawing.Size(92, 20);
-			this.serialSettingsToolStripMenuItem.Text = "Serial Settings";
-			// 
-			// menuItemCOMPort
-			// 
-			this.menuItemCOMPort.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.noSerialPortsFoundToolStripMenuItem});
-			this.menuItemCOMPort.Name = "menuItemCOMPort";
-			this.menuItemCOMPort.Size = new System.Drawing.Size(184, 22);
-			this.menuItemCOMPort.Text = "COM Port";
-			this.menuItemCOMPort.DropDownOpening += new System.EventHandler(this.UpdateCOMPorts);
-			this.menuItemCOMPort.DropDownItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.SelectCOMPort);
-			// 
-			// noSerialPortsFoundToolStripMenuItem
-			// 
-			this.noSerialPortsFoundToolStripMenuItem.Name = "noSerialPortsFoundToolStripMenuItem";
-			this.noSerialPortsFoundToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
-			this.noSerialPortsFoundToolStripMenuItem.Text = "No serial ports found!";
-			// 
-			// menuItemBaud
-			// 
-			this.menuItemBaud.Name = "menuItemBaud";
-			this.menuItemBaud.Size = new System.Drawing.Size(184, 22);
-			this.menuItemBaud.Text = "Baud";
-			// 
-			// menuItemDataBits
-			// 
-			this.menuItemDataBits.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem2,
-            this.toolStripMenuItem3,
-            this.toolStripMenuItem4,
-            this.toolStripMenuItem5});
-			this.menuItemDataBits.Name = "menuItemDataBits";
-			this.menuItemDataBits.Size = new System.Drawing.Size(184, 22);
-			this.menuItemDataBits.Text = "Data Bits";
-			this.menuItemDataBits.DropDownItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.HandleCOMParamChange);
-			// 
-			// toolStripMenuItem2
-			// 
-			this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-			this.toolStripMenuItem2.Size = new System.Drawing.Size(80, 22);
-			this.toolStripMenuItem2.Text = "5";
-			// 
-			// toolStripMenuItem3
-			// 
-			this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-			this.toolStripMenuItem3.Size = new System.Drawing.Size(80, 22);
-			this.toolStripMenuItem3.Text = "6";
-			// 
-			// toolStripMenuItem4
-			// 
-			this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-			this.toolStripMenuItem4.Size = new System.Drawing.Size(80, 22);
-			this.toolStripMenuItem4.Text = "7";
-			// 
-			// toolStripMenuItem5
-			// 
-			this.toolStripMenuItem5.Name = "toolStripMenuItem5";
-			this.toolStripMenuItem5.Size = new System.Drawing.Size(80, 22);
-			this.toolStripMenuItem5.Text = "8";
-			// 
-			// menuItemParity
-			// 
-			this.menuItemParity.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.evenToolStripMenuItem,
-            this.oddToolStripMenuItem,
-            this.noneToolStripMenuItem,
-            this.markToolStripMenuItem,
-            this.spaceToolStripMenuItem});
-			this.menuItemParity.Name = "menuItemParity";
-			this.menuItemParity.Size = new System.Drawing.Size(184, 22);
-			this.menuItemParity.Text = "Parity";
-			this.menuItemParity.DropDownItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.HandleCOMParamChange);
-			// 
-			// evenToolStripMenuItem
-			// 
-			this.evenToolStripMenuItem.Name = "evenToolStripMenuItem";
-			this.evenToolStripMenuItem.Size = new System.Drawing.Size(105, 22);
-			this.evenToolStripMenuItem.Text = "Even";
-			// 
-			// oddToolStripMenuItem
-			// 
-			this.oddToolStripMenuItem.Name = "oddToolStripMenuItem";
-			this.oddToolStripMenuItem.Size = new System.Drawing.Size(105, 22);
-			this.oddToolStripMenuItem.Text = "Odd";
-			// 
-			// noneToolStripMenuItem
-			// 
-			this.noneToolStripMenuItem.Name = "noneToolStripMenuItem";
-			this.noneToolStripMenuItem.Size = new System.Drawing.Size(105, 22);
-			this.noneToolStripMenuItem.Text = "None";
-			// 
-			// markToolStripMenuItem
-			// 
-			this.markToolStripMenuItem.Name = "markToolStripMenuItem";
-			this.markToolStripMenuItem.Size = new System.Drawing.Size(105, 22);
-			this.markToolStripMenuItem.Text = "Mark";
-			// 
-			// spaceToolStripMenuItem
-			// 
-			this.spaceToolStripMenuItem.Name = "spaceToolStripMenuItem";
-			this.spaceToolStripMenuItem.Size = new System.Drawing.Size(105, 22);
-			this.spaceToolStripMenuItem.Text = "Space";
-			// 
-			// menuItemStopBits
-			// 
-			this.menuItemStopBits.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem6,
-            this.toolStripMenuItem7,
-            this.toolStripMenuItem8});
-			this.menuItemStopBits.Name = "menuItemStopBits";
-			this.menuItemStopBits.Size = new System.Drawing.Size(184, 22);
-			this.menuItemStopBits.Text = "Stop Bits";
-			this.menuItemStopBits.DropDownItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.HandleCOMParamChange);
-			// 
-			// toolStripMenuItem6
-			// 
-			this.toolStripMenuItem6.Name = "toolStripMenuItem6";
-			this.toolStripMenuItem6.Size = new System.Drawing.Size(89, 22);
-			this.toolStripMenuItem6.Text = "1";
-			// 
-			// toolStripMenuItem7
-			// 
-			this.toolStripMenuItem7.Name = "toolStripMenuItem7";
-			this.toolStripMenuItem7.Size = new System.Drawing.Size(89, 22);
-			this.toolStripMenuItem7.Text = "1.5";
-			// 
-			// toolStripMenuItem8
-			// 
-			this.toolStripMenuItem8.Name = "toolStripMenuItem8";
-			this.toolStripMenuItem8.Size = new System.Drawing.Size(89, 22);
-			this.toolStripMenuItem8.Text = "2";
-			// 
-			// menuItemFlowControl
-			// 
-			this.menuItemFlowControl.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.noneToolStripMenuItem1,
-            this.requestToSendToolStripMenuItem,
-            this.xonXoffToolStripMenuItem,
-            this.rTSXonXoffToolStripMenuItem});
-			this.menuItemFlowControl.Name = "menuItemFlowControl";
-			this.menuItemFlowControl.Size = new System.Drawing.Size(184, 22);
-			this.menuItemFlowControl.Text = "Flow Control";
-			this.menuItemFlowControl.DropDownItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.HandleCOMParamChange);
-			// 
-			// noneToolStripMenuItem1
-			// 
-			this.noneToolStripMenuItem1.Name = "noneToolStripMenuItem1";
-			this.noneToolStripMenuItem1.Size = new System.Drawing.Size(162, 22);
-			this.noneToolStripMenuItem1.Text = "None";
-			// 
-			// requestToSendToolStripMenuItem
-			// 
-			this.requestToSendToolStripMenuItem.Name = "requestToSendToolStripMenuItem";
-			this.requestToSendToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
-			this.requestToSendToolStripMenuItem.Text = "Request To Send";
-			// 
-			// xonXoffToolStripMenuItem
-			// 
-			this.xonXoffToolStripMenuItem.Name = "xonXoffToolStripMenuItem";
-			this.xonXoffToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
-			this.xonXoffToolStripMenuItem.Text = "Xon/Xoff";
-			// 
-			// rTSXonXoffToolStripMenuItem
-			// 
-			this.rTSXonXoffToolStripMenuItem.Name = "rTSXonXoffToolStripMenuItem";
-			this.rTSXonXoffToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
-			this.rTSXonXoffToolStripMenuItem.Text = "RTS + Xon/Xoff";
-			// 
-			// menuItemLineDelay
-			// 
-			this.menuItemLineDelay.Name = "menuItemLineDelay";
-			this.menuItemLineDelay.Size = new System.Drawing.Size(184, 22);
-			this.menuItemLineDelay.Text = "Line Delay (ms)";
-			this.menuItemLineDelay.Visible = false;
-			// 
-			// menuItemCharacterDelay
-			// 
-			this.menuItemCharacterDelay.Name = "menuItemCharacterDelay";
-			this.menuItemCharacterDelay.Size = new System.Drawing.Size(184, 22);
-			this.menuItemCharacterDelay.Text = "Character Delay (ms)";
-			this.menuItemCharacterDelay.Visible = false;
 			// 
 			// aboutToolStripMenuItem
 			// 
@@ -433,55 +206,10 @@ namespace HyperToken_WinForms_GUI
 			this.fileSendPane1.Visible = false;
 			this.fileSendPane1.OnSend += new CustomControls.FileSendPane.OnFileSendEventHandler(FileSendPaneSend);
 			// 
-			// ConnectionStatusLabel
-			// 
-			this.ConnectionStatusLabel.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-			this.ConnectionStatusLabel.Name = "ConnectionStatusLabel";
-			this.ConnectionStatusLabel.Size = new System.Drawing.Size(79, 19);
-			this.ConnectionStatusLabel.Text = "Disconnected";
-			this.ConnectionStatusLabel.Visible = false;
-			// 
-			// dropDownCOMPort
-			// 
-			this.dropDownCOMPort.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-			this.dropDownCOMPort.Image = ((System.Drawing.Image)(resources.GetObject("dropDownCOMPort.Image")));
-			this.dropDownCOMPort.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.dropDownCOMPort.Name = "dropDownCOMPort";
-			this.dropDownCOMPort.Size = new System.Drawing.Size(54, 22);
-			this.dropDownCOMPort.Text = "COM1";
-			this.dropDownCOMPort.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			this.dropDownCOMPort.DropDownOpening += new System.EventHandler(this.UpdateCOMPorts);
-			this.dropDownCOMPort.DropDownItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.SelectCOMPort);
-			// 
-			// dropDownBaud
-			// 
-			this.dropDownBaud.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-			this.dropDownBaud.Image = ((System.Drawing.Image)(resources.GetObject("dropDownBaud.Image")));
-			this.dropDownBaud.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.dropDownBaud.Name = "dropDownBaud";
-			this.dropDownBaud.Size = new System.Drawing.Size(86, 22);
-			this.dropDownBaud.Text = "115200 Baud";
-			// 
-			// toolStripStatusLabelLocalEcho
-			// 
-			this.toolStripStatusLabelLocalEcho.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top)
-						| System.Windows.Forms.ToolStripStatusLabelBorderSides.Right)
-						| System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
-			this.toolStripStatusLabelLocalEcho.Name = "toolStripStatusLabelLocalEcho";
-			this.toolStripStatusLabelLocalEcho.Size = new System.Drawing.Size(57, 19);
-			this.toolStripStatusLabelLocalEcho.Text = "Echo Off";
-			this.toolStripStatusLabelLocalEcho.ToolTipText = "Click to toggle";
-			this.toolStripStatusLabelLocalEcho.Click += new System.EventHandler(this.ToggleEcho);
-			// 
 			// statusStrip
 			// 
 			this.statusStrip.ClickThrough = true;
 			this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ConnectionStatusLabel,
-            this.dropDownCOMPort,
-            this.dropDownBaud,
-            this.toolStripStatusLabelPortSettings,
-            this.toolStripStatusLabelLocalEcho,
             this.fileSendLoadingCircle});
 			this.statusStrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
 			this.statusStrip.Location = new System.Drawing.Point(0, 366);
@@ -489,12 +217,6 @@ namespace HyperToken_WinForms_GUI
 			this.statusStrip.Size = new System.Drawing.Size(670, 24);
 			this.statusStrip.TabIndex = 0;
 			this.statusStrip.Text = "statusStrip";
-			// 
-			// toolStripStatusLabelPortSettings
-			// 
-			this.toolStripStatusLabelPortSettings.Name = "toolStripStatusLabelPortSettings";
-			this.toolStripStatusLabelPortSettings.Size = new System.Drawing.Size(34, 19);
-			this.toolStripStatusLabelPortSettings.Text = "8;N;1";
 			// 
 			// fileSendLoadingCircle
 			// 
@@ -571,16 +293,6 @@ namespace HyperToken_WinForms_GUI
 		private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem saveEntireSessionToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem serialSettingsToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem menuItemCOMPort;
-		private System.Windows.Forms.ToolStripMenuItem menuItemBaud;
-		private System.Windows.Forms.ToolStripMenuItem menuItemDataBits;
-		private System.Windows.Forms.ToolStripMenuItem menuItemParity;
-		private System.Windows.Forms.ToolStripMenuItem menuItemStopBits;
-		private System.Windows.Forms.ToolStripMenuItem menuItemFlowControl;
-		private System.Windows.Forms.ToolStripMenuItem menuItemLineDelay;
-		private System.Windows.Forms.ToolStripMenuItem menuItemCharacterDelay;
-		//private System.Windows.Forms.RichTextBox IOBox;
 		private Scintilla IOBox;
 		private CustomControls.FileSendPane fileSendPane1;
 		private System.Windows.Forms.ToolStripPanel BottomToolStripPanel;
@@ -591,32 +303,10 @@ namespace HyperToken_WinForms_GUI
 		private System.Windows.Forms.ToolStripButton toolStripButtonConnect;
 		private System.Windows.Forms.ToolStripButton toolStripButtonSendFile;
 		private System.Windows.Forms.ToolStripMenuItem newToolStripMenuItem;
-		private System.Windows.Forms.ToolStripStatusLabel ConnectionStatusLabel;
-		public System.Windows.Forms.ToolStripDropDownButton dropDownCOMPort;
-		public System.Windows.Forms.ToolStripDropDownButton dropDownBaud;
-		private PretendStatusbarButton toolStripStatusLabelLocalEcho;
 		private MenuStripEx menuStrip1;
 		private ToolStripEx toolStrip1;
 		private StatusStripEx statusStrip;
 		private System.Windows.Forms.VScrollBar vScrollBar1;
-		private System.Windows.Forms.ToolStripMenuItem noSerialPortsFoundToolStripMenuItem;
-		private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelPortSettings;
 		private MRG.Controls.UI.LoadingCircleToolStripMenuItem fileSendLoadingCircle;
-		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
-		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem3;
-		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem4;
-		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem5;
-		private System.Windows.Forms.ToolStripMenuItem evenToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem oddToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem noneToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem markToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem spaceToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem6;
-		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem7;
-		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem8;
-		private System.Windows.Forms.ToolStripMenuItem noneToolStripMenuItem1;
-		private System.Windows.Forms.ToolStripMenuItem requestToSendToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem xonXoffToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem rTSXonXoffToolStripMenuItem;
 	}
 }

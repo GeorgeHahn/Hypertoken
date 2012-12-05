@@ -118,6 +118,7 @@
     <Reference Include="CustomControls, Version=1.0.21.314, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>Binaries\CustomControls.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="MRG.Controls.UI, Version=1.0.39.1212, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>Binaries\MRG.Controls.UI.dll</HintPath>
     </Reference>
@@ -202,6 +203,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="SerialGUI.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="SettingsForm.cs">
       <SubType>Form</SubType>

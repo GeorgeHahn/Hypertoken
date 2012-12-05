@@ -19,14 +19,14 @@ namespace HyperToken_WinForms_GUI
 
 		private ToolStripMenuItem _mainMenuItem;
 		private ToolStripStatusLabel _statusBarItem;
-		private readonly SaveFileDialog selectLoggingFileDialog;
+		private readonly SaveFileDialog _selectLoggingFileDialog;
 
 		public LoggingGui(ILogger logger)
 		{
 			_logger = logger;
 			logger.PropertyChanged += LoggerOnPropertyChanged;
 
-			selectLoggingFileDialog = new SaveFileDialog
+			_selectLoggingFileDialog = new SaveFileDialog
 									   {
 										   DefaultExt = "txt",
 										   Filter = "Text files|*.txt|All files|*.*",
@@ -53,14 +53,12 @@ namespace HyperToken_WinForms_GUI
 			}
 		}
 
-		public ToolStripStatusLabel StatusBarItem
+		public ToolStripItem StatusBarItem
 		{
 			get
 			{
 				if (_statusBarItem == null)
-				{
 					_statusBarItem = new PretendStatusbarButton(Resources.Text_Logging_Disabled, null, (s, a) => OnToggleLogging());
-				}
 
 				return _statusBarItem;
 			}
@@ -102,8 +100,8 @@ namespace HyperToken_WinForms_GUI
 
 		public string GetLoggingFilePath()
 		{
-			if (selectLoggingFileDialog.ShowDialog() == DialogResult.OK)
-				return selectLoggingFileDialog.FileName;
+			if (_selectLoggingFileDialog.ShowDialog() == DialogResult.OK)
+				return _selectLoggingFileDialog.FileName;
 
 			throw new FileSelectionCanceledException();
 		}
