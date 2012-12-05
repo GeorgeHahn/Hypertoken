@@ -35,11 +35,11 @@ namespace HyperToken_WinForms_GUI
 
 		private readonly IFileSender _fileSender;
 
-		private ISerialPort _dataDevice;
+		private readonly ISerialPort _dataDevice;
 
-		private IEnumerable<IMainMenuExtension> _menuExtensions;
+		private readonly IEnumerable<IMainMenuExtension> _menuExtensions;
 
-		private IEnumerable<IStatusbarExtension> _statusbarExtensions;
+		private readonly IEnumerable<IStatusbarExtension> _statusbarExtensions;
 
 		public MainForm(IAboutBox aboutBox,
 						ILogger logger,
