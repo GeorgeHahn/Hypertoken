@@ -52,7 +52,9 @@ namespace Terminal
 		private static void CurrentDomainOnUnhandledException(object sender, UnhandledExceptionEventArgs unhandledExceptionEventArgs)
 		{
 			// Pop a GUI
-			throw (Exception)unhandledExceptionEventArgs.ExceptionObject;
+			var e = (Exception)unhandledExceptionEventArgs.ExceptionObject;
+			BugSense.SendException(e);
+			throw e;
 		}
 	}
 }
