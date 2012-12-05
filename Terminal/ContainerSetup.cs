@@ -24,6 +24,7 @@ namespace Terminal
 
 			// Serial port wiring
 			builder.RegisterType<SerialPortDataHandler>().As<ISerialPort>().SingleInstance();
+			builder.RegisterType<HIDDataHandler>().As<IDataDevice>().SingleInstance();
 
 			//builder.RegisterType<HIDDataHandler>().As<ISerialPort>();
 
@@ -46,6 +47,8 @@ namespace Terminal
 			builder.RegisterType<DataBitsMenu>().As<ISerialSettingsMenu>();
 
 			builder.RegisterType<HidMenu>().As<IMainMenuExtension>();
+
+			builder.RegisterType<DeviceSelectionMenu>().As<IHidSettingsMenu>();
 
 			// Logger wiring
 			builder.RegisterType<FileLogger>().As<ILogger>().SingleInstance();
