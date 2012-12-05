@@ -157,6 +157,7 @@
       <DependentUpon>AboutBox.cs</DependentUpon>
     </Compile>
     <Compile Include="Helpers\GetDescription.cs" />
+    <Compile Include="HidGUI.cs" />
     <Compile Include="Initializer.cs" />
     <Compile Include="LoggingGui.cs" />
     <Compile Include="MainForm.cs">

@@ -45,6 +45,8 @@ namespace Terminal
 			builder.RegisterType<StopBitsMenu>().As<ISerialSettingsMenu>();
 			builder.RegisterType<DataBitsMenu>().As<ISerialSettingsMenu>();
 
+			builder.RegisterType<HidMenu>().As<IMainMenuExtension>();
+
 			// Logger wiring
 			builder.RegisterType<FileLogger>().As<ILogger>().SingleInstance();
 
