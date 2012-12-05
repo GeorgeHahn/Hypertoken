@@ -15,11 +15,11 @@ using Terminal_Interface.Enums;
 using Terminal_Interface.Events;
 using Terminal_Interface.Exceptions;
 
-// TODO tweak garbage collection
-// TODO Custom Baud setting
-// TODO right click menu
-// - Copy, Save selection, Send file
+// TODO Add 'human readable version' for Rob
 // TODO Parse incoming data for unprintable characters (display as hex?)
+// TODO tweak garbage collection
+// TODO right click menu - remove paste?
+// TODO Custom Baud setting
 
 namespace HyperToken_WinForms_GUI
 {
