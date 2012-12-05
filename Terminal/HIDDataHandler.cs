@@ -11,10 +11,17 @@ using Terminal_Interface.Events;
 
 namespace Terminal
 {
-	public class HIDDataHandler : ISerialPort
+	public class HIDDataHandler : IDataDevice
 	{
+		private HidDevice _device;
+
 		public HIDDataHandler()
 		{
+		}
+
+		private string MangleDevicePath(string path)
+		{
+			return path;
 		}
 
 		public IEnumerable<string> ListAvailableDevices()
@@ -22,20 +29,30 @@ namespace Terminal
 			var devices = HidDevices.Enumerate();
 			List<string> names = new List<string>();
 			foreach (HidDevice device in devices)
-				names.Add(device.Attributes.VendorHexId + "," + device.Attributes.ProductHexId);
+			{
+				names.Add(MangleDevicePath(device.DevicePath));
+			}
 			return names.AsEnumerable();
+		}
+
+		public string[] Devices
+		{
+			get
+			{
+				return ListAvailableDevices().ToArray();
+			}
 		}
 
 		public string DeviceName
 		{
 			get
 			{
-				throw new NotImplementedException();
+				if (_device == null)
+					return string.Empty;
+
+				return _device.DevicePath;
 			}
-			set
-			{
-				throw new NotImplementedException();
-			}
+			set { _device = HidDevices.GetDevice(value); }
 		}
 
 		public string DeviceStatus
@@ -57,14 +74,6 @@ namespace Terminal
 			set
 			{
 				throw new NotImplementedException();
-			}
-		}
-
-		public string[] Devices
-		{
-			get
-			{
-				return ListAvailableDevices().ToArray();
 			}
 		}
 
@@ -96,97 +105,5 @@ namespace Terminal
 		public event DataReceivedEventHandler DataReceived;
 
 		public event PropertyChangedEventHandler PropertyChanged;
-
-		// TODO remove below
-		// TODO remove below
-		// TODO remove below
-		// TODO remove below
-		// TODO remove below
-		// TODO remove below
-		// TODO remove below
-		// TODO remove below
-		// TODO remove below
-		// TODO remove below
-		// TODO remove below
-		// TODO remove below
-		// TODO remove below
-		// TODO remove below
-		// TODO remove below
-		// TODO remove below
-		// TODO remove below
-		// TODO remove below
-		// TODO remove below
-		// TODO remove below
-		// TODO remove below
-		// TODO remove below
-		// TODO remove below
-		// TODO remove below
-		// TODO remove below
-		// TODO remove below
-		// TODO remove below
-
-		#region ISerialPort Members
-
-		public int Baud
-		{
-			get
-			{
-				throw new NotImplementedException();
-			}
-			set
-			{
-				throw new NotImplementedException();
-			}
-		}
-
-		public StopBits StopBits
-		{
-			get
-			{
-				throw new NotImplementedException();
-			}
-			set
-			{
-				throw new NotImplementedException();
-			}
-		}
-
-		public int DataBits
-		{
-			get
-			{
-				throw new NotImplementedException();
-			}
-			set
-			{
-				throw new NotImplementedException();
-			}
-		}
-
-		public FlowControl FlowControl
-		{
-			get
-			{
-				throw new NotImplementedException();
-			}
-			set
-			{
-				throw new NotImplementedException();
-			}
-		}
-
-		public Parity Parity
-		{
-			get
-			{
-				throw new NotImplementedException();
-			}
-			set
-			{
-				throw new NotImplementedException();
-			}
-		}
-
-		#endregion ISerialPort Members
 	}
 }
