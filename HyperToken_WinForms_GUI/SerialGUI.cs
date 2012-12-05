@@ -17,58 +17,14 @@ namespace HyperToken_WinForms_GUI
 		ToolStripItem Menu { get; }
 	}
 
-	public abstract class SerialSettingsMenu : ISerialSettingsMenu
+	public abstract class SerialSettingsMenu : GenericSettingsMenu, ISerialSettingsMenu
 	{
-		internal ToolStripMenuItem _menu;
-
-		internal abstract dynamic Values { get; }
-
-		internal abstract string MenuName { get; }
-
-		internal readonly ISerialPort SerialPort;
-
-		internal abstract dynamic ItemValue { get; set; }
-
-		internal abstract string PropertyName { get; }
+		protected readonly ISerialPort SerialPort;
 
 		protected SerialSettingsMenu(ISerialPort serialPort)
 		{
 			SerialPort = serialPort;
 			SerialPort.PropertyChanged += (sender, args) => UpdateCheckedStates(args.PropertyName);
-		}
-
-		public ToolStripItem Menu
-		{
-			get
-			{
-				if (_menu == null)
-				{
-					_menu = new ToolStripMenuItem(MenuName);
-					_menu.DropDownItemClicked += (sender, args) => ItemClicked(_menu.DropDownItems.IndexOf(args.ClickedItem));
-					foreach (var value in Values)
-					{
-						_menu.DropDownItems.Add(value.ToString());
-					}
-					UpdateCheckedStates(PropertyName);
-				}
-
-				return _menu;
-			}
-		}
-
-		private void ItemClicked(int item)
-		{
-			ItemValue = Values[item];
-		}
-
-		private void UpdateCheckedStates(string propertyName)
-		{
-			if (propertyName != PropertyName) return;
-
-			foreach (ToolStripMenuItem menu in _menu.DropDownItems)
-			{
-				menu.Checked = menu.Text == ItemValue.ToString();
-			}
 		}
 	}
 
@@ -78,7 +34,7 @@ namespace HyperToken_WinForms_GUI
 			: base(serialPort)
 		{ }
 
-		internal override dynamic Values
+		protected override dynamic Values
 		{
 			get
 			{
@@ -86,18 +42,18 @@ namespace HyperToken_WinForms_GUI
 			}
 		}
 
-		internal override string MenuName
+		protected override string MenuName
 		{
 			get { return "Data Bits"; }
 		}
 
-		internal override dynamic ItemValue
+		protected override dynamic ItemValue
 		{
 			get { return SerialPort.DataBits; }
 			set { SerialPort.DataBits = value; }
 		}
 
-		internal override string PropertyName
+		protected override string PropertyName
 		{
 			get { return "DataBits"; }
 		}
@@ -109,7 +65,7 @@ namespace HyperToken_WinForms_GUI
 			: base(serialPort)
 		{ }
 
-		internal override dynamic Values
+		protected override dynamic Values
 		{
 			get
 			{
@@ -123,18 +79,18 @@ namespace HyperToken_WinForms_GUI
 			}
 		}
 
-		internal override string MenuName
+		protected override string MenuName
 		{
 			get { return "Flow Control"; }
 		}
 
-		internal override dynamic ItemValue
+		protected override dynamic ItemValue
 		{
 			get { return SerialPort.FlowControl; }
 			set { SerialPort.FlowControl = value; }
 		}
 
-		internal override string PropertyName
+		protected override string PropertyName
 		{
 			get { return "FlowControl"; }
 		}
@@ -146,7 +102,7 @@ namespace HyperToken_WinForms_GUI
 			: base(serialPort)
 		{ }
 
-		internal override dynamic Values
+		protected override dynamic Values
 		{
 			get
 			{
@@ -169,18 +125,18 @@ namespace HyperToken_WinForms_GUI
 			}
 		}
 
-		internal override string MenuName
+		protected override string MenuName
 		{
 			get { return "Baud Rate"; }
 		}
 
-		internal override dynamic ItemValue
+		protected override dynamic ItemValue
 		{
 			get { return SerialPort.Baud; }
 			set { SerialPort.Baud = value; }
 		}
 
-		internal override string PropertyName
+		protected override string PropertyName
 		{
 			get { return "Baud"; }
 		}
@@ -192,25 +148,30 @@ namespace HyperToken_WinForms_GUI
 			: base(serialPort)
 		{ }
 
-		internal override dynamic Values
+		protected override dynamic Values
 		{
 			get { return SerialPort.Devices; }
 		}
 
-		internal override string MenuName
+		protected override string MenuName
 		{
 			get { return "COM Port"; }
 		}
 
-		internal override dynamic ItemValue
+		protected override dynamic ItemValue
 		{
 			get { return SerialPort.DeviceName; }
 			set { SerialPort.DeviceName = value; }
 		}
 
-		internal override string PropertyName
+		protected override string PropertyName
 		{
 			get { return "DeviceName"; }
+		}
+
+		protected override bool UpdateOnOpen
+		{
+			get { return true; }
 		}
 	}
 
@@ -220,7 +181,7 @@ namespace HyperToken_WinForms_GUI
 			: base(serialPort)
 		{ }
 
-		internal override dynamic Values
+		protected override dynamic Values
 		{
 			get
 			{
@@ -235,18 +196,18 @@ namespace HyperToken_WinForms_GUI
 			}
 		}
 
-		internal override string MenuName
+		protected override string MenuName
 		{
 			get { return "Parity"; }
 		}
 
-		internal override dynamic ItemValue
+		protected override dynamic ItemValue
 		{
 			get { return SerialPort.Parity; }
 			set { SerialPort.Parity = value; }
 		}
 
-		internal override string PropertyName
+		protected override string PropertyName
 		{
 			get { return "Parity"; }
 		}
@@ -258,7 +219,7 @@ namespace HyperToken_WinForms_GUI
 			: base(serialPort)
 		{ }
 
-		internal override dynamic Values
+		protected override dynamic Values
 		{
 			get
 			{
@@ -271,18 +232,18 @@ namespace HyperToken_WinForms_GUI
 			}
 		}
 
-		internal override string MenuName
+		protected override string MenuName
 		{
 			get { return "Stop Bits"; }
 		}
 
-		internal override dynamic ItemValue
+		protected override dynamic ItemValue
 		{
 			get { return SerialPort.StopBits; }
 			set { SerialPort.StopBits = value; }
 		}
 
-		internal override string PropertyName
+		protected override string PropertyName
 		{
 			get { return "StopBits"; }
 		}
