@@ -43,11 +43,8 @@ namespace HyperToken_WinForms_GUI
 				if (_mainMenuItem == null)
 				{
 					_mainMenuItem = new Menu("Logging");
-					_mainMenuItem.Items.AddRange(new[]
-						    {
-							    new Menu("Enable Logging", (s, a) => OnToggleLogging()),
-							    new Menu("Set Destination File", (s, a) => OnSetDestinationFile())
-						    });
+					_mainMenuItem.Items.Add(new Menu("Enable Logging", (s, a) => OnToggleLogging()));
+					_mainMenuItem.Items.Add(new Menu("Set Destination File", (s, a) => OnSetDestinationFile()));
 				}
 
 				return _mainMenuItem;

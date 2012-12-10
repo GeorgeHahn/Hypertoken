@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Windows.Forms;
 
 namespace Terminal_GUI_Interface
@@ -13,9 +15,10 @@ namespace Terminal_GUI_Interface
 	{
 		public string Text { get; set; }
 
-		public List<Menu> Items { get; private set; }
+		public ObservableCollection<Menu> Items { get; private set; }
 
 		private bool _checked;
+
 		public bool Checked
 		{
 			get { return _checked; }
@@ -26,6 +29,7 @@ namespace Terminal_GUI_Interface
 					CheckStateChanged(this, new EventArgs());
 			}
 		}
+
 		public event ItemsListOpeningEventHandler ItemsListOpening;
 
 		public event ItemClickedEventHandler ItemClicked;
@@ -35,11 +39,11 @@ namespace Terminal_GUI_Interface
 		public Menu(string text)
 		{
 			Text = text;
-			Items = new List<Menu>();
+			Items = new ObservableCollection<Menu>();
 		}
 
 		public Menu()
-			:this(string.Empty)
+			: this(string.Empty)
 		{ }
 
 		public Menu(string text, ItemClickedEventHandler clicked)
@@ -54,11 +58,11 @@ namespace Terminal_GUI_Interface
 				ItemClicked(sender, args);
 		}
 
-        public void FireItemClicked(object sender, string itemName)
-        {
-            if(ItemClicked != null)
-                ItemClicked(sender, new ItemClickedEventArgs(itemName));
-        }
+		public void FireItemClicked(object sender, string itemName)
+		{
+			if (ItemClicked != null)
+				ItemClicked(sender, new ItemClickedEventArgs(itemName));
+		}
 
 		public void FireItemListOpening(object sender, EventArgs args)
 		{
@@ -66,7 +70,7 @@ namespace Terminal_GUI_Interface
 				ItemsListOpening(sender, args);
 		}
 
-		internal static int GetIndex(List<Menu> list, string menu)
+		internal static int GetIndex(ObservableCollection<Menu> list, string menu)
 		{
 			for (int index = 0; index < list.Count; index++)
 			{
@@ -88,7 +92,7 @@ namespace Terminal_GUI_Interface
 		public string ClickedItem { get; set; }
 
 		public ItemClickedEventArgs()
-		{}
+		{ }
 
 		public ItemClickedEventArgs(string clickedItem)
 		{
@@ -97,5 +101,4 @@ namespace Terminal_GUI_Interface
 	}
 
 	public delegate void ItemsListOpeningEventHandler(object sender, EventArgs args);
-
 }

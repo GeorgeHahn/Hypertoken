@@ -37,12 +37,10 @@ namespace Terminal_GUI_Interface
 			}
 		}
 
-        //TODO: OnItemsModified event?
 		private void SetItems()
 		{
 			_menu.Items.Clear();
 
-            // This breaks with WinForms adapter
 			foreach (var value in Values)
 				_menu.Items.Add(new Menu(value.ToString()));
 
