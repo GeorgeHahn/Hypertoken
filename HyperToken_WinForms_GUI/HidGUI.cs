@@ -58,7 +58,7 @@ namespace HyperToken_WinForms_GUI
 
 		protected override bool UpdateOnOpen
 		{
-			get { return true; }
+			get { return false; }
 		}
 	}
 

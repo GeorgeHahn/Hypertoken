@@ -19,18 +19,13 @@ namespace Terminal
 		{
 		}
 
-		private string MangleDevicePath(string path)
-		{
-			return path;
-		}
-
 		public IEnumerable<string> ListAvailableDevices()
 		{
 			var devices = HidDevices.Enumerate();
 			List<string> names = new List<string>();
 			foreach (HidDevice device in devices)
 			{
-				names.Add(MangleDevicePath(device.DevicePath + " " + device.Description));
+				names.Add(string.Format("{0}, {1}: {2}", device.Attributes.VendorHexId, device.Attributes.ProductHexId, device.Description));
 			}
 			return names.AsEnumerable();
 		}
