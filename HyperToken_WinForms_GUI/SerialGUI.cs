@@ -9,12 +9,13 @@ using NLog;
 using Terminal_GUI_Interface;
 using Terminal_Interface;
 using Terminal_Interface.Enums;
+using Menu = Terminal_GUI_Interface.Menu;
 
 namespace HyperToken_WinForms_GUI
 {
 	public interface ISerialSettingsMenu
 	{
-		ToolStripItem Menu { get; }
+		Menu Menu { get; }
 	}
 
 	public abstract class SerialSettingsMenu : GenericSettingsMenu, ISerialSettingsMenu
@@ -251,7 +252,7 @@ namespace HyperToken_WinForms_GUI
 
 	public class SerialMenu : IMainMenuExtension
 	{
-		private ToolStripMenuItem _menu;
+		private Menu _menu;
 		private readonly IEnumerable<ISerialSettingsMenu> _serialSettingsMenus;
 
 		public SerialMenu(IEnumerable<ISerialSettingsMenu> serialSettingsMenus)
@@ -259,15 +260,15 @@ namespace HyperToken_WinForms_GUI
 			_serialSettingsMenus = serialSettingsMenus;
 		}
 
-		public ToolStripMenuItem Menu
+		public Menu Menu
 		{
-			get
+		    get
 			{
 				if (_menu == null)
 				{
-					_menu = new ToolStripMenuItem("Serial Settings");
+					_menu = new Menu("Serial Settings");
 					foreach (var serialSettingsMenu in _serialSettingsMenus)
-						_menu.DropDownItems.Add(serialSettingsMenu.Menu);
+						_menu.Items.Add(serialSettingsMenu.Menu);
 				}
 
 				return _menu;

@@ -8,7 +8,7 @@ namespace Terminal_GUI_Interface
 {
 	public abstract class GenericSettingsMenu
 	{
-		protected ToolStripMenuItem _menu;
+		protected Menu _menu;
 
 		protected abstract dynamic Values { get; }
 
@@ -20,16 +20,16 @@ namespace Terminal_GUI_Interface
 
 		protected virtual bool UpdateOnOpen { get { return false; } }
 
-		public ToolStripItem Menu
+		public Menu Menu
 		{
 			get
 			{
 				if (_menu == null)
 				{
-					_menu = new ToolStripMenuItem(MenuName);
-					_menu.DropDownItemClicked += (sender, args) => ItemClicked(_menu.DropDownItems.IndexOf(args.ClickedItem));
+					_menu = new Menu(MenuName);
+					_menu.ItemClicked += (sender, args) => ItemClicked(Menu.GetIndex(_menu.Items, args.ClickedItem));
 					if (UpdateOnOpen)
-						_menu.DropDownOpening += (sender, args) => SetItems();
+						_menu.ItemsListOpening += (sender, args) => SetItems();
 					SetItems();
 				}
 
@@ -37,12 +37,14 @@ namespace Terminal_GUI_Interface
 			}
 		}
 
+        //TODO: OnItemsModified event?
 		private void SetItems()
 		{
-			_menu.DropDownItems.Clear();
+			_menu.Items.Clear();
 
+            // This breaks with WinForms adapter
 			foreach (var value in Values)
-				_menu.DropDownItems.Add(value.ToString());
+				_menu.Items.Add(new Menu(value.ToString()));
 
 			UpdateCheckedStates(PropertyName);
 		}
@@ -56,9 +58,9 @@ namespace Terminal_GUI_Interface
 		{
 			if (propertyName != PropertyName) return;
 
-			foreach (ToolStripMenuItem menu in _menu.DropDownItems)
+			foreach (var menuItem in _menu.Items)
 			{
-				menu.Checked = menu.Text == ItemValue.ToString();
+				menuItem.Checked = menuItem.Text == ItemValue.ToString();
 			}
 		}
 	}

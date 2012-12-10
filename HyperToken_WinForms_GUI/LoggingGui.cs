@@ -10,6 +10,7 @@ using Terminal_GUI_Interface;
 using Terminal_Interface;
 using Terminal_Interface.Enums;
 using Terminal_Interface.Exceptions;
+using Menu = Terminal_GUI_Interface.Menu;
 
 namespace HyperToken_WinForms_GUI
 {
@@ -17,7 +18,7 @@ namespace HyperToken_WinForms_GUI
 	{
 		private readonly ILogger _logger;
 
-		private ToolStripMenuItem _mainMenuItem;
+		private Menu _mainMenuItem;
 		private ToolStripStatusLabel _statusBarItem;
 		private readonly SaveFileDialog _selectLoggingFileDialog;
 
@@ -35,17 +36,17 @@ namespace HyperToken_WinForms_GUI
 									   };
 		}
 
-		public ToolStripMenuItem Menu
+		public Menu Menu
 		{
 			get
 			{
 				if (_mainMenuItem == null)
 				{
-					_mainMenuItem = new ToolStripMenuItem("Logging");
-					_mainMenuItem.DropDownItems.AddRange(new ToolStripItem[]
+					_mainMenuItem = new Menu("Logging");
+					_mainMenuItem.Items.AddRange(new[]
 						    {
-							    new ToolStripMenuItem("Enable Logging", null, (s, a) => OnToggleLogging()),
-							    new ToolStripMenuItem("Set Destination File", null, (s, a) => OnSetDestinationFile())
+							    new Menu("Enable Logging", (s, a) => OnToggleLogging()),
+							    new Menu("Set Destination File", (s, a) => OnSetDestinationFile())
 						    });
 				}
 
@@ -83,12 +84,12 @@ namespace HyperToken_WinForms_GUI
 			{
 				case LoggingState.Disabled:
 					_statusBarItem.Text = Resources.Text_Logging_Disabled;
-					((ToolStripMenuItem)(_mainMenuItem.DropDownItems[0])).Checked = false;
+					_mainMenuItem.Items[0].Checked = false;
 					break;
 
 				case LoggingState.Enabled:
 					_statusBarItem.Text = Resources.Text_Logging_Enabled;
-					((ToolStripMenuItem)(_mainMenuItem.DropDownItems[0])).Checked = true;
+					_mainMenuItem.Items[0].Checked = true;
 					break;
 			}
 		}

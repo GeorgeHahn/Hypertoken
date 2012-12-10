@@ -37,7 +37,9 @@ namespace HyperToken_WinForms_GUI
 
 		private readonly ISerialPort _dataDevice;
 
-		private readonly IEnumerable<IMainMenuExtension> _menuExtensions;
+		private IEnumerable<ToolStripMenuItem> _menuExtensions;
+
+	    private readonly WinformsMainMenuExtender _mainMenuExtender;
 
 		private readonly IEnumerable<IStatusbarExtension> _statusbarExtensions;
 
@@ -46,7 +48,7 @@ namespace HyperToken_WinForms_GUI
 						IEchoer echoer,
 						IFileSender fileSender,
 						ISerialPort dataDevice,
-						IEnumerable<IMainMenuExtension> menuExtensions,
+						WinformsMainMenuExtender mainMenuExtender,
 						IEnumerable<IStatusbarExtension> statusbarExtensions)
 		{
 			_aboutBox = aboutBox;
@@ -54,7 +56,7 @@ namespace HyperToken_WinForms_GUI
 			_echoer = echoer;
 			_fileSender = fileSender;
 			_dataDevice = dataDevice;
-			_menuExtensions = menuExtensions;
+		    _mainMenuExtender = mainMenuExtender;
 			_statusbarExtensions = statusbarExtensions;
 
 			_dataDevice.PropertyChanged += DataDeviceOnPropertyChanged;
@@ -63,12 +65,12 @@ namespace HyperToken_WinForms_GUI
 			MainForm.logger.Trace("Mainform object created");
 		}
 
-		public MainForm(IAboutBox aboutBox, ISerialPort dataDevice, ILogger logger, IEnumerable<IMainMenuExtension> menuExtensions, IEnumerable<IStatusbarExtension> statusbarExtensions)
-			: this(aboutBox, logger, null, null, dataDevice, menuExtensions, statusbarExtensions)
+		public MainForm(IAboutBox aboutBox, ISerialPort dataDevice, ILogger logger, WinformsMainMenuExtender mainMenuExtender, IEnumerable<IStatusbarExtension> statusbarExtensions)
+			: this(aboutBox, logger, null, null, dataDevice, mainMenuExtender, statusbarExtensions)
 		{ }
 
-		public MainForm(IAboutBox aboutBox, ISerialPort dataDevice, IEnumerable<IMainMenuExtension> menuExtensions, IEnumerable<IStatusbarExtension> statusbarExtensions)
-			: this(aboutBox, null, null, null, dataDevice, menuExtensions, statusbarExtensions)
+		public MainForm(IAboutBox aboutBox, ISerialPort dataDevice, WinformsMainMenuExtender mainMenuExtender, IEnumerable<IStatusbarExtension> statusbarExtensions)
+			: this(aboutBox, null, null, null, dataDevice, mainMenuExtender, statusbarExtensions)
 		{ }
 
 		public event SaveSessionEventHandler OnSaveSession;
@@ -93,9 +95,11 @@ namespace HyperToken_WinForms_GUI
 
 			fileSendLoadingCircle.Alignment = ToolStripItemAlignment.Right;
 
+            _menuExtensions = _mainMenuExtender.GetMenus();
+
 			if (_menuExtensions != null)
 				foreach (var mainMenuExtension in _menuExtensions)
-					menuStrip1.Items.Add(mainMenuExtension.Menu);
+					menuStrip1.Items.Add(mainMenuExtension);
 
 			if (_statusbarExtensions != null)
 				foreach (var statusbarExtension in _statusbarExtensions)

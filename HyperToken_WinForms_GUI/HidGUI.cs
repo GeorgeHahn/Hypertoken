@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
-using System.Windows.Forms;
 using Terminal_GUI_Interface;
 using Terminal_Interface;
 using Terminal_Interface.Enums;
@@ -12,7 +11,7 @@ namespace HyperToken_WinForms_GUI
 {
 	public interface IHidSettingsMenu
 	{
-		ToolStripItem Menu { get; }
+		Menu Menu { get; }
 	}
 
 	public abstract class HidSettingsMenu : GenericSettingsMenu, IHidSettingsMenu
@@ -65,7 +64,7 @@ namespace HyperToken_WinForms_GUI
 
 	public class HidMenu : IMainMenuExtension
 	{
-		private ToolStripMenuItem _menu;
+		private Menu _menu;
 		private readonly IEnumerable<IHidSettingsMenu> _hidSettingsMenus;
 
 		public HidMenu(IEnumerable<IHidSettingsMenu> hidSettingsMenus)
@@ -73,15 +72,15 @@ namespace HyperToken_WinForms_GUI
 			_hidSettingsMenus = hidSettingsMenus;
 		}
 
-		public ToolStripMenuItem Menu
+		public Menu Menu
 		{
 			get
 			{
 				if (_menu == null)
 				{
-					_menu = new ToolStripMenuItem("HID Settings");
+					_menu = new Menu("HID Settings");
 					foreach (var serialSettingsMenu in _hidSettingsMenus)
-						_menu.DropDownItems.Add(serialSettingsMenu.Menu);
+						_menu.Items.Add(serialSettingsMenu.Menu);
 				}
 
 				return _menu;

@@ -46,6 +46,8 @@ namespace Terminal
 			builder.RegisterType<StopBitsMenu>().As<ISerialSettingsMenu>();
 			builder.RegisterType<DataBitsMenu>().As<ISerialSettingsMenu>();
 
+		    builder.RegisterType<WinformsMainMenuExtender>();
+
 			builder.RegisterType<HidMenu>().As<IMainMenuExtension>();
 
 			builder.RegisterType<DeviceSelectionMenu>().As<IHidSettingsMenu>();
