@@ -70,7 +70,7 @@ namespace Terminal_GUI_Interface
 				ItemsListOpening(sender, args);
 		}
 
-		internal static int GetIndex(ObservableCollection<Menu> list, string menu)
+		public static int GetIndex(ObservableCollection<Menu> list, string menu)
 		{
 			for (int index = 0; index < list.Count; index++)
 			{
