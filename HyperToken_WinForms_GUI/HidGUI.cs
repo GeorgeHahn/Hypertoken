@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using HyperToken_WinForms_GUI;
 using Terminal_GUI_Interface;
 using Terminal_Interface;
 using Terminal_Interface.Enums;
@@ -21,44 +22,123 @@ namespace HyperToken_WinForms_GUI
 		protected HidSettingsMenu(IDataDevice dataDevice)
 		{
 			DataDevice = dataDevice;
-			DataDevice.PropertyChanged += (sender, args) => UpdateCheckedStates(args.PropertyName);
+			dataDevice.PropertyChanged += (sender, args) => UpdateCheckedStates(args.PropertyName);
 		}
 	}
 
-	public class DeviceSelectionMenu : HidSettingsMenu
+	public class DeviceSelectionMenu : IHidSettingsMenu
 	{
-		public DeviceSelectionMenu(IDataDevice dataDevice)
-			: base(dataDevice)
+		private readonly IDataDevice DataDevice;
 
+		public DeviceSelectionMenu(IDataDevice dataDevice)
+		{
+			DataDevice = dataDevice;
+			DataDevice.PropertyChanged += (sender, args) => UpdateCheckedStates(args.PropertyName);
+		}
+
+		private Menu _menu;
+
+		private string MenuName
+		{
+			get { return "Device Selection"; }
+		}
+
+		private dynamic ItemValue
+		{
+			get { return DataDevice.DeviceName; }
+			set { DataDevice.DeviceName = value; }
+		}
+
+		private string PropertyName
+		{
+			get { return "DeviceName"; }
+		}
+
+		private bool UpdateOnOpen
+		{
+			get { return false; }
+		}
+
+		public Menu Menu
+		{
+			get
+			{
+				if (_menu == null)
+				{
+					_menu = new Menu(MenuName);
+					_menu.ItemClicked += (sender, args) => ItemClicked(Menu.GetIndex(_menu.Items, args.ClickedItem));
+					if (UpdateOnOpen)
+						_menu.ItemsListOpening += (sender, args) => SetItems();
+					SetItems();
+				}
+
+				return _menu;
+			}
+		}
+
+		private string[] _devicePaths;
+		private string[] _deviceNames;
+
+		private void SetItems()
+		{
+			_menu.Items.Clear();
+			_devicePaths = DataDevice.Devices;
+			_deviceNames = DataDevice.ListAvailableDevices().ToArray();
+
+			foreach (var value in _deviceNames)
+				_menu.Items.Add(new Menu(value));
+
+			UpdateCheckedStates(PropertyName);
+		}
+
+		private void ItemClicked(int item)
+		{
+			ItemValue = _devicePaths[item];
+		}
+
+		private void UpdateCheckedStates(string propertyName)
+		{
+			if (propertyName != PropertyName) return;
+
+			foreach (var menuItem in _menu.Items)
+			{
+				menuItem.Checked = menuItem.Text == ItemValue.ToString();
+			}
+		}
+	}
+
+	public class HidDeviceConnection : HidSettingsMenu
+	{
+		public HidDeviceConnection(IDataDevice dataDevice)
+			: base(dataDevice)
 		{ }
 
 		protected override dynamic Values
 		{
 			get
 			{
-				return DataDevice.Devices;
+				return new[]
+				             {
+					             PortState.Open,
+								 PortState.Closed,
+				             };
 			}
 		}
 
 		protected override string MenuName
 		{
-			get { return "Device Selection"; }
+			get { return "Connection"; }
 		}
 
 		protected override dynamic ItemValue
 		{
-			get { return DataDevice.DeviceName; }
-			set { DataDevice.DeviceName = value; }
+			get { return DataDevice.PortState; }
+			set { DataDevice.PortState = value; }
 		}
 
 		protected override string PropertyName
 		{
-			get { return "DeviceName"; }
-		}
-
-		protected override bool UpdateOnOpen
-		{
-			get { return false; }
+			get { return "PortState"; }
 		}
 	}
 
