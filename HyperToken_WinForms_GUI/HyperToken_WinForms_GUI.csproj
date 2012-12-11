@@ -156,6 +156,7 @@
     <Compile Include="AboutBox.Designer.cs">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="CurrentDeviceSerialStatusLabel.cs" />
     <Compile Include="Helpers\GetDescription.cs" />
     <Compile Include="HidGUI.cs" />
     <Compile Include="Initializer.cs" />
@@ -318,7 +319,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_BuildVersioningStyle="None.None.Increment.MonthAndDayStamp" BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UseGlobalSettings="True" />
+      <UserProperties BuildVersion_UseGlobalSettings="True" BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" BuildVersion_BuildVersioningStyle="None.None.Increment.MonthAndDayStamp" />
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>

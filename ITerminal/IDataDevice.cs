@@ -5,61 +5,63 @@ using Terminal_Interface.Events;
 
 namespace Terminal_Interface
 {
-	public enum deviceType
-	{
-		SerialPort,
-		HID,
-	}
+    public enum deviceType
+    {
+        SerialPort,
+        HID,
+    }
 
-	public interface IDataDevice : IDataWriter, IDataReader, INotifyPropertyChanged
-	{
-		IEnumerable<string> ListAvailableDevices();
+    public interface IDataDevice : IDataWriter, IDataReader, INotifyPropertyChanged
+    {
+        IEnumerable<string> ListAvailableDevices();
 
-		string DeviceName { get; set; }
+        string DeviceName { get; set; }
 
-		string DeviceStatus { get; }
+        string FriendlyName { get; }
 
-		deviceType DeviceType { get; }
+        string DeviceStatus { get; }
 
-		PortState PortState { get; set; }
+        deviceType DeviceType { get; }
 
-		string[] Devices { get; }
+        PortState PortState { get; set; }
 
-		void KeyPressed(char c);
-	}
+        string[] Devices { get; }
 
-	public interface ISerialPort : IDataDevice
-	{
-		int Baud { get; set; }
+        void KeyPressed(char c);
+    }
 
-		StopBits StopBits { get; set; }
+    public interface ISerialPort : IDataDevice
+    {
+        int Baud { get; set; }
 
-		int DataBits { get; set; }
+        StopBits StopBits { get; set; }
 
-		FlowControl FlowControl { get; set; }
+        int DataBits { get; set; }
 
-		Parity Parity { get; set; }
-	}
+        FlowControl FlowControl { get; set; }
 
-	public interface IHIDDevice : IDataDevice
-	{
-		int ReportLength { get; set; }
-	}
+        Parity Parity { get; set; }
+    }
 
-	public interface ILogger : IDataWriter, INotifyPropertyChanged
-	{
-		string LoggingFilePath { get; set; }
+    public interface IHIDDevice : IDataDevice
+    {
+        int ReportLength { get; set; }
+    }
 
-		LoggingState LoggingState { get; set; }
-	}
+    public interface ILogger : IDataWriter, INotifyPropertyChanged
+    {
+        string LoggingFilePath { get; set; }
 
-	public interface IEchoer
-	{
-		EchoState EchoState { get; set; }
-	}
+        LoggingState LoggingState { get; set; }
+    }
 
-	public interface IFileSender
-	{
-		FileSendState FileSendState { get; set; }
-	}
+    public interface IEchoer
+    {
+        EchoState EchoState { get; set; }
+    }
+
+    public interface IFileSender
+    {
+        FileSendState FileSendState { get; set; }
+    }
 }

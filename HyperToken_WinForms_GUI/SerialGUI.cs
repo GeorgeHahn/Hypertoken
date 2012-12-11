@@ -13,101 +13,101 @@ using Menu = Terminal_GUI_Interface.Menu;
 
 namespace HyperToken_WinForms_GUI
 {
-	public interface ISerialSettingsMenu
-	{
-		Menu Menu { get; }
-	}
+    public interface ISerialSettingsMenu
+    {
+        Menu Menu { get; }
+    }
 
-	public abstract class SerialSettingsMenu : GenericSettingsMenu, ISerialSettingsMenu
-	{
-		protected readonly ISerialPort SerialPort;
+    public abstract class SerialSettingsMenu : GenericSettingsMenu, ISerialSettingsMenu
+    {
+        protected readonly ISerialPort SerialPort;
 
-		protected SerialSettingsMenu(ISerialPort serialPort)
-		{
-			SerialPort = serialPort;
-			SerialPort.PropertyChanged += (sender, args) => UpdateCheckedStates(args.PropertyName);
-		}
-	}
+        protected SerialSettingsMenu(ISerialPort serialPort)
+        {
+            SerialPort = serialPort;
+            SerialPort.PropertyChanged += (sender, args) => UpdateCheckedStates(args.PropertyName);
+        }
+    }
 
-	public class DataBitsMenu : SerialSettingsMenu
-	{
-		public DataBitsMenu(ISerialPort serialPort)
-			: base(serialPort)
-		{ }
+    public class DataBitsMenu : SerialSettingsMenu
+    {
+        public DataBitsMenu(ISerialPort serialPort)
+            : base(serialPort)
+        { }
 
-		protected override dynamic Values
-		{
-			get
-			{
-				return new[] { 5, 6, 7, 8 };
-			}
-		}
+        protected override dynamic Values
+        {
+            get
+            {
+                return new[] { 5, 6, 7, 8 };
+            }
+        }
 
-		protected override string MenuName
-		{
-			get { return "Data Bits"; }
-		}
+        protected override string MenuName
+        {
+            get { return "Data Bits"; }
+        }
 
-		protected override dynamic ItemValue
-		{
-			get { return SerialPort.DataBits; }
-			set { SerialPort.DataBits = value; }
-		}
+        protected override dynamic ItemValue
+        {
+            get { return SerialPort.DataBits; }
+            set { SerialPort.DataBits = value; }
+        }
 
-		protected override string PropertyName
-		{
-			get { return "DataBits"; }
-		}
-	}
+        protected override string PropertyName
+        {
+            get { return "DataBits"; }
+        }
+    }
 
-	public class FlowControlMenu : SerialSettingsMenu
-	{
-		public FlowControlMenu(ISerialPort serialPort)
-			: base(serialPort)
-		{ }
+    public class FlowControlMenu : SerialSettingsMenu
+    {
+        public FlowControlMenu(ISerialPort serialPort)
+            : base(serialPort)
+        { }
 
-		protected override dynamic Values
-		{
-			get
-			{
-				return new[]
+        protected override dynamic Values
+        {
+            get
+            {
+                return new[]
 				             {
 					             FlowControl.None,
 								 FlowControl.RequestToSend,
 								 FlowControl.RequestToSendXOnXOff,
 								 FlowControl.XOnXOff,
 				             };
-			}
-		}
+            }
+        }
 
-		protected override string MenuName
-		{
-			get { return "Flow Control"; }
-		}
+        protected override string MenuName
+        {
+            get { return "Flow Control"; }
+        }
 
-		protected override dynamic ItemValue
-		{
-			get { return SerialPort.FlowControl; }
-			set { SerialPort.FlowControl = value; }
-		}
+        protected override dynamic ItemValue
+        {
+            get { return SerialPort.FlowControl; }
+            set { SerialPort.FlowControl = value; }
+        }
 
-		protected override string PropertyName
-		{
-			get { return "FlowControl"; }
-		}
-	}
+        protected override string PropertyName
+        {
+            get { return "FlowControl"; }
+        }
+    }
 
-	public class BaudRateMenu : SerialSettingsMenu
-	{
-		public BaudRateMenu(ISerialPort serialPort)
-			: base(serialPort)
-		{ }
+    public class BaudRateMenu : SerialSettingsMenu
+    {
+        public BaudRateMenu(ISerialPort serialPort)
+            : base(serialPort)
+        { }
 
-		protected override dynamic Values
-		{
-			get
-			{
-				return new[]
+        protected override dynamic Values
+        {
+            get
+            {
+                return new[]
 					       {
 						       110,
 							   300,
@@ -123,70 +123,78 @@ namespace HyperToken_WinForms_GUI
 							   460800,
 							   921600
 					       };
-			}
-		}
+            }
+        }
 
-		protected override string MenuName
-		{
-			get { return "Baud Rate"; }
-		}
+        protected override string MenuName
+        {
+            get { return "Baud Rate"; }
+        }
 
-		protected override dynamic ItemValue
-		{
-			get { return SerialPort.Baud; }
-			set { SerialPort.Baud = value; }
-		}
+        protected override dynamic ItemValue
+        {
+            get { return SerialPort.Baud; }
+            set { SerialPort.Baud = value; }
+        }
 
-		protected override string PropertyName
-		{
-			get { return "Baud"; }
-		}
-	}
+        protected override string PropertyName
+        {
+            get { return "Baud"; }
+        }
+    }
 
-	public class PortMenu : SerialSettingsMenu
-	{
-		public PortMenu(ISerialPort serialPort)
-			: base(serialPort)
-		{ }
+    public class PortMenu : SerialSettingsMenu
+    {
+        private readonly CurrentDataDevice _dataDevice;
 
-		protected override dynamic Values
-		{
-			get { return SerialPort.Devices; }
-		}
+        public PortMenu(ISerialPort serialPort, CurrentDataDevice terminal)
+            : base(serialPort)
+        {
+            _dataDevice = terminal;
+        }
 
-		protected override string MenuName
-		{
-			get { return "COM Port"; }
-		}
+        protected override dynamic Values
+        {
+            get { return SerialPort.Devices; }
+        }
 
-		protected override dynamic ItemValue
-		{
-			get { return SerialPort.DeviceName; }
-			set { SerialPort.DeviceName = value; }
-		}
+        protected override string MenuName
+        {
+            get { return "COM Port"; }
+        }
 
-		protected override string PropertyName
-		{
-			get { return "DeviceName"; }
-		}
+        protected override dynamic ItemValue
+        {
+            get { return SerialPort.DeviceName; }
+            set
+            {
+                SerialPort.DeviceName = value;
+                _dataDevice.CurrentDevice = SerialPort;
+            }
+        }
 
-		protected override bool UpdateOnOpen
-		{
-			get { return true; }
-		}
-	}
+        protected override string PropertyName
+        {
+            get { return "DeviceName"; }
+        }
 
-	public class ParityMenu : SerialSettingsMenu
-	{
-		public ParityMenu(ISerialPort serialPort)
-			: base(serialPort)
-		{ }
+        protected override bool UpdateOnOpen
+        {
+            get { return true; }
+        }
+    }
 
-		protected override dynamic Values
-		{
-			get
-			{
-				return new[]
+    public class ParityMenu : SerialSettingsMenu
+    {
+        public ParityMenu(ISerialPort serialPort)
+            : base(serialPort)
+        { }
+
+        protected override dynamic Values
+        {
+            get
+            {
+                return new[]
 					       {
 						       Parity.Even,
 						       Parity.Odd,
@@ -194,230 +202,229 @@ namespace HyperToken_WinForms_GUI
 						       Parity.Mark,
 						       Parity.Space,
 					       };
-			}
-		}
+            }
+        }
 
-		protected override string MenuName
-		{
-			get { return "Parity"; }
-		}
+        protected override string MenuName
+        {
+            get { return "Parity"; }
+        }
 
-		protected override dynamic ItemValue
-		{
-			get { return SerialPort.Parity; }
-			set { SerialPort.Parity = value; }
-		}
+        protected override dynamic ItemValue
+        {
+            get { return SerialPort.Parity; }
+            set { SerialPort.Parity = value; }
+        }
 
-		protected override string PropertyName
-		{
-			get { return "Parity"; }
-		}
-	}
+        protected override string PropertyName
+        {
+            get { return "Parity"; }
+        }
+    }
 
-	public class StopBitsMenu : SerialSettingsMenu
-	{
-		public StopBitsMenu(ISerialPort serialPort)
-			: base(serialPort)
-		{ }
+    public class StopBitsMenu : SerialSettingsMenu
+    {
+        public StopBitsMenu(ISerialPort serialPort)
+            : base(serialPort)
+        { }
 
-		protected override dynamic Values
-		{
-			get
-			{
-				return new[]
+        protected override dynamic Values
+        {
+            get
+            {
+                return new[]
 				             {
 					             StopBits.One,
 								 StopBits.OnePointFive,
 								 StopBits.Two,
 				             };
-			}
-		}
+            }
+        }
 
-		protected override string MenuName
-		{
-			get { return "Stop Bits"; }
-		}
+        protected override string MenuName
+        {
+            get { return "Stop Bits"; }
+        }
 
-		protected override dynamic ItemValue
-		{
-			get { return SerialPort.StopBits; }
-			set { SerialPort.StopBits = value; }
-		}
+        protected override dynamic ItemValue
+        {
+            get { return SerialPort.StopBits; }
+            set { SerialPort.StopBits = value; }
+        }
 
-		protected override string PropertyName
-		{
-			get { return "StopBits"; }
-		}
-	}
+        protected override string PropertyName
+        {
+            get { return "StopBits"; }
+        }
+    }
 
-	public class SerialMenu : IMainMenuExtension
-	{
-		private Menu _menu;
-		private readonly IEnumerable<ISerialSettingsMenu> _serialSettingsMenus;
+    public class SerialMenu : IMainMenuExtension
+    {
+        private Menu _menu;
+        private readonly IEnumerable<ISerialSettingsMenu> _serialSettingsMenus;
 
-		public SerialMenu(IEnumerable<ISerialSettingsMenu> serialSettingsMenus)
-		{
-			_serialSettingsMenus = serialSettingsMenus;
-		}
+        public SerialMenu(IEnumerable<ISerialSettingsMenu> serialSettingsMenus)
+        {
+            _serialSettingsMenus = serialSettingsMenus;
+        }
 
-		public Menu Menu
-		{
-		    get
-			{
-				if (_menu == null)
-				{
-					_menu = new Menu("Serial Settings");
-					foreach (var serialSettingsMenu in _serialSettingsMenus)
-						_menu.Items.Add(serialSettingsMenu.Menu);
-				}
+        public Menu Menu
+        {
+            get
+            {
+                if (_menu == null)
+                {
+                    _menu = new Menu("Serial Settings");
+                    foreach (var serialSettingsMenu in _serialSettingsMenus)
+                        _menu.Items.Add(serialSettingsMenu.Menu);
+                }
 
-				return _menu;
-			}
-		}
-	}
+                return _menu;
+            }
+        }
+    }
 
-	public class SerialStatusbarPortMenu : IStatusbarExtension
-	{
-		private ToolStripDropDownButton _statusBarItem;
-		private static ISerialPort _serialPort;
+    public abstract class SerialStatusBarExtension : IStatusbarExtension
+    {
+        protected static ISerialPort _serialPort;
+        protected CurrentDataDevice _currentDataDevice;
+        protected ToolStripItem _statusBarItem;
 
-		public SerialStatusbarPortMenu(ISerialPort iSerialPort)
-		{
-			_serialPort = iSerialPort;
-			_serialPort.PropertyChanged += (sender, args) => UpdateLabel();
-		}
+        protected SerialStatusBarExtension(ISerialPort iSerialPort, CurrentDataDevice currentDataDevice)
+        {
+            _serialPort = iSerialPort;
+            _serialPort.PropertyChanged += (sender, args) => UpdateStatusBarItem();
+            _currentDataDevice = currentDataDevice;
+            _currentDataDevice.PropertyChanged += (sender, args) => UpdateVisibility();
+        }
 
-		private void UpdateLabel()
-		{
-			_statusBarItem.Text = _serialPort.DeviceName;
-			foreach (ToolStripMenuItem portItem in _statusBarItem.DropDownItems)
-			{
-				if (portItem.Text == _statusBarItem.Text)
-					portItem.Checked = true;
-				else
-					portItem.Checked = false;
-			}
-		}
+        protected void UpdateVisibility()
+        {
+            if (_currentDataDevice.CurrentDevice as ISerialPort != null)
+            {
+                _statusBarItem.Visible = true;
+                return;
+            }
 
-		public ToolStripItem StatusBarItem
-		{
-			get
-			{
-				if (_statusBarItem == null)
-				{
-					_statusBarItem = new ToolStripDropDownButton("COM1");
-					_statusBarItem.DropDownOpening += (sender, args) => UpdatePortList((ToolStripDropDownItem)sender);
-					_statusBarItem.DropDownItemClicked += (sender, args) => SetSerialPort(args.ClickedItem.Text);
-				}
+            _statusBarItem.Visible = false;
+        }
 
-				return _statusBarItem;
-			}
-		}
+        public ToolStripItem StatusBarItem
+        {
+            get
+            {
+                if (_statusBarItem == null)
+                    CreateStatusBarItem();
+                return _statusBarItem;
+            }
+        }
 
-		private void SetSerialPort(string port)
-		{
-			_serialPort.DeviceName = port;
-		}
+        protected abstract void CreateStatusBarItem();
 
-		public static void UpdatePortList(ToolStripDropDownItem item)
-		{
-			var ports = _serialPort.Devices;
+        protected abstract void UpdateStatusBarItem();
+    }
 
-			if (ports == null)
-			{
-				Log.Error("No serial ports to list");
-				Log.Error("TODO We should handle this more gracefully");
-				Log.Error("Show a 'No serial ports found' item");
-				return;
-			}
+    public class SerialStatusbarPortMenu : SerialStatusBarExtension
+    {
+        public SerialStatusbarPortMenu(ISerialPort iSerialPort, CurrentDataDevice currentDataDevice)
+            : base(iSerialPort, currentDataDevice)
+        { }
 
-			item.DropDownItems.Clear();
-			foreach (var port in ports)
-				item.DropDownItems.Add(port);
-		}
-	}
+        protected override void UpdateStatusBarItem()
+        {
+            _statusBarItem.Text = _serialPort.DeviceName;
+            foreach (ToolStripMenuItem portItem in ((ToolStripDropDownButton)_statusBarItem).DropDownItems)
+            {
+                if (portItem.Text == _statusBarItem.Text)
+                    portItem.Checked = true;
+                else
+                    portItem.Checked = false;
+            }
+        }
 
-	public class SerialStatusbarStatusLabel : IStatusbarExtension
-	{
-		private ToolStripStatusLabel _statusBarItem;
-		private readonly ISerialPort _serialPort;
+        public static void UpdatePortList(ToolStripDropDownItem item)
+        {
+            var ports = _serialPort.Devices;
 
-		public SerialStatusbarStatusLabel(ISerialPort serialPort)
-		{
-			_serialPort = serialPort;
-			_serialPort.PropertyChanged += (sender, args) => UpdateText();
-		}
+            if (ports == null)
+            {
+                Log.Error("No serial ports to list");
+                Log.Error("TODO We should handle this more gracefully");
+                Log.Error("Show a 'No serial ports found' item");
+                return;
+            }
 
-		private void UpdateText()
-		{
-			_statusBarItem.Text = _serialPort.DeviceStatus;
-		}
+            item.DropDownItems.Clear();
+            foreach (var port in ports)
+                item.DropDownItems.Add(port);
+        }
 
-		public ToolStripItem StatusBarItem
-		{
-			get
-			{
-				if (_statusBarItem == null)
-				{
-					_statusBarItem = new ToolStripStatusLabel(_serialPort.DeviceStatus);
-				}
+        protected override void CreateStatusBarItem()
+        {
+            var tempDropDown = new ToolStripDropDownButton("COM1");
+            tempDropDown.DropDownOpening += (sender, args) => UpdatePortList((ToolStripDropDownItem)sender);
+            tempDropDown.DropDownItemClicked += (sender, args) => _serialPort.DeviceName = args.ClickedItem.Text;
+            _statusBarItem = tempDropDown;
+        }
+    }
 
-				return _statusBarItem;
-			}
-		}
-	}
+    public class SerialStatusbarStatusLabel : SerialStatusBarExtension
+    {
+        public SerialStatusbarStatusLabel(ISerialPort serialPort, CurrentDataDevice currentDataDevice)
+            : base(serialPort, currentDataDevice)
+        { }
 
-	public class SerialStatusbarBaudMenu : IStatusbarExtension
-	{
-		private ToolStripItem _statusBarItem;
-		private readonly ISerialPort _serialPort;
-		private readonly List<int> _baudRates;
+        protected override void UpdateStatusBarItem()
+        {
+            _statusBarItem.Text = _serialPort.DeviceStatus;
+        }
 
-		public SerialStatusbarBaudMenu(ISerialPort serialPort)
-		{
-			_serialPort = serialPort;
-			_serialPort.PropertyChanged += (sender, args) => UpdateBaudSelection();
-			_baudRates = new List<int>(new[] { 110, 300, 1200, 2400, 4800, 9600, 19200, 38400, 57600, 115200, 230400, 460800, 921600 });
-		}
+        protected override void CreateStatusBarItem()
+        {
+            _statusBarItem = new ToolStripStatusLabel(_serialPort.DeviceStatus);
+        }
+    }
 
-		private void UpdateBaudSelection()
-		{
-			_statusBarItem.Text = _serialPort.Baud.ToString();
+    public class SerialStatusbarBaudMenu : SerialStatusBarExtension
+    {
+        private readonly List<int> _baudRates;
 
-			var tempStatusBarItem = (ToolStripDropDownButton)_statusBarItem;
-			foreach (ToolStripMenuItem baudItem in tempStatusBarItem.DropDownItems)
-			{
-				baudItem.Checked = baudItem.Text == _statusBarItem.Text;
-			}
-		}
+        public SerialStatusbarBaudMenu(ISerialPort serialPort, CurrentDataDevice currentDataDevice)
+            : base(serialPort, currentDataDevice)
+        {
+            _baudRates = new List<int>(new[] { 110, 300, 1200, 2400, 4800, 9600, 19200, 38400, 57600, 115200, 230400, 460800, 921600 });
+        }
 
-		public ToolStripItem StatusBarItem
-		{
-			get
-			{
-				if (_statusBarItem == null)
-				{
-					var tempStatusBarItem = new ToolStripDropDownButton();
-					tempStatusBarItem.Text = _serialPort.Baud.ToString();
-					foreach (var baudRate in BaudRates)
-						tempStatusBarItem.DropDownItems.Add(baudRate.ToString());
+        protected override void UpdateStatusBarItem()
+        {
+            _statusBarItem.Text = _serialPort.Baud.ToString();
 
-					tempStatusBarItem.DropDownItemClicked += (sender, args) => SetBaudTo(args.ClickedItem.Text);
-					_statusBarItem = tempStatusBarItem;
-				}
+            var tempStatusBarItem = (ToolStripDropDownButton)_statusBarItem;
+            foreach (ToolStripMenuItem baudItem in tempStatusBarItem.DropDownItems)
+            {
+                baudItem.Checked = baudItem.Text == _statusBarItem.Text;
+            }
+        }
 
-				return _statusBarItem;
-			}
-		}
+        protected override void CreateStatusBarItem()
+        {
+            var tempStatusBarItem = new ToolStripDropDownButton();
+            tempStatusBarItem.Text = _serialPort.Baud.ToString();
+            foreach (var baudRate in BaudRates)
+                tempStatusBarItem.DropDownItems.Add(baudRate.ToString());
 
-		private void SetBaudTo(string baudRate)
-		{
-			_serialPort.Baud = int.Parse(baudRate);
-		}
+            tempStatusBarItem.DropDownItemClicked += (sender, args) => SetBaudTo(args.ClickedItem.Text);
+            _statusBarItem = tempStatusBarItem;
+        }
 
-		public IEnumerable<int> BaudRates
-		{
-			get { return _baudRates; }
-		}
-	}
+        private void SetBaudTo(string baudRate)
+        {
+            _serialPort.Baud = int.Parse(baudRate);
+        }
+
+        public IEnumerable<int> BaudRates
+        {
+            get { return _baudRates; }
+        }
+    }
 }

@@ -4,20 +4,20 @@ using Terminal_Interface.Events;
 
 namespace Terminal_Interface
 {
-	public delegate void SaveSessionEventHandler(object sender, SaveSessionEventArgs e);
+    public delegate void SaveSessionEventHandler(object sender, SaveSessionEventArgs e);
 
-	//TODO Add dropped file event
+    //TODO Add dropped file event
 
-	public interface ITerminal : INotifyPropertyChanged
-	{
-		void Run();
+    public interface ITerminal : INotifyPropertyChanged
+    {
+        void Run();
 
-		void AddLine(string line);
+        void AddLine(string line);
 
-		void AddChar(char c);
+        void AddChar(char c);
 
-		string Title { get; set; }
+        string Title { get; set; }
 
-		event SaveSessionEventHandler OnSaveSession;
-	}
+        event SaveSessionEventHandler OnSaveSession;
+    }
 }

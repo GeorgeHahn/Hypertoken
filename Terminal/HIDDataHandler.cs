@@ -11,99 +11,109 @@ using Terminal_Interface.Events;
 
 namespace Terminal
 {
-	public class HIDDataHandler : IDataDevice
-	{
-		private HidDevice _device;
+    public class HIDDataHandler : IDataDevice
+    {
+        private HidDevice _device;
 
-		public IEnumerable<string> ListAvailableDevices()
-		{
-			var devices = HidDevices.Enumerate();
-			List<string> names = new List<string>();
-			foreach (HidDevice device in devices)
-			{
-				names.Add(string.Format("{0}, {1}: {2}", device.Attributes.VendorHexId, device.Attributes.ProductHexId, device.Description));
-			}
-			return names.AsEnumerable();
-		}
+        public IEnumerable<string> ListAvailableDevices()
+        {
+            var devices = HidDevices.Enumerate();
+            List<string> names = new List<string>();
+            foreach (HidDevice device in devices)
+            {
+                names.Add(GetFriendlyName(device));
+            }
+            return names.AsEnumerable();
+        }
 
-		public string[] Devices
-		{
-			get { return HidDevices.EnumerateHidDevicePaths().ToArray(); }
-		}
+        private string GetFriendlyName(HidDevice device)
+        {
+            return string.Format("{0}, {1}: {2}", device.Attributes.VendorHexId, device.Attributes.ProductHexId, device.Description);
+        }
 
-		public string DeviceName
-		{
-			get
-			{
-				if (_device == null)
-					return string.Empty;
+        public string[] Devices
+        {
+            get { return HidDevices.EnumerateHidDevicePaths().ToArray(); }
+        }
 
-				return _device.DevicePath;
-			}
-			set
-			{
-				_device = HidDevices.GetDevice(value);
-			}
-		}
+        public string DeviceName
+        {
+            get
+            {
+                if (_device == null)
+                    return string.Empty;
 
-		public string DeviceStatus
-		{
-			get { throw new NotImplementedException(); }
-		}
+                return _device.DevicePath;
+            }
+            set
+            {
+                _device = HidDevices.GetDevice(value);
+            }
+        }
 
-		public deviceType DeviceType
-		{
-			get { throw new NotImplementedException(); }
-		}
+        public string FriendlyName
+        {
+            get { return string.Format("HID: {0}", GetFriendlyName(_device)); }
+        }
 
-		public PortState PortState
-		{
-			get
-			{
-				if (_device == null)
-					return PortState.Error;
+        public string DeviceStatus
+        {
+            get { throw new NotImplementedException(); }
+        }
 
-				return _device.IsOpen ? PortState.Open : PortState.Closed;
-			}
-			set
-			{
-				if (_device == null)
-					return;
+        public deviceType DeviceType
+        {
+            get { throw new NotImplementedException(); }
+        }
 
-				if (value == PortState.Open)
-					_device.OpenDevice();
-				else
-					_device.CloseDevice();
-			}
-		}
+        public PortState PortState
+        {
+            get
+            {
+                if (_device == null)
+                    return PortState.Error;
 
-		public void KeyPressed(char c)
-		{
-			throw new NotImplementedException();
-		}
+                return _device.IsOpen ? PortState.Open : PortState.Closed;
+            }
+            set
+            {
+                if (_device == null)
+                    return;
 
-		public int Write(byte[] data)
-		{
-			throw new NotImplementedException();
-		}
+                if (value == PortState.Open)
+                    _device.OpenDevice();
+                else
+                    _device.CloseDevice();
+            }
+        }
 
-		public int Write(byte data)
-		{
-			throw new NotImplementedException();
-		}
+        public void KeyPressed(char c)
+        {
+            throw new NotImplementedException();
+        }
 
-		public int Write(char data)
-		{
-			throw new NotImplementedException();
-		}
+        public int Write(byte[] data)
+        {
+            throw new NotImplementedException();
+        }
 
-		public int Write(string data)
-		{
-			throw new NotImplementedException();
-		}
+        public int Write(byte data)
+        {
+            throw new NotImplementedException();
+        }
 
-		public event DataReceivedEventHandler DataReceived;
+        public int Write(char data)
+        {
+            throw new NotImplementedException();
+        }
 
-		public event PropertyChangedEventHandler PropertyChanged;
-	}
+        public int Write(string data)
+        {
+            throw new NotImplementedException();
+        }
+
+        public event DataReceivedEventHandler DataReceived;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+    }
 }
