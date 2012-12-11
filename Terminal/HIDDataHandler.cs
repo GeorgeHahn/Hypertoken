@@ -15,10 +15,6 @@ namespace Terminal
 	{
 		private HidDevice _device;
 
-		public HIDDataHandler()
-		{
-		}
-
 		public IEnumerable<string> ListAvailableDevices()
 		{
 			var devices = HidDevices.Enumerate();
@@ -32,10 +28,7 @@ namespace Terminal
 
 		public string[] Devices
 		{
-			get
-			{
-				return ListAvailableDevices().ToArray();
-			}
+			get { return HidDevices.EnumerateHidDevicePaths().ToArray(); }
 		}
 
 		public string DeviceName
@@ -47,7 +40,10 @@ namespace Terminal
 
 				return _device.DevicePath;
 			}
-			set { _device = HidDevices.GetDevice(value); }
+			set
+			{
+				_device = HidDevices.GetDevice(value);
+			}
 		}
 
 		public string DeviceStatus
@@ -64,11 +60,20 @@ namespace Terminal
 		{
 			get
 			{
-				throw new NotImplementedException();
+				if (_device == null)
+					return PortState.Error;
+
+				return _device.IsOpen ? PortState.Open : PortState.Closed;
 			}
 			set
 			{
-				throw new NotImplementedException();
+				if (_device == null)
+					return;
+
+				if (value == PortState.Open)
+					_device.OpenDevice();
+				else
+					_device.CloseDevice();
 			}
 		}
 
