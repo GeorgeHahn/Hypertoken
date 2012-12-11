@@ -3,4 +3,4 @@
 	url = git://github.com/GeorgeHahn/Bugsense.WPF.git
 [submodule "HidLibrary"]
 	path = HidLibrary
-	url = git://github.com/mikeobrien/HidLibrary.git
+	url = https://github.com/GeorgeHahn/HidLibrary.git
