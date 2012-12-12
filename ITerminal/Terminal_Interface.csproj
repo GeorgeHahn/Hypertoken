@@ -66,6 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CurrentDataDevice.cs" />
+    <Compile Include="CurrentPacketInterpreter.cs" />
     <Compile Include="Enums\EchoState.cs" />
     <Compile Include="Enums\FileSendState.cs" />
     <Compile Include="Enums\FlowControl.cs" />
@@ -84,6 +85,7 @@
     <Compile Include="IDataReader.cs" />
     <Compile Include="IDataWriter.cs" />
     <Compile Include="IInitable.cs" />
+    <Compile Include="IPacketInterpreter.cs" />
     <Compile Include="ISettings.cs" />
     <Compile Include="ITerminal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
