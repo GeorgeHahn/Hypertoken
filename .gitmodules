@@ -4,3 +4,6 @@
 [submodule "HidLibrary"]
 	path = HidLibrary
 	url = https://github.com/GeorgeHahn/HidLibrary.git
+[submodule "devicedescriptions"]
+	path = devicedescriptions
+	url = git@github.com:GeorgeHahn/HidLibrary.git
