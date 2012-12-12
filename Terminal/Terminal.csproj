@@ -97,6 +97,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AdvancedJit.cs" />
+    <Compile Include="StringPacketInterpreter.cs" />
     <Compile Include="TerminalRunner.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -127,6 +128,10 @@
     <ProjectReference Include="..\ITerminal\Terminal_Interface.csproj">
       <Project>{cdf84311-5363-4054-ad8b-74741cfd4418}</Project>
       <Name>Terminal_Interface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PacketParser\PacketParser.csproj">
+      <Project>{6e050dbd-053a-40dd-a044-f6cf450d2f33}</Project>
+      <Name>PacketParser</Name>
     </ProjectReference>
     <ProjectReference Include="..\Terminal_GUI_Interface\Terminal_GUI_Interface.csproj">
       <Project>{867db553-9770-4fc6-be0b-abff3e734c96}</Project>
