@@ -16,6 +16,13 @@ namespace Terminal
     {
         private HidDevice _device;
 
+        private IPacketInterpreter _packetInterpreter;
+
+        public HIDDataHandler(IPacketInterpreter packetInterpreter)
+        {
+            _packetInterpreter = packetInterpreter;
+        }
+
         public IEnumerable<string> ListAvailableDevices()
         {
             var devices = HidDevices.EnumerateHidDeviceInstances();
@@ -99,28 +106,6 @@ namespace Terminal
             }
         }
 
-        private string b2str(byte[] ba)
-        {
-            var hex = new StringBuilder(ba.Length * 6);
-            int endIndex = ba.Length - 1;
-            while ((ba[endIndex] == 0) && (endIndex >= 0))
-                endIndex--;
-
-            if (endIndex == 0)
-                return "Empty string\r\n";
-
-            for (int index = 0; index < endIndex; index++)
-            {
-                byte b = ba[index];
-                if ((b >= 0x21) && (b <= 0x7E))
-                    hex.Append((char)b);
-                else
-                    hex.AppendFormat(" 0x{0:x2},", b);
-            }
-            hex.Append(Environment.NewLine);
-            return hex.ToString();
-        }
-
         private void ReadReportCallback(HidReport report)
         {
             Log.Debug("Got a ReadReportCallback of length {0}", report.Data.Length);
@@ -131,7 +116,7 @@ namespace Terminal
                 return;
 
             var data = report.GetBytes();
-            var dataString = b2str(data);
+            var dataString = _packetInterpreter.InterpretPacket(data);
             var args = new DataReceivedEventArgs(dataString);
             DataReceived(this, args);
         }
@@ -146,7 +131,7 @@ namespace Terminal
                 return;
 
             var bytes = data.Data;
-            var dataString = b2str(bytes);
+            var dataString = _packetInterpreter.InterpretPacket(bytes);
             var args = new DataReceivedEventArgs(dataString);
             DataReceived(this, args);
         }
