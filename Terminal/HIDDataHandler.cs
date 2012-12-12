@@ -101,9 +101,23 @@ namespace Terminal
 
         private string b2str(byte[] ba)
         {
-            var hex = new StringBuilder(ba.Length * 3);
-            foreach (byte b in ba)
-                hex.AppendFormat("{0:x2},", b);
+            var hex = new StringBuilder(ba.Length * 6);
+            int endIndex = ba.Length - 1;
+            while ((ba[endIndex] == 0) && (endIndex >= 0))
+                endIndex--;
+
+            if (endIndex == 0)
+                return "Empty string\r\n";
+
+            for (int index = 0; index < endIndex; index++)
+            {
+                byte b = ba[index];
+                if ((b >= 0x21) && (b <= 0x7E))
+                    hex.Append((char)b);
+                else
+                    hex.AppendFormat(" 0x{0:x2},", b);
+            }
+            hex.Append(Environment.NewLine);
             return hex.ToString();
         }
 
@@ -149,13 +163,19 @@ namespace Terminal
 
         public int Write(byte[] data)
         {
-            _device.Write(data);
+            //_device.Write(data);
+            var header = new byte[] { 0x01, 0xF0, 0x10, 0x03, 0xA0, 0x01, 0x0F, 0x58, 0x04 };
+            var writeReport = _device.CreateReport();
+            int i = 0;
+            foreach (var b in header)
+                writeReport.Data[i++] = b;
+            _device.WriteReport(writeReport);
             return data.Length;
         }
 
         public int Write(byte data)
         {
-            _device.Write(new[] { data });
+            Write(new[] { data });
             return 1;
         }
 
@@ -166,7 +186,7 @@ namespace Terminal
 
         public int Write(char data)
         {
-            _device.Write(new[] { (byte)data });
+            Write(new[] { (byte)data });
             return 1;
         }
 

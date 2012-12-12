@@ -70,6 +70,7 @@ namespace HyperToken_WinForms_GUI
                                                           _dataDevice.PropertyChanged += DataDeviceOnPropertyChanged;
                                                           _dataDevice.DataReceived += DataDeviceOnDataReceived;
                                                       };
+
             _dataDevice = _currentDataDevice.CurrentDevice;
 
             MainForm.logger.Trace("Mainform object created");
