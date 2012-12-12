@@ -2,103 +2,100 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Windows.Forms;
 
 namespace Terminal_GUI_Interface
 {
-	public interface IMainMenuExtension
-	{
-		Menu Menu { get; }
-	}
+    public interface IMainMenuExtension
+    {
+        Menu Menu { get; }
+    }
 
-	public class Menu
-	{
-		public string Text { get; set; }
+    public class Menu : INotifyPropertyChanged
+    {
+        public string Text { get; set; }
 
-		public ObservableCollection<Menu> Items { get; private set; }
+        public ObservableCollection<Menu> Items { get; private set; }
 
-		private bool _checked;
+        public bool Checked { get; set; }
 
-		public bool Checked
-		{
-			get { return _checked; }
-			set
-			{
-				_checked = value;
-				if (CheckStateChanged != null)
-					CheckStateChanged(this, new EventArgs());
-			}
-		}
+        public event ItemsListOpeningEventHandler ItemsListOpening;
 
-		public event ItemsListOpeningEventHandler ItemsListOpening;
+        public event ItemClickedEventHandler ItemClicked;
 
-		public event ItemClickedEventHandler ItemClicked;
+        public Menu(string text)
+        {
+            Text = text;
+            Items = new ObservableCollection<Menu>();
+        }
 
-		public event CheckStateChangedEventHandler CheckStateChanged;
+        public Menu()
+            : this(string.Empty)
+        { }
 
-		public Menu(string text)
-		{
-			Text = text;
-			Items = new ObservableCollection<Menu>();
-		}
+        public Menu(string text, ItemClickedEventHandler clicked)
+        {
+            ItemClicked += clicked;
+            Text = text;
+        }
 
-		public Menu()
-			: this(string.Empty)
-		{ }
+        public void FireItemClicked(object sender, ItemClickedEventArgs args)
+        {
+            if (ItemClicked != null)
+                ItemClicked(sender, args);
+        }
 
-		public Menu(string text, ItemClickedEventHandler clicked)
-		{
-			ItemClicked += clicked;
-			Text = text;
-		}
+        public void FireItemClicked(object sender, string itemName)
+        {
+            if (ItemClicked != null)
+                ItemClicked(sender, new ItemClickedEventArgs(itemName));
+        }
 
-		public void FireItemClicked(object sender, ItemClickedEventArgs args)
-		{
-			if (ItemClicked != null)
-				ItemClicked(sender, args);
-		}
+        public void FireItemListOpening(object sender, EventArgs args)
+        {
+            if (ItemsListOpening != null)
+                ItemsListOpening(sender, args);
+        }
 
-		public void FireItemClicked(object sender, string itemName)
-		{
-			if (ItemClicked != null)
-				ItemClicked(sender, new ItemClickedEventArgs(itemName));
-		}
+        public static int GetIndex(ObservableCollection<Menu> list, string menu)
+        {
+            for (int index = 0; index < list.Count; index++)
+            {
+                var item = list[index];
+                if (item.Text == menu)
+                    return index;
+            }
 
-		public void FireItemListOpening(object sender, EventArgs args)
-		{
-			if (ItemsListOpening != null)
-				ItemsListOpening(sender, args);
-		}
+            return -1;
+        }
 
-		public static int GetIndex(ObservableCollection<Menu> list, string menu)
-		{
-			for (int index = 0; index < list.Count; index++)
-			{
-				var item = list[index];
-				if (item.Text == menu)
-					return index;
-			}
+        public void AddRange(IEnumerable<Menu> menus)
+        {
+            foreach (var menu in menus)
+                Items.Add(menu);
 
-			return -1;
-		}
-	}
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs("Items"));
+        }
 
-	public delegate void CheckStateChangedEventHandler(object sender, EventArgs args);
+        public event PropertyChangedEventHandler PropertyChanged;
+    }
 
-	public delegate void ItemClickedEventHandler(object sender, ItemClickedEventArgs args);
+    public delegate void ItemClickedEventHandler(object sender, ItemClickedEventArgs args);
 
-	public class ItemClickedEventArgs
-	{
-		public string ClickedItem { get; set; }
+    public class ItemClickedEventArgs
+    {
+        public string ClickedItem { get; set; }
 
-		public ItemClickedEventArgs()
-		{ }
+        public ItemClickedEventArgs()
+        { }
 
-		public ItemClickedEventArgs(string clickedItem)
-		{
-			ClickedItem = clickedItem;
-		}
-	}
+        public ItemClickedEventArgs(string clickedItem)
+        {
+            ClickedItem = clickedItem;
+        }
+    }
 
-	public delegate void ItemsListOpeningEventHandler(object sender, EventArgs args);
+    public delegate void ItemsListOpeningEventHandler(object sender, EventArgs args);
 }

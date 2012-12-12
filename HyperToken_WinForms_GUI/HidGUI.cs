@@ -62,7 +62,7 @@ namespace HyperToken_WinForms_GUI
 
         private bool UpdateOnOpen
         {
-            get { return false; }
+            get { return true; }
         }
 
         public Menu Menu
@@ -91,8 +91,11 @@ namespace HyperToken_WinForms_GUI
             _devicePaths = _dataDevice.Devices;
             _deviceNames = _dataDevice.ListAvailableDevices().ToArray();
 
+            var menus = new List<Menu>();
             foreach (var value in _deviceNames)
-                _menu.Items.Add(new Menu(value));
+                menus.Add(new Menu(value));
+
+            _menu.AddRange(menus);
 
             UpdateCheckedStates(PropertyName);
         }

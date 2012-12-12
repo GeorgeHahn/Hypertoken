@@ -6,60 +6,62 @@ using System.Windows.Forms;
 
 namespace Terminal_GUI_Interface
 {
-	public abstract class GenericSettingsMenu
-	{
-		protected Menu _menu;
+    public abstract class GenericSettingsMenu
+    {
+        protected Menu _menu;
 
-		protected abstract dynamic Values { get; }
+        protected abstract dynamic Values { get; }
 
-		protected abstract string MenuName { get; }
+        protected abstract string MenuName { get; }
 
-		protected abstract dynamic ItemValue { get; set; }
+        protected abstract dynamic ItemValue { get; set; }
 
-		protected abstract string PropertyName { get; }
+        protected abstract string PropertyName { get; }
 
-		protected virtual bool UpdateOnOpen { get { return false; } }
+        protected virtual bool UpdateOnOpen { get { return false; } }
 
-		public Menu Menu
-		{
-			get
-			{
-				if (_menu == null)
-				{
-					_menu = new Menu(MenuName);
-					_menu.ItemClicked += (sender, args) => ItemClicked(Menu.GetIndex(_menu.Items, args.ClickedItem));
-					if (UpdateOnOpen)
-						_menu.ItemsListOpening += (sender, args) => SetItems();
-					SetItems();
-				}
+        public Menu Menu
+        {
+            get
+            {
+                if (_menu == null)
+                {
+                    _menu = new Menu(MenuName);
+                    _menu.ItemClicked += (sender, args) => ItemClicked(Menu.GetIndex(_menu.Items, args.ClickedItem));
 
-				return _menu;
-			}
-		}
+                    //_menu.PropertyChanged += (sender, args) => UpdateCheckedStates(args.PropertyName);
+                    if (UpdateOnOpen)
+                        _menu.ItemsListOpening += (sender, args) => SetItems();
+                    SetItems();
+                }
 
-		private void SetItems()
-		{
-			_menu.Items.Clear();
+                return _menu;
+            }
+        }
 
-			foreach (var value in Values)
-				_menu.Items.Add(new Menu(value.ToString()));
+        private void SetItems()
+        {
+            _menu.Items.Clear();
 
-			UpdateCheckedStates(PropertyName);
-		}
+            foreach (var value in Values)
+                _menu.Items.Add(new Menu(value.ToString()));
 
-		protected void ItemClicked(int item)
-		{
-			ItemValue = Values[item];
-		}
+            UpdateCheckedStates(PropertyName);
+        }
 
-		protected void UpdateCheckedStates(string propertyName)
-		{
-			if (propertyName != PropertyName) return;
+        protected void ItemClicked(int item)
+        {
+            ItemValue = Values[item];
+        }
 
-			foreach (var menuItem in _menu.Items)
-			{
-				menuItem.Checked = menuItem.Text == ItemValue.ToString();
-			}
-		}
-	}
+        protected void UpdateCheckedStates(string propertyName)
+        {
+            if (propertyName != PropertyName) return;
+
+            foreach (var menuItem in _menu.Items)
+            {
+                menuItem.Checked = menuItem.Text == ItemValue.ToString();
+            }
+        }
+    }
 }

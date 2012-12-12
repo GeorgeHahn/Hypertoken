@@ -35,7 +35,9 @@ namespace HyperToken_WinForms_GUI
 
         private readonly IFileSender _fileSender;
 
-        private readonly ISerialPort _dataDevice;
+        private readonly CurrentDataDevice _currentDataDevice;
+
+        private IDataDevice _dataDevice;
 
         private IEnumerable<ToolStripMenuItem> _menuExtensions;
 
@@ -47,7 +49,7 @@ namespace HyperToken_WinForms_GUI
                         ILogger logger,
                         IEchoer echoer,
                         IFileSender fileSender,
-                        ISerialPort dataDevice,
+                        CurrentDataDevice dataDevice,
                         WinformsMainMenuExtender mainMenuExtender,
                         IEnumerable<IStatusbarExtension> statusbarExtensions)
         {
@@ -55,21 +57,29 @@ namespace HyperToken_WinForms_GUI
             _logger = logger;
             _echoer = echoer;
             _fileSender = fileSender;
-            _dataDevice = dataDevice;
             _mainMenuExtender = mainMenuExtender;
             _statusbarExtensions = statusbarExtensions;
 
-            _dataDevice.PropertyChanged += DataDeviceOnPropertyChanged;
-            _dataDevice.DataReceived += DataDeviceOnDataReceived;
+            _currentDataDevice = dataDevice;
+            _currentDataDevice.PropertyChanged += (sender, args) =>
+                                                      {
+                                                          _dataDevice = _currentDataDevice.CurrentDevice;
+                                                          if (_dataDevice == null)
+                                                              return;
+
+                                                          _dataDevice.PropertyChanged += DataDeviceOnPropertyChanged;
+                                                          _dataDevice.DataReceived += DataDeviceOnDataReceived;
+                                                      };
+            _dataDevice = _currentDataDevice.CurrentDevice;
 
             MainForm.logger.Trace("Mainform object created");
         }
 
-        public MainForm(IAboutBox aboutBox, ISerialPort dataDevice, ILogger logger, WinformsMainMenuExtender mainMenuExtender, IEnumerable<IStatusbarExtension> statusbarExtensions)
+        public MainForm(IAboutBox aboutBox, CurrentDataDevice dataDevice, ILogger logger, WinformsMainMenuExtender mainMenuExtender, IEnumerable<IStatusbarExtension> statusbarExtensions)
             : this(aboutBox, logger, null, null, dataDevice, mainMenuExtender, statusbarExtensions)
         { }
 
-        public MainForm(IAboutBox aboutBox, ISerialPort dataDevice, WinformsMainMenuExtender mainMenuExtender, IEnumerable<IStatusbarExtension> statusbarExtensions)
+        public MainForm(IAboutBox aboutBox, CurrentDataDevice dataDevice, WinformsMainMenuExtender mainMenuExtender, IEnumerable<IStatusbarExtension> statusbarExtensions)
             : this(aboutBox, null, null, null, dataDevice, mainMenuExtender, statusbarExtensions)
         { }
 
@@ -366,9 +376,9 @@ namespace HyperToken_WinForms_GUI
             Title = "HyperToken";
 
 #if DEBUG
-			Title += " [Debug]";
+            Title += " [Debug]";
 
-			logger.Warn("Debug version");
+            logger.Warn("Debug version");
 #endif
 
             if (System.Diagnostics.Debugger.IsAttached)
