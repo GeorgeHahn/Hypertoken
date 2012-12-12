@@ -1,9 +1,3 @@
 [submodule "Bugsense.WPF"]
 	path = Bugsense.WPF
-	url = git://github.com/GeorgeHahn/Bugsense.WPF.git
-[submodule "HidLibrary"]
-	path = HidLibrary
-	url = https://github.com/GeorgeHahn/HidLibrary.git
-[submodule "devicedescriptions"]
-	path = devicedescriptions
-	url = git@github.com:GeorgeHahn/HidLibrary.git
+	url = https://github.com/GeorgeHahn/Bugsense.WPF.git
