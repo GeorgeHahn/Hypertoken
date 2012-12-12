@@ -28,8 +28,10 @@ namespace PacketParser
             //engine = Python.CreateEngine();
             //scope = engine.CreateScope();
 
-            var watcher = new FileSystemWatcher(AppDomain.CurrentDomain.BaseDirectory, "*.py");
+            var watcher = new FileSystemWatcher(@"C:\Users\ghahn\Documents\GitHub\Hypertoken\Terminal\bin\Debug\", "*.py");
+
             watcher.Changed += (sender, args) => UpdateScript();
+            watcher.EnableRaisingEvents = true;
             UpdateScript();
         }
 
@@ -50,14 +52,9 @@ namespace PacketParser
                 //scope.SetVariable("packet", packet);
                 //return engine.Execute<string>(scriptStr, scope);
             }
-            catch (MemberAccessException e)
-            {
-                return string.Format("Script error: {0}\r\n", e.Message);
-            }
             catch (Exception e)
             {
-                return e.Message + Environment.NewLine;
-            }
+                return string.Format("Script error: {0}\r\n", e.Message);
         }
     }
 }

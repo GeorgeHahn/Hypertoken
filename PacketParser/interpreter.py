@@ -1,2 +1,2 @@
 ﻿def Parse(packet):
-    return packet.decode("utf-8")
+    return str(packet, "utf-8")
