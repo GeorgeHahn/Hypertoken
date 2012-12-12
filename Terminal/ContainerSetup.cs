@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Autofac;
 using HyperToken_WinForms_GUI;
+using PacketParser;
 using Terminal_GUI_Interface;
 using Terminal_Interface;
 
@@ -56,6 +57,10 @@ namespace Terminal
             builder.RegisterType<HidDeviceConnection>().As<IHidSettingsMenu>();
 
             builder.RegisterType<CurrentDataDevice>().SingleInstance();
+            builder.RegisterType<CurrentPacketInterpreter>().SingleInstance();
+
+            //builder.RegisterType<StringPacketInterpreter>().As<IPacketInterpreter>();
+            builder.RegisterType<PythonPacketParser>().As<IPacketInterpreter>();
 
             // Logger wiring
             builder.RegisterType<FileLogger>().As<ILogger>().SingleInstance();
