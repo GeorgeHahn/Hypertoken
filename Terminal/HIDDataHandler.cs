@@ -19,7 +19,7 @@ namespace Terminal
         public IEnumerable<string> ListAvailableDevices()
         {
             var devices = HidDevices.EnumerateHidDeviceInstances();
-            List<string> names = new List<string>();
+            var names = new List<string>();
             foreach (HidDevice device in devices)
             {
                 names.Add(GetFriendlyName(device));
@@ -91,6 +91,7 @@ namespace Terminal
                 }
                 else
                 {
+                    // todo: Do this in a separate thread
                     _device.CloseDevice();
                     _device.MonitorDeviceEvents = false;
                     _device.Removed -= DeviceOnRemoved;
@@ -98,34 +99,41 @@ namespace Terminal
             }
         }
 
+        private string b2str(byte[] ba)
+        {
+            var hex = new StringBuilder(ba.Length * 3);
+            foreach (byte b in ba)
+                hex.AppendFormat("{0:x2},", b);
+            return hex.ToString();
+        }
+
         private void ReadReportCallback(HidReport report)
         {
+            Log.Debug("Got a ReadReportCallback of length {0}", report.Data.Length);
+
             _device.ReadReport(ReadReportCallback);
 
             if (DataReceived == null)
                 return;
 
             var data = report.GetBytes();
-            StringBuilder hex = new StringBuilder(data.Length * 2);
-            foreach (byte b in data)
-                hex.AppendFormat("{0:x2},", b);
-
-            var args = new DataReceivedEventArgs(hex.ToString());
+            var dataString = b2str(data);
+            var args = new DataReceivedEventArgs(dataString);
             DataReceived(this, args);
         }
 
         private void ReadCallback(HidDeviceData data)
         {
+            Log.Debug("Got a ReadCallback of length {0}", data.Data.Length);
+
             _device.Read(ReadCallback);
 
             if (DataReceived == null)
                 return;
 
-            StringBuilder hex = new StringBuilder(data.Data.Length * 2);
-            foreach (byte b in data.Data)
-                hex.AppendFormat("{0:x2},", b);
-
-            var args = new DataReceivedEventArgs(hex.ToString());
+            var bytes = data.Data;
+            var dataString = b2str(bytes);
+            var args = new DataReceivedEventArgs(dataString);
             DataReceived(this, args);
         }
 
