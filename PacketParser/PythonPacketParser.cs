@@ -36,6 +36,8 @@ namespace PacketParser
             watcher.Changed += (sender, args) => UpdateScript();
             watcher.EnableRaisingEvents = true;
             UpdateScript();
+
+            Log.Debug(InterpretPacket((new UTF8Encoding()).GetBytes("Hello world")));
         }
 
         private void UpdateScript()
@@ -49,7 +51,7 @@ namespace PacketParser
 
         public string InterpretPacket(byte[] packet)
         {
-            UpdateScript();
+            // UpdateScript();
             try
             {
                 return script.Parse(packet);
