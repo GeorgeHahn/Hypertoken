@@ -4,10 +4,12 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Anotar;
 using IronPython.Hosting;
 using IronPython.Runtime;
 using Microsoft.Scripting;
 using Microsoft.Scripting.Hosting;
+using NLog;
 using Terminal_Interface;
 
 namespace PacketParser
@@ -44,6 +46,7 @@ namespace PacketParser
 
         public string InterpretPacket(byte[] packet)
         {
+            UpdateScript();
             try
             {
                 return script.Parse(packet);
@@ -55,6 +58,7 @@ namespace PacketParser
             catch (Exception e)
             {
                 return string.Format("Script error: {0}\r\n", e.Message);
+            }
         }
     }
 }
