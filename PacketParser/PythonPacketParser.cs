@@ -25,6 +25,7 @@ namespace PacketParser
 
         public PythonPacketParser()
         {
+            Log.Debug("PythonPacketParser created");
             runtime = Python.CreateRuntime();
 
             //engine = Python.CreateEngine();
@@ -39,6 +40,8 @@ namespace PacketParser
 
         private void UpdateScript()
         {
+            Log.Debug("Reloaded interpreter.py");
+
             //scriptStr = File.ReadAllText("interpreter.py");
             //source = engine.CreateScriptSourceFromString(scriptStr, "py");
             script = runtime.UseFile("interpreter.py");
