@@ -152,8 +152,9 @@ namespace Terminal
             var header = new byte[] { 0x01, 0xF0, 0x10, 0x03, 0xA0, 0x01, 0x0F, 0x58, 0x04 };
             var writeReport = _device.CreateReport();
             int i = 0;
-            foreach (var b in header)
-                writeReport.Data[i++] = b;
+            if (writeReport.Data.Length > 0)
+                foreach (var b in header)
+                    writeReport.Data[i++] = b;
             _device.WriteReport(writeReport);
             return data.Length;
         }
