@@ -1,6 +1,6 @@
 ﻿import clr
 
-from System import *
+from System import Text
 from System.Text import UTF8Encoding
 
 def Parse(packet):
