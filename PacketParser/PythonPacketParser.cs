@@ -52,7 +52,9 @@ namespace PacketParser
             //scriptStr = File.ReadAllText("interpreter.py");
             //source = engine.CreateScriptSourceFromString(scriptStr, "py");
 
-            script = runtime.UseFile("interpreter.py");
+            string path = "interpreter.py";
+            if (File.Exists(path))
+                script = runtime.UseFile(path);
         }
 
         public string InterpretPacket(byte[] packet)
