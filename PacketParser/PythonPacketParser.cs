@@ -24,16 +24,25 @@ namespace PacketParser
             Log.Debug("PythonPacketParser created");
             runtime = Python.CreateRuntime();
 
-            //engine = Python.CreateEngine();
-            //scope = engine.CreateScope();
+            var scriptDirectory = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            if (scriptDirectory == null)
+                throw new NullReferenceException("ScriptDirectory should not be null");
 
-            var watcher = new FileSystemWatcher(@"C:\Users\ghahn\Documents\GitHub\Hypertoken\Terminal\bin\Debug\", "*.py");
+            Log.Debug("Looking for python decoder in {0}", scriptDirectory);
+            var watcher = new FileSystemWatcher(scriptDirectory, "*.py");
 
             watcher.Changed += (sender, args) => UpdateScript();
             watcher.EnableRaisingEvents = true;
             UpdateScript();
 
-            Log.Debug(InterpretPacket((new UTF8Encoding()).GetBytes("Hello world")));
+            try
+            {
+                Log.Debug(InterpretPacket((new UTF8Encoding()).GetBytes("Hello from Python")));
+            }
+            catch (Exception e)
+            {
+                Log.WarnException("Interpreting python script threw an error", e);
+            }
         }
 
         private void UpdateScript()
@@ -42,6 +51,7 @@ namespace PacketParser
 
             //scriptStr = File.ReadAllText("interpreter.py");
             //source = engine.CreateScriptSourceFromString(scriptStr, "py");
+
             script = runtime.UseFile("interpreter.py");
         }
 
