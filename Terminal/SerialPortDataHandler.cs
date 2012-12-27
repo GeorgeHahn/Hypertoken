@@ -62,7 +62,7 @@ namespace Terminal
             set
             {
                 if(_port.IsOpen)
-                    _port.Close();
+                    PortState = PortState.Closed;
 
                 _port.PortName = value;
             }
