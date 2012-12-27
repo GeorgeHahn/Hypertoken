@@ -112,11 +112,9 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Anotar">
-      <HintPath>..\packages\Anotar.Fody.0.10.0.0\lib\NET40\Anotar.dll</HintPath>
-    </Reference>
-    <Reference Include="CustomControls, Version=1.0.21.314, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>Binaries\CustomControls.dll</HintPath>
+    <Reference Include="Anotar, Version=0.11.1.0, Culture=neutral, PublicKeyToken=1d3f964f81f300dd, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Anotar.Fody.0.11.1.0\lib\NET40\Anotar.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="MRG.Controls.UI, Version=1.0.39.1212, Culture=neutral, processorArchitecture=MSIL">
@@ -308,6 +306,10 @@
     <ProjectReference Include="..\Bugsense.WPF\Bugsense.WPF\Bugsense.WPF.csproj">
       <Project>{96d7fdaa-341f-49d9-b910-1f349ca565d7}</Project>
       <Name>Bugsense.WPF</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CustomControls\CustomControls.csproj">
+      <Project>{18ae5954-cb94-41e2-942d-59bfe225abc1}</Project>
+      <Name>CustomControls</Name>
     </ProjectReference>
     <ProjectReference Include="..\ITerminal\Terminal_Interface.csproj">
       <Project>{cdf84311-5363-4054-ad8b-74741cfd4418}</Project>
