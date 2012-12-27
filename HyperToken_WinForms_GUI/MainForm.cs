@@ -163,37 +163,6 @@ namespace HyperToken_WinForms_GUI
             }
         }
 
-        /// <summary>
-        /// Populates a menu with items
-        /// </summary>
-        /// <param name="items">Reference to the finished items</param>
-        /// <param name="values">One item will be generated for each value</param>
-        /// <param name="parentMenu">Parent menu for the items</param>
-        /// <param name="name">DeviceName property for each item</param>
-        /// <param name="clickHandler">OnClick event for each item</param>
-        /// <returns>Success</returns>
-        private void CreateMenuFrom(ToolStripDropDownItem parentMenu, IEnumerable values, string name, EventHandler clickHandler)
-        {
-            if (values == null)
-                return;
-
-            Log.Debug("Creating menu {0}", name);
-
-            var items = new List<ToolStripItem>();
-
-            foreach (var value in values)
-            {
-                ToolStripItem temp = new ToolStripMenuItem();
-                temp.Name = name;
-                temp.Size = new Size(152, 22);
-                temp.Click += clickHandler;
-                temp.Text = value.ToString();
-                items.Add(temp);
-            }
-
-            parentMenu.DropDownItems.AddRange(items.ToArray());
-        }
-
         //Initialize application shutdown
         private void Exit(object sender, EventArgs e)
         {
