@@ -70,7 +70,7 @@ namespace Terminal
 
         public string[] Devices
         {
-            get { return ListAvailableDevices().ToArray(); }
+            get { return SerialPort.GetPortNames(); }
         }
 
         public string FriendlyName
@@ -154,7 +154,7 @@ namespace Terminal
 
         public IEnumerable<string> ListAvailableDevices()
         {
-            return SerialPort.GetPortNames().AsEnumerable();
+            return Devices.AsEnumerable();
         }
 
         public int Write(byte[] data)
