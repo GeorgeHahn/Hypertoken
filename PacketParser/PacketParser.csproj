@@ -50,8 +50,9 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Anotar">
-      <HintPath>..\packages\Anotar.Fody.0.10.0.0\lib\NET40\Anotar.dll</HintPath>
+    <Reference Include="Anotar, Version=0.11.1.0, Culture=neutral, PublicKeyToken=1d3f964f81f300dd, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Anotar.Fody.0.11.1.0\lib\NET40\Anotar.dll</HintPath>
     </Reference>
     <Reference Include="IronPython">
       <HintPath>..\packages\IronPython.2.7.3\lib\Net40\IronPython.dll</HintPath>

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using Anotar;
+using NLog;
 
 namespace Terminal_GUI_Interface
 {
@@ -56,7 +58,11 @@ namespace Terminal_GUI_Interface
 
         protected void UpdateCheckedStates(string propertyName)
         {
-            if (propertyName != PropertyName) return;
+            if (propertyName != PropertyName)
+            {
+                Log.Debug("Ignoring {0} on {1}", propertyName, PropertyName);
+                return;
+            }
 
             foreach (var menuItem in _menu.Items)
             {
