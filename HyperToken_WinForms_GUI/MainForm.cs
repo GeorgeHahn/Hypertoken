@@ -52,14 +52,20 @@ namespace HyperToken_WinForms_GUI
 
             _currentDataDevice = dataDevice;
             _currentDataDevice.PropertyChanged += (sender, args) =>
-                {
-                    _dataDevice = _currentDataDevice.CurrentDevice;
-                    if (_dataDevice == null)
-                        return;
-
-                    _dataDevice.PropertyChanged += DataDeviceOnPropertyChanged;
-                    _dataDevice.DataReceived += DataDeviceOnDataReceived;
-                };
+                                                    {
+                                                        var oldDataDevice = _dataDevice;
+                                                        _dataDevice = _currentDataDevice.CurrentDevice;
+                                                        if (_dataDevice != null)
+                                                        {
+                                                            _dataDevice.PropertyChanged += DataDeviceOnPropertyChanged;
+                                                            _dataDevice.DataReceived += DataDeviceOnDataReceived;
+                                                        }
+                                                        if (oldDataDevice != null)
+                                                        {
+                                                            oldDataDevice.PropertyChanged -= DataDeviceOnPropertyChanged;
+                                                            oldDataDevice.DataReceived -= DataDeviceOnDataReceived;
+                                                        }
+                                                    };
 
             _dataDevice = _currentDataDevice.CurrentDevice;
 
@@ -96,12 +102,11 @@ namespace HyperToken_WinForms_GUI
 
             fileSendLoadingCircle.Alignment = ToolStripItemAlignment.Right;
 
-            _menuExtensions = from menu in _mainMenuExtender.GetMenus()
-                        where menu != null
-                        select menu;
+            _menuExtensions = _mainMenuExtender.GetMenus();
 
-            foreach (var menu in _menuExtensions)
-                menuStrip1.Items.Add(menu);
+            if (_menuExtensions != null)
+                foreach (var mainMenuExtension in _menuExtensions)
+                    menuStrip1.Items.Add(mainMenuExtension);
 
             if (_statusbarExtensions != null)
                 foreach (var statusbarExtension in _statusbarExtensions)

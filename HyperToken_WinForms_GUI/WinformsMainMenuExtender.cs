@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using Terminal_GUI_Interface;
+using NLog;
+using Anotar;
 using Menu = Terminal_GUI_Interface.Menu;
 
 namespace HyperToken_WinForms_GUI
@@ -24,8 +26,11 @@ namespace HyperToken_WinForms_GUI
             {
                 m.PropertyChanged += (sender, args) =>
                                         {
+                                            Log.Debug("Property changed: {0}", args.PropertyName);
                                             if (args.PropertyName != "Items")
                                                 return;
+
+                                            Log.Debug("Regenerating ToolStripMenuItems for menu {0}", m.Text);
 
                                             temp.DropDownItems.Clear();
                                             foreach (var item in m.Items)
@@ -39,6 +44,7 @@ namespace HyperToken_WinForms_GUI
             temp.Checked = m.Checked;
             m.PropertyChanged += (sender, args) =>
                                      {
+                                         Log.Debug("Property changed: {0}", args.PropertyName);
                                          if (args.PropertyName != "Checked")
                                              return;
                                          if (m.Checked != temp.Checked)

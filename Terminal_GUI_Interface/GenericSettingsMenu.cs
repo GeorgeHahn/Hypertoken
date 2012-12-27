@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -43,12 +44,15 @@ namespace Terminal_GUI_Interface
 
         private void SetItems()
         {
+            Log.Debug("Setting items for menu {0}", MenuName);
             _menu.Items.Clear();
 
             foreach (var value in Values)
                 _menu.Items.Add(new Menu(value.ToString()));
 
             UpdateCheckedStates(PropertyName);
+
+            _menu.FirePropertyChanged(this, new PropertyChangedEventArgs("Items"));
         }
 
         protected void ItemClicked(int item)

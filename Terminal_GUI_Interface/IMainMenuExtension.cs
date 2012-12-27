@@ -58,6 +58,12 @@ namespace Terminal_GUI_Interface
                 ItemsListOpening(sender, args);
         }
 
+        public void FirePropertyChanged(object sender, PropertyChangedEventArgs args)
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(sender, args);
+        }
+
         public static int GetIndex(ObservableCollection<Menu> list, string menu)
         {
             for (int index = 0; index < list.Count; index++)
