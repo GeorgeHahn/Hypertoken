@@ -101,8 +101,8 @@ namespace HyperToken_WinForms_GUI
                         where menu != null
                         select menu;
 
-            foreach (var mainMenuExtension in _menuExtensions)
-                menuStrip1.Items.Add(mainMenuExtension);
+            foreach (var menu in _menuExtensions)
+                menuStrip1.Items.Add(menu);
 
             if (_statusbarExtensions != null)
                 foreach (var statusbarExtension in _statusbarExtensions)
