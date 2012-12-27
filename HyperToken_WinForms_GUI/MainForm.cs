@@ -7,7 +7,6 @@ using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
 using CustomControls;
-using HyperToken_WinForms_GUI.Helpers;
 using HyperToken_WinForms_GUI.Properties;
 using NLog;
 using Terminal_GUI_Interface;
@@ -334,22 +333,18 @@ namespace HyperToken_WinForms_GUI
         private void ShowVersionInformation()
         {
             Log.Warn("Version {0}", GetVersion());
-
             Title = "HyperToken";
-
 #if DEBUG
             Title += " [Debug]";
-
             Log.Warn("Debug version");
 #endif
 
-            if (System.Diagnostics.Debugger.IsAttached)
-            {
-                Title += " (" + GetVersion() + ')';
+            if (!System.Diagnostics.Debugger.IsAttached)
+                return;
 
-                Log.Warn("Debugger attached");
-                Title += " [Debugger attached]";
-            }
+            Log.Warn("Debugger attached");
+            Title += " (" + GetVersion() + ')';
+            Title += " [Debugger attached]";
         }
 
         private void ToggleConnection(object sender, EventArgs e)
