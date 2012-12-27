@@ -169,7 +169,7 @@ namespace HyperToken_WinForms_GUI
             Application.Exit();
         }
 
-        // Why both of these?
+        // Send LF
         private void HandleKeyPress(object sender, KeyEventArgs e)
         {
             e.Handled = true;
