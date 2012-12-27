@@ -8,5 +8,6 @@ namespace Terminal_Interface
     public interface IPacketInterpreter
     {
         string InterpretPacket(byte[] packet);
+        string Name { get; }
     }
 }

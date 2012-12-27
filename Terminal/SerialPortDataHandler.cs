@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO.Ports;
 using System.Linq;
+using HyperToken_WinForms_GUI;
 using NLog;
 using Terminal_Interface;
 using Terminal_Interface.Enums;
@@ -12,12 +13,14 @@ namespace Terminal
 {
     public class SerialPortDataHandler : ISerialPort
     {
+        private readonly PacketParserHandler _handler;
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
         private readonly SerialPort _port;
         private readonly byte[] _receiveBuffer;
 
-        public SerialPortDataHandler()
+        public SerialPortDataHandler(PacketParserHandler handler)
         {
+            _handler = handler;
             _port = new SerialPort();
             _port.DataReceived += PortOnDataReceived;
 
@@ -56,7 +59,13 @@ namespace Terminal
         public string DeviceName
         {
             get { return _port.PortName; }
-            set { _port.PortName = value; }
+            set
+            {
+                if(_port.IsOpen)
+                    _port.Close();
+
+                _port.PortName = value;
+            }
         }
 
         public string[] Devices
@@ -188,29 +197,19 @@ namespace Terminal
 
             if (count == 0)
                 return;
-
-            //if (count > 200)
-            //{
-            //	logger.Warn("High latency detected");
-
-            //	// TODO Add a feedback mechanism for reporting latency issues
-
-            //	//_terminal.TrimLines(1000);
-            //}
-
+            
             if (count > 1024)
                 count = 1024;
 
             _port.Read(_receiveBuffer, 0, count);
 
-            //TODO Translate unprintable characters to hex
-            string inStr = System.Text.Encoding.ASCII.GetString(_receiveBuffer, 0, count);
-
-            inStr = inStr.Replace(new string(new char[] { (char)0xA, (char)0xD }), Environment.NewLine);
-
             if (DataReceived != null)
             {
-                var args = new DataReceivedEventArgs(inStr);
+                var actualData = new byte[count];
+                Array.Copy(_receiveBuffer, actualData, count);
+                string packet = _handler.CurrentParser.InterpretPacket(actualData);
+
+                var args = new DataReceivedEventArgs(packet);
                 DataReceived(this, args);
             }
         }

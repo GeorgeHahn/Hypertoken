@@ -61,5 +61,7 @@ namespace PacketParser
                 return string.Format("Script error: {0}\r\n", e.Message);
             }
         }
+
+        public string Name { get { return "Scriptable parser"; }}
     }
 }

@@ -16,11 +16,11 @@ namespace Terminal
     {
         private HidDevice _device;
 
-        private IPacketInterpreter _packetInterpreter;
+        private PacketParserHandler _parserHandler;
 
-        public HIDDataHandler(IPacketInterpreter packetInterpreter)
+        public HIDDataHandler(PacketParserHandler parserHandler)
         {
-            _packetInterpreter = packetInterpreter;
+            _parserHandler = parserHandler;
         }
 
         public IEnumerable<string> ListAvailableDevices()
@@ -116,7 +116,7 @@ namespace Terminal
                 return;
 
             var data = report.GetBytes();
-            var dataString = _packetInterpreter.InterpretPacket(data);
+            var dataString = _parserHandler.CurrentParser.InterpretPacket(data);
             var args = new DataReceivedEventArgs(dataString);
             DataReceived(this, args);
         }
@@ -131,7 +131,7 @@ namespace Terminal
                 return;
 
             var bytes = data.Data;
-            var dataString = _packetInterpreter.InterpretPacket(bytes);
+            var dataString = _parserHandler.CurrentParser.InterpretPacket(bytes);
             var args = new DataReceivedEventArgs(dataString);
             DataReceived(this, args);
         }

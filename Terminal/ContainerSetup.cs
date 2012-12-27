@@ -32,6 +32,7 @@ namespace Terminal
             // GUI Extensions
             builder.RegisterType<LoggingGui>().As<IMainMenuExtension>().SingleInstance();
             builder.RegisterType<LoggingGui>().As<IStatusbarExtension>().SingleInstance();
+            builder.RegisterType<PacketParserGUI>().As<IMainMenuExtension>().SingleInstance();
             builder.RegisterType<SerialMenu>().As<IMainMenuExtension>();
 
             builder.RegisterType<SerialStatusbarPortMenu>().As<IStatusbarExtension>();
@@ -59,8 +60,11 @@ namespace Terminal
             builder.RegisterType<CurrentDataDevice>().SingleInstance();
             builder.RegisterType<CurrentPacketInterpreter>().SingleInstance();
 
-            //builder.RegisterType<StringPacketInterpreter>().As<IPacketInterpreter>();
-            builder.RegisterType<PythonPacketParser>().As<IPacketInterpreter>();
+            builder.RegisterType<PacketParserHandler>().SingleInstance();
+            builder.RegisterType<StringPacketInterpreter>().As<IPacketInterpreter>().SingleInstance();
+            builder.RegisterType<PythonPacketParser>().As<IPacketInterpreter>().SingleInstance();
+            builder.RegisterType<RawPacketParser>().As<IPacketInterpreter>().SingleInstance();
+
 
             // Logger wiring
             builder.RegisterType<FileLogger>().As<ILogger>().SingleInstance();

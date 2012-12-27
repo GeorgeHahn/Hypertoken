@@ -30,5 +30,7 @@ namespace PacketParser
             hex.Append(Environment.NewLine);
             return hex.ToString();
         }
+
+        public string Name { get { return "Unprintable character parser"; }}
     }
 }

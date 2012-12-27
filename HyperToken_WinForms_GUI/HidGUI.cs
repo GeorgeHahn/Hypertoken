@@ -26,6 +26,7 @@ namespace HyperToken_WinForms_GUI
         }
     }
 
+    // Doesn't implement GenericSettingsMenu
     public class DeviceSelectionMenu : IHidSettingsMenu
     {
         private readonly IDataDevice _dataDevice;
