@@ -17,10 +17,6 @@ namespace PacketParser
     public class PythonPacketParser : IPacketInterpreter
     {
         private ScriptRuntime runtime;
-        private ScriptEngine engine;
-        private string scriptStr;
-        private ScriptSource source;
-        private ScriptScope scope;
         private dynamic script;
 
         public PythonPacketParser()
