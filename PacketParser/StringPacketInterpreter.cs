@@ -11,23 +11,22 @@ namespace PacketParser
     {
         public string InterpretPacket(byte[] packet)
         {
-            var hex = new StringBuilder(packet.Length * 6);
+            var hex = new StringBuilder(packet.Length * 4);
             int endIndex = packet.Length - 1;
             while ((packet[endIndex] == 0) && (endIndex >= 0))
                 endIndex--;
 
-            if (endIndex == 0)
+            if (endIndex < 0)
                 return "Empty string\r\n";
 
-            for (int index = 0; index < endIndex; index++)
+            for (int index = 0; index <= endIndex; index++)
             {
-                byte b = packet[index];
+                var b = packet[index];
                 if ((b >= 0x21) && (b <= 0x7E))
-                    hex.Append((char)b);
+                    hex.Append(Encoding.UTF8.GetChars(new []{ b }));
                 else
-                    hex.AppendFormat(" 0x{0:x2},", b);
+                    hex.AppendFormat("[{0:X2}]", b);
             }
-            hex.Append(Environment.NewLine);
             return hex.ToString();
         }
 
