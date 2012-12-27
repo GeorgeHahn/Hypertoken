@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Globalization;
+using System.Linq;
 using System.Windows.Forms;
 using CustomControls;
 using HyperToken_WinForms_GUI.Helpers;
@@ -17,9 +18,6 @@ using Terminal_Interface.Exceptions;
 using Anotar;
 
 // TODO Add 'human readable version' for Rob
-// TODO Parse incoming data for unprintable characters (display as hex?)
-// TODO tweak garbage collection
-// TODO right click menu - remove paste?
 // TODO Custom Baud setting
 
 namespace HyperToken_WinForms_GUI
@@ -55,14 +53,14 @@ namespace HyperToken_WinForms_GUI
 
             _currentDataDevice = dataDevice;
             _currentDataDevice.PropertyChanged += (sender, args) =>
-                                                      {
-                                                          _dataDevice = _currentDataDevice.CurrentDevice;
-                                                          if (_dataDevice == null)
-                                                              return;
+                {
+                    _dataDevice = _currentDataDevice.CurrentDevice;
+                    if (_dataDevice == null)
+                        return;
 
-                                                          _dataDevice.PropertyChanged += DataDeviceOnPropertyChanged;
-                                                          _dataDevice.DataReceived += DataDeviceOnDataReceived;
-                                                      };
+                    _dataDevice.PropertyChanged += DataDeviceOnPropertyChanged;
+                    _dataDevice.DataReceived += DataDeviceOnDataReceived;
+                };
 
             _dataDevice = _currentDataDevice.CurrentDevice;
 
@@ -99,11 +97,12 @@ namespace HyperToken_WinForms_GUI
 
             fileSendLoadingCircle.Alignment = ToolStripItemAlignment.Right;
 
-            _menuExtensions = _mainMenuExtender.GetMenus();
+            _menuExtensions = from menu in _mainMenuExtender.GetMenus()
+                        where menu != null
+                        select menu;
 
-            if (_menuExtensions != null)
-                foreach (var mainMenuExtension in _menuExtensions)
-                    menuStrip1.Items.Add(mainMenuExtension);
+            foreach (var mainMenuExtension in _menuExtensions)
+                menuStrip1.Items.Add(mainMenuExtension);
 
             if (_statusbarExtensions != null)
                 foreach (var statusbarExtension in _statusbarExtensions)
