@@ -26,8 +26,6 @@ namespace Terminal_Interface
         PortState PortState { get; set; }
 
         string[] Devices { get; }
-
-        void KeyPressed(char c);
     }
 
     public interface ISerialPort : IDataDevice

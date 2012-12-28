@@ -147,11 +147,6 @@ namespace Terminal
             }
         }
 
-        public void KeyPressed(char c)
-        {
-            _port.Write(new char[] { c }, 0, 1);
-        }
-
         public IEnumerable<string> ListAvailableDevices()
         {
             return Devices.AsEnumerable();

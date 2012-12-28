@@ -141,11 +141,6 @@ namespace Terminal
             throw new NotImplementedException();
         }
 
-        public void KeyPressed(char c)
-        {
-            throw new NotImplementedException();
-        }
-
         public int Write(byte[] data)
         {
             //_device.Write(data);
