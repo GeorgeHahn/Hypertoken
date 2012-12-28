@@ -90,6 +90,8 @@
   <ItemGroup>
     <Compile Include="ContainerSetup.cs" />
     <Compile Include="FileLogger.cs" />
+    <Compile Include="GUI\HidGUI.cs" />
+    <Compile Include="GUI\SerialGUI.cs" />
     <Compile Include="HIDDataHandler.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="SerialPortDataHandler.cs">
@@ -141,6 +143,7 @@
       <Name>Terminal_GUI_Interface</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

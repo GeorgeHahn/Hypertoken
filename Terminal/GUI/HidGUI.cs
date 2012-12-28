@@ -1,14 +1,10 @@
-﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using HyperToken_WinForms_GUI;
 using Terminal_GUI_Interface;
 using Terminal_Interface;
 using Terminal_Interface.Enums;
 
-namespace HyperToken_WinForms_GUI
+namespace Terminal.GUI
 {
     public interface IHidSettingsMenu
     {

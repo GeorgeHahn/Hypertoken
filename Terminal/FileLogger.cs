@@ -15,10 +15,6 @@ namespace Terminal
 		private FileStream _loggingStream;
 		private string _loggingFilePath;
 
-		public FileLogger()
-		{
-		}
-
 		private void Open()
 		{
 			if (_loggingFilePath == null)

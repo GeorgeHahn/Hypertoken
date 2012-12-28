@@ -5,6 +5,7 @@ using System.Text;
 using Autofac;
 using HyperToken_WinForms_GUI;
 using PacketParser;
+using Terminal.GUI;
 using Terminal_GUI_Interface;
 using Terminal_Interface;
 
