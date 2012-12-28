@@ -71,7 +71,10 @@ namespace Terminal
 
         public deviceType DeviceType
         {
-            get { throw new NotImplementedException(); }
+            get
+            {
+                return deviceType.HID;
+            }
         }
 
         public PortState PortState
@@ -85,8 +88,10 @@ namespace Terminal
             }
             set
             {
+                //if (_device == null)
+                //    return;
                 if (_device == null)
-                    return;
+                    throw new ArgumentException("_device should not be null");
 
                 if (value == PortState.Open)
                 {
@@ -143,8 +148,8 @@ namespace Terminal
 
         public int Write(byte[] data)
         {
-            //_device.Write(data);
-            var header = new byte[] { 0x01, 0xF0, 0x10, 0x03, 0xA0, 0x01, 0x0F, 0x58, 0x04 };
+            //var header = new byte[] { 0x01, 0xF0, 0x10, 0x03, 0xA0, 0x01, 0x0F, 0x58, 0x04 };
+            var header = data;
             var writeReport = _device.CreateReport();
             int i = 0;
             if (writeReport.Data.Length > 0)
@@ -156,19 +161,17 @@ namespace Terminal
 
         public int Write(byte data)
         {
-            Write(new[] { data });
-            return 1;
+            return Write(new[] { data });
         }
 
         public int Write(string data)
         {
-            throw new NotImplementedException();
+            return Write(Encoding.UTF8.GetBytes(data));
         }
 
         public int Write(char data)
         {
-            Write(new[] { (byte)data });
-            return 1;
+            return Write(new[] { (byte)data });
         }
 
         public event DataReceivedEventHandler DataReceived;
