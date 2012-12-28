@@ -3,7 +3,7 @@
      xmlns:ui="http://schemas.microsoft.com/wix/UiExtension"
      xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension">
      
-	<Product Id="*" Name="Hypertoken_Installer" Language="1033" Version="1.0.0.0" Manufacturer="" UpgradeCode="03e683c6-1a44-4edd-9efc-27c93721503e">
+	<Product Id="*" Name="Hypertoken_Installer" Language="1033" Version="1.0.0.0" Manufacturer="Circuit Works, Inc" UpgradeCode="03e683c6-1a44-4edd-9efc-27c93721503e">
 		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
         
 		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
