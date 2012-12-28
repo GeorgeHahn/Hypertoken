@@ -96,7 +96,6 @@
     <Compile Include="GUI\HidGUI.cs" />
     <Compile Include="GUI\SerialGUI.cs" />
     <Compile Include="HIDDataHandler.cs" />
-    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="SerialPortDataHandler.cs">
       <SubType>Code</SubType>
     </Compile>

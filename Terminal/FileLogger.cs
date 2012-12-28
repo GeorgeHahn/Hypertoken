@@ -3,7 +3,6 @@ using System.ComponentModel;
 using System.IO;
 using Anotar;
 using NLog;
-using Terminal.Annotations;
 using Terminal_Interface;
 using Terminal_Interface.Enums;
 

@@ -20,6 +20,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -28,6 +29,24 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -48,15 +67,15 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ITerminal\Terminal_Interface.csproj">
-      <Project>{CDF84311-5363-4054-AD8B-74741CFD4418}</Project>
+      <Project>{cdf84311-5363-4054-ad8b-74741cfd4418}</Project>
       <Name>Terminal_Interface</Name>
     </ProjectReference>
     <ProjectReference Include="..\PacketParser\PacketParser.csproj">
-      <Project>{6E050DBD-053A-40DD-A044-F6CF450D2F33}</Project>
+      <Project>{6e050dbd-053a-40dd-a044-f6cf450d2f33}</Project>
       <Name>PacketParser</Name>
     </ProjectReference>
     <ProjectReference Include="..\Terminal\Terminal.csproj">
-      <Project>{5CD89504-1C11-457F-A1EC-9AC23AB51AD3}</Project>
+      <Project>{5cd89504-1c11-457f-a1ec-9ac23ab51ad3}</Project>
       <Name>Terminal</Name>
     </ProjectReference>
   </ItemGroup>
