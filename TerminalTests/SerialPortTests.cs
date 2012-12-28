@@ -55,16 +55,7 @@ namespace TerminalTests
             SerialPortDataHandler port = new SerialPortDataHandler(new PacketParserHandler(new RawPacketParser()));
 
             port.DeviceName = "COMx";
-            bool threw = false;
-            try
-            {
-                port.PortState = PortState.Open;
-            }
-            catch (System.IO.IOException)
-            {
-                threw = true;
-            }
-            Assert.True(threw);
+            Assert.Throws<System.IO.IOException>(() => port.PortState = PortState.Open);
         }
 
         [Fact]
@@ -73,16 +64,7 @@ namespace TerminalTests
             SerialPortDataHandler port = new SerialPortDataHandler(new PacketParserHandler(new RawPacketParser()));
 
             port.DeviceName = "NOGOOD";
-            bool threw = false;
-            try
-            {
-                port.PortState = PortState.Open;
-            }
-            catch (ArgumentException)
-            {
-                threw = true;
-            }
-            Assert.True(threw);
+            Assert.Throws<ArgumentException>(() => port.PortState = PortState.Open);
         }
 
         [Fact]
