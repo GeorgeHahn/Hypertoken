@@ -59,7 +59,7 @@ namespace Terminal
             builder.RegisterType<CurrentDataDevice>().SingleInstance();
             builder.RegisterType<CurrentPacketInterpreter>().SingleInstance();
 
-            builder.RegisterType<PacketParserHandler>().SingleInstance();
+            builder.RegisterType<CurrentPacketParser>().SingleInstance();
             builder.RegisterType<StringPacketInterpreter>().As<IPacketInterpreter>().SingleInstance();
             builder.RegisterType<PythonPacketParser>().As<IPacketInterpreter>().SingleInstance();
             builder.RegisterType<RawPacketParser>().As<IPacketInterpreter>().SingleInstance();

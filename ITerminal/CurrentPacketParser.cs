@@ -2,12 +2,12 @@
 
 namespace Terminal_Interface
 {
-    public class PacketParserHandler : INotifyPropertyChanged
+    public class CurrentPacketParser : INotifyPropertyChanged
     {
         public IPacketInterpreter CurrentParser { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public PacketParserHandler(IPacketInterpreter defaultParser)
+        public CurrentPacketParser(IPacketInterpreter defaultParser)
         {
             CurrentParser = defaultParser;
         }

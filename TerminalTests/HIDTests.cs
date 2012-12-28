@@ -18,14 +18,14 @@ namespace TerminalTests
         [Fact]
         public void TestPortEnumeration()
         {
-            HIDDataHandler port = new HIDDataHandler(new PacketParserHandler(new RawPacketParser()));
+            HIDDataHandler port = new HIDDataHandler(new CurrentPacketParser(new RawPacketParser()));
             Assert.NotNull(port.Devices);
         }
 
         [Fact]
         public void TestPortOpenClose()
         {
-            HIDDataHandler port = new HIDDataHandler(new PacketParserHandler(new RawPacketParser()));
+            HIDDataHandler port = new HIDDataHandler(new CurrentPacketParser(new RawPacketParser()));
 
             Assert.Equal(port.PortState, PortState.Error);
 
@@ -36,7 +36,7 @@ namespace TerminalTests
         [Fact]
         public void TestFriendlyName()
         {
-            HIDDataHandler port = new HIDDataHandler(new PacketParserHandler(new RawPacketParser()));
+            HIDDataHandler port = new HIDDataHandler(new CurrentPacketParser(new RawPacketParser()));
             port.DeviceName = port.Devices[0];
             Assert.NotNull(port.FriendlyName);
             Assert.NotEmpty(port.FriendlyName);
@@ -45,7 +45,7 @@ namespace TerminalTests
         [Fact]
         public void TestDeviceType()
         {
-            HIDDataHandler port = new HIDDataHandler(new PacketParserHandler(new RawPacketParser()));
+            HIDDataHandler port = new HIDDataHandler(new CurrentPacketParser(new RawPacketParser()));
             Assert.Equal(port.DeviceType, deviceType.HID);
         }
     }

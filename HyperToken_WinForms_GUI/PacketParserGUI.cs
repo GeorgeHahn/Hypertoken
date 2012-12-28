@@ -13,9 +13,9 @@ namespace HyperToken_WinForms_GUI
     public class PacketParserGUI : GenericSettingsMenu, IMainMenuExtension
     {
         private readonly IEnumerable<IPacketInterpreter> _parsers;
-        private readonly PacketParserHandler _handler;
+        private readonly CurrentPacketParser _handler;
 
-        public PacketParserGUI(IEnumerable<IPacketInterpreter> parsers, PacketParserHandler handler)
+        public PacketParserGUI(IEnumerable<IPacketInterpreter> parsers, CurrentPacketParser handler)
         {
             _parsers = parsers;
             _handler = handler;

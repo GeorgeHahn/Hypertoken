@@ -13,11 +13,11 @@ namespace Terminal
 {
     public class SerialPortDataHandler : ISerialPort
     {
-        private readonly PacketParserHandler _handler;
+        private readonly CurrentPacketParser _handler;
         private readonly SerialPort _port;
         private readonly byte[] _receiveBuffer;
 
-        public SerialPortDataHandler(PacketParserHandler handler)
+        public SerialPortDataHandler(CurrentPacketParser handler)
         {
             _handler = handler;
             _port = new SerialPort();
