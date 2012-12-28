@@ -3,18 +3,17 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO.Ports;
 using System.Linq;
-using HyperToken_WinForms_GUI;
-using NLog;
 using Terminal_Interface;
 using Terminal_Interface.Enums;
 using Terminal_Interface.Events;
+using Anotar;
+using NLog;
 
 namespace Terminal
 {
     public class SerialPortDataHandler : ISerialPort
     {
         private readonly PacketParserHandler _handler;
-        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
         private readonly SerialPort _port;
         private readonly byte[] _receiveBuffer;
 
@@ -89,7 +88,7 @@ namespace Terminal
             }
             set
             {
-                logger.Trace("Invalidated DeviceStatus; {0}", value);
+                Log.Info("Invalidated DeviceStatus; {0}", value);
             }
         }
 
@@ -122,7 +121,7 @@ namespace Terminal
             get { return _port.IsOpen ? PortState.Open : PortState.Closed; }
             set
             {
-                logger.Trace("Port being set to {0}", value);
+                Log.Info("Port being set to {0}", value);
                 if (value == PortState.Open)
                     try
                     {
@@ -130,7 +129,7 @@ namespace Terminal
                     }
                     catch (UnauthorizedAccessException)
                     {
-                        logger.Error("{0} is in use", DeviceName);
+                        Log.Error("{0} is in use", DeviceName);
                     }
                 else
                     _port.Close();
@@ -184,7 +183,7 @@ namespace Terminal
 
         private void PortOnDataReceived(object sender, SerialDataReceivedEventArgs serialDataReceivedEventArgs)
         {
-            logger.Trace("Received {0} bytes", _port.BytesToRead);
+            Log.Info("Received {0} bytes", _port.BytesToRead);
             if (!_port.IsOpen)
                 return;
 
