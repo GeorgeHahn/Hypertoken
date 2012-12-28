@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using NLog;
 using Terminal_Interface;
+using Anotar;
 
 namespace Terminal
 {
@@ -12,21 +13,19 @@ namespace Terminal
 		private readonly ITerminal _terminal;
 		private readonly ISerialPort _dataDevice;
 
-		private static readonly Logger logger = LogManager.GetCurrentClassLogger();
-
 		public TerminalRunner(ITerminal terminal, ISerialPort dataDevice)
 		{
-			logger.Trace("TerminalRunner created");
+			Log.Debug("TerminalRunner created");
 			_dataDevice = dataDevice;
 			_terminal = terminal;
 		}
 
 		public void Run()
 		{
-			logger.Trace("Running terminal");
+			Log.Debug("Running terminal");
 			_terminal.Run();
 
-			logger.Info("Application shutting down");
+			Log.Info("Application shutting down");
 		}
 	}
 }
