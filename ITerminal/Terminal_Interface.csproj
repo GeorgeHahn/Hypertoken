@@ -89,7 +89,7 @@
     <Compile Include="IPacketInterpreter.cs" />
     <Compile Include="ISettings.cs" />
     <Compile Include="ITerminal.cs" />
-    <Compile Include="PacketParserHandler.cs" />
+    <Compile Include="CurrentPacketParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Events\SettingChangedEventArgs.cs" />
   </ItemGroup>
