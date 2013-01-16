@@ -19,6 +19,32 @@
                   Value="INSTALLDIR" />
         <UIRef Id="WixUI_Mondo"/>
     </Fragment>
+
+    <Fragment>
+        <Directory Id="TARGETDIR" Name="SourceDir">
+            <Directory Id="ProgramMenuFolder">
+                <Directory Id="ApplicationProgramsFolder" Name="Hypertoken">
+                    <Component Id="StartMenuShortcut">
+                        <Shortcut Id="ApplicationStartMenuShortcut"
+                                  Name="Hypertoken"
+                                  Description="Modern Serial Terminal"
+                                  Target="[INSTALLFOLDER]Terminal.exe"
+                                  WorkingDirectory="INSTALLFOLDER"/>
+                    </Component>
+                </Directory>
+            </Directory>
+        
+            <Directory Id="DesktopFolder">
+                <Component Id="DesktopShortcut">
+                    <Shortcut Id="ApplicationDesktopShortcut"
+                              Name="Hypertoken"
+                              Description="Modern Serial Terminal"
+                              Target="[INSTALLFOLDER]Terminal.exe"
+                              WorkingDirectory="INSTALLFOLDER"/>
+                </Component>
+            </Directory>
+        </Directory>
+    </Fragment>
     
 	<Fragment>
 		<Directory Id="TARGETDIR" Name="SourceDir">
