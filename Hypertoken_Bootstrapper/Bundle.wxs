@@ -1,11 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-	<Bundle Name="Hypertoken_Bootstrapper" Version="1.0.0.0" Manufacturer="" UpgradeCode="faeadb99-d831-43b9-af3d-454f3a42269b">
-		<BootstrapperApplicationRef Id="WixStandardBootstrapperApplication.RtfLicense" />
+	<Bundle Name="Hypertoken" Version="1.0.0.0" Manufacturer="Circuit Works, Inc" UpgradeCode="faeadb99-d831-43b9-af3d-454f3a42269b">
+		<BootstrapperApplicationRef Id="WixStandardBootstrapperApplication.HyperlinkLicense" />
+        <WixVariable Id="WixStdbaLicenseUrl" Value="" /> 
+        
+        <Variable Name="InstallFolder" Type="string" Value="[ProgramFilesFolder]Hypertoken"/>
 
-		<Chain>
-			<!-- TODO: Define the list of chained packages. -->
-			<!-- <MsiPackage SourceFile="path\to\your.msi" /> -->
+        <Chain>
+            <PackageGroupRef Id="NetFx45Web" />
+            <MsiPackage
+              Id="Setup"
+              Compressed="yes"
+              SourceFile="$(var.Hypertoken_Installer.TargetPath)"
+              Vital="yes">
+                <MsiProperty Name="INSTALLLOCATION" Value="[InstallFolder]" />
+            </MsiPackage>
 		</Chain>
 	</Bundle>
 </Wix>
