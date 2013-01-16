@@ -33,6 +33,80 @@
       <Name>WixNetFxExtension</Name>
     </WixExtension>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Bugsense.WPF\Bugsense.WPF\Bugsense.WPF.csproj">
+      <Name>Bugsense.WPF</Name>
+      <Project>{96d7fdaa-341f-49d9-b910-1f349ca565d7}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>
+      </DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Symbols</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\CustomControls\CustomControls.csproj">
+      <Name>CustomControls</Name>
+      <Project>{18ae5954-cb94-41e2-942d-59bfe225abc1}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>
+      </DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Symbols</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\HidLibrary\src\HidLibrary\HidLibrary.csproj">
+      <Name>HidLibrary</Name>
+      <Project>{9e8f1d50-74ea-4c60-bd5c-ab2c5b53bc66}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>
+      </DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Symbols</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\HyperToken_WinForms_GUI\HyperToken_WinForms_GUI.csproj">
+      <Name>HyperToken_WinForms_GUI</Name>
+      <Project>{6e23681c-544e-44b7-81e1-9086f5bff888}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>
+      </DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Symbols</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\ITerminal\Terminal_Interface.csproj">
+      <Name>Terminal_Interface</Name>
+      <Project>{cdf84311-5363-4054-ad8b-74741cfd4418}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>
+      </DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Symbols</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\PacketParser\PacketParser.csproj">
+      <Name>PacketParser</Name>
+      <Project>{6e050dbd-053a-40dd-a044-f6cf450d2f33}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>
+      </DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Symbols</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\Terminal\Terminal.csproj">
+      <Name>Terminal</Name>
+      <Project>{5cd89504-1c11-457f-a1ec-9ac23ab51ad3}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>
+      </DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Symbols</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\Terminal_GUI_Interface\Terminal_GUI_Interface.csproj">
+      <Name>Terminal_GUI_Interface</Name>
+      <Project>{867db553-9770-4fc6-be0b-abff3e734c96}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>
+      </DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Symbols</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(WixTargetsPath)" />
   <!--
 	To modify your build process, add your task inside one of the targets below and uncomment it.

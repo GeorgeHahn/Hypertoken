@@ -17,17 +17,22 @@
 	<Fragment>
 		<Directory Id="TARGETDIR" Name="SourceDir">
 			<Directory Id="ProgramFilesFolder">
-				<Directory Id="INSTALLFOLDER" Name="Hypertoken_Installer" />
+				<Directory Id="INSTALLFOLDER" Name="Hypertoken" />
+                <Component Id="Terminal.exe" Guid="2F91FC86-41DB-46AB-A030-563B78D1B947">
+                    <File Id="Terminal.exe" Source="$(var.Terminal.TargetDir)Terminal.exe" KeyPath="yes" Checksum="yes"/>
+                </Component>
 			</Directory>
 		</Directory>
 	</Fragment>
 
+    <Fragment>
+        <DirectoryRef Id="INSTALLFOLDER">
+        </DirectoryRef>
+    </Fragment>
+    
 	<Fragment>
 		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
-			<!-- TODO: Remove the comments around this Component element and the ComponentRef below in order to add resources to this installer. -->
-			<!-- <Component Id="ProductComponent"> -->
-				<!-- TODO: Insert files, registry keys, and other resources here. -->
-			<!-- </Component> -->
+            <ComponentRef Id="Terminal.exe" />
 		</ComponentGroup>
 	</Fragment>
 </Wix>
