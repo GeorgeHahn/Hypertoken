@@ -33,7 +33,8 @@ namespace Terminal
 
 			logger.Trace("Building IOC container");
 			ContainerSetup containerSetup = new ContainerSetup();
-			IContainer container = containerSetup.BuildContainer();
+			var container = containerSetup.BuildWinFormsContainer();
+		    //var container = containerSetup.BuildAvalonContainer();
 
 			logger.Trace("Running ITerminal");
 			if (container.IsRegistered<InitableRunner>())

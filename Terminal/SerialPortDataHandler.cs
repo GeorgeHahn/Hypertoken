@@ -130,6 +130,7 @@ namespace Terminal
                     catch (UnauthorizedAccessException)
                     {
                         Log.Error("{0} is in use", DeviceName);
+                        throw;
                     }
                 else
                     _port.Close();

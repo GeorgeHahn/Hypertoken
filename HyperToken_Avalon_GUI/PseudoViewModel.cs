@@ -8,7 +8,7 @@ namespace HyperToken_Avalon_GUI
 {
 	public class PseudoViewModel : ITerminal, INotifyPropertyChanged
 	{
-		private ISerialPort _backend;
+        private IDataDevice _backend;
 
 		public void TrimLines(int trimTo)
 		{
@@ -20,16 +20,10 @@ namespace HyperToken_Avalon_GUI
 		//	this._backend = backend;
 		//}
 
-		public void SetBackend(ISerialPort backend)
+		public void SetBackend(IDataDevice backend)
 		{
 			this._backend = backend;
 		}
-
-		public event SendFileEventHandler OnSendFile;
-
-		public event SetLoggingPathEventHandler OnSetLoggingPath;
-
-		public event OnKeyPressedEventHandler OnKeyPressed;
 
 		public event SaveSessionEventHandler OnSaveSession;
 
@@ -155,9 +149,9 @@ namespace HyperToken_Avalon_GUI
 
 		private static Logger logger = LogManager.GetCurrentClassLogger();
 
-		internal void KeyPressed(char p)
-		{
-			_backend.KeyPressed(p);
-		}
+        public void KeyPressed(char p)
+        {
+            _backend.Write(p);
+        }
 	}
 }

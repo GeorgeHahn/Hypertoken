@@ -43,6 +43,24 @@ namespace TerminalTests
         }
 
         [Fact]
+        public void TestPortOpenException()
+        {
+            SerialPortDataHandler port = new SerialPortDataHandler(new CurrentPacketParser(new RawPacketParser()));
+
+            Assert.Equal(port.PortState, PortState.Closed);
+
+            port.DeviceName = port.Devices[0];
+            port.PortState = PortState.Open;
+            Assert.Equal(port.PortState, PortState.Open);
+
+            SerialPortDataHandler port2 = new SerialPortDataHandler(new CurrentPacketParser(new RawPacketParser()));
+            port2.DeviceName = port.Devices[0];
+            Assert.Throws<UnauthorizedAccessException>(() => port2.PortState = PortState.Open);
+
+            port.PortState = PortState.Closed;
+        }
+
+        [Fact]
         public void TestEnumeration()
         {
             SerialPortDataHandler port = new SerialPortDataHandler(new CurrentPacketParser(new RawPacketParser()));
