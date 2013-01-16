@@ -2,25 +2,156 @@
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
      xmlns:ui="http://schemas.microsoft.com/wix/UiExtension"
      xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension">
-     
+    
 	<Product Id="*" Name="Hypertoken_Installer" Language="1033" Version="1.0.0.0" Manufacturer="Circuit Works, Inc" UpgradeCode="03e683c6-1a44-4edd-9efc-27c93721503e">
 		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
         
 		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
-		<MediaTemplate />
+		<MediaTemplate EmbedCab="yes" />
 
 		<Feature Id="ProductFeature" Title="Hypertoken_Installer" Level="1">
 			<ComponentGroupRef Id="ProductComponents" />
 		</Feature>
 	</Product>
 
+    <Fragment>
+        <Property Id="WIXUI_INSTALLDIR"
+                  Value="INSTALLDIR" />
+        <UIRef Id="WixUI_Mondo"/>
+    </Fragment>
+    
 	<Fragment>
 		<Directory Id="TARGETDIR" Name="SourceDir">
 			<Directory Id="ProgramFilesFolder">
-				<Directory Id="INSTALLFOLDER" Name="Hypertoken" />
-                <Component Id="Terminal.exe" Guid="2F91FC86-41DB-46AB-A030-563B78D1B947">
-                    <File Id="Terminal.exe" Source="$(var.Terminal.TargetDir)Terminal.exe" KeyPath="yes" Checksum="yes"/>
-                </Component>
+                <Directory Id="INSTALLFOLDER" Name="Hypertoken">
+                    <Component Id="Terminal.exe" Guid="2F91FC86-41DB-46AB-A030-563B78D1B947">
+                        <File Id="Terminal.exe" Source="$(var.Terminal.TargetDir)Terminal.exe" KeyPath="yes" Checksum="yes">
+                            <netfx:NativeImage Id="Terminal.exe" Platform="32bit" Priority="0" AppBaseDirectory="INSTALLFOLDER"/>
+                        </File>
+                    </Component>
+                    <Component Id="Terminal.exe.config">
+                        <File Source="$(var.Terminal.TargetDir)Terminal.exe.config"/>
+                    </Component>
+                    <Component Id="Terminal.pdb">
+                        <File Source="$(var.Terminal.TargetDir)Terminal.pdb"/>
+                    </Component>
+                    <Component Id="App.config">
+                        <File Source="$(var.Terminal.TargetDir)App.config"/>
+                    </Component>
+                    <Component Id="Autofac.Configuration.dll">
+                        <File Source="$(var.Terminal.TargetDir)Autofac.Configuration.dll">
+                            <netfx:NativeImage Id="Autofac.Configuration.dll" Platform="32bit" Priority="0" AppBaseDirectory="INSTALLFOLDER"/>
+                        </File>
+                    </Component>
+                    <Component Id="Autofac.dll">
+                        <File Source="$(var.Terminal.TargetDir)Autofac.dll">
+                            <netfx:NativeImage Id="Autofac.dll" Platform="32bit" Priority="0" AppBaseDirectory="INSTALLFOLDER"/>
+                        </File>
+                    </Component>
+                    <Component Id="Bugsense.WPF.dll">
+                        <File Source="$(var.Terminal.TargetDir)Bugsense.WPF.dll">
+                            <netfx:NativeImage Id="Bugsense.WPF.dll" Platform="32bit" Priority="0" AppBaseDirectory="INSTALLFOLDER"/>
+                        </File>
+                    </Component>
+                    <Component Id="Bugsense.WPF.pdb">
+                        <File Source="$(var.Terminal.TargetDir)Bugsense.WPF.pdb"/>
+                    </Component>
+                    <Component Id="CustomControls.dll">
+                        <File Source="$(var.Terminal.TargetDir)CustomControls.dll">
+                            <netfx:NativeImage Id="CustomControls.dll" Platform="32bit" Priority="0" AppBaseDirectory="INSTALLFOLDER"/>
+                        </File>
+                    </Component>
+                    <Component Id="CustomControls.pdb">
+                        <File Source="$(var.Terminal.TargetDir)CustomControls.pdb"/>
+                    </Component>
+                    <Component Id="HidLibrary.dll">
+                        <File Source="$(var.Terminal.TargetDir)HidLibrary.dll">
+                            <netfx:NativeImage Id="HidLibrary.dll" Platform="32bit" Priority="0" AppBaseDirectory="INSTALLFOLDER"/>
+                        </File>
+                    </Component>
+                    <Component Id="HidLibrary.pdb">
+                        <File Source="$(var.Terminal.TargetDir)HidLibrary.pdb"/>
+                    </Component>
+                    <Component Id="HyperToken_WinForms_GUI.dll">
+                        <File Source="$(var.Terminal.TargetDir)HyperToken_WinForms_GUI.dll">
+                            <netfx:NativeImage Id="HyperToken_WinForms_GUI.dll" Platform="32bit" Priority="0" AppBaseDirectory="INSTALLFOLDER"/>
+                        </File>
+                    </Component>
+                    <Component Id="HyperToken_WinForms_GUI.pdb">
+                        <File Source="$(var.Terminal.TargetDir)HyperToken_WinForms_GUI.pdb"/>
+                    </Component>
+                    <Component Id="interpreter.py">
+                        <File Source="$(var.Terminal.TargetDir)interpreter.py"/>
+                    </Component>
+                    <Component Id="IronPython.dll">
+                        <File Source="$(var.Terminal.TargetDir)IronPython.dll">
+                            <netfx:NativeImage Id="IronPython.dll" Platform="32bit" Priority="0" AppBaseDirectory="INSTALLFOLDER"/>
+                        </File>
+                    </Component>
+                    <Component Id="Microsoft.Dynamic.dll">
+                        <File Source="$(var.Terminal.TargetDir)Microsoft.Dynamic.dll">
+                            <netfx:NativeImage Id="Microsoft.Dynamic.dll" Platform="32bit" Priority="0" AppBaseDirectory="INSTALLFOLDER"/>
+                        </File>
+                    </Component>
+                    <Component Id="Microsoft.Scripting.dll">
+                        <File Source="$(var.Terminal.TargetDir)Microsoft.Scripting.dll">
+                            <netfx:NativeImage Id="Microsoft.Scripting.dll" Platform="32bit" Priority="0" AppBaseDirectory="INSTALLFOLDER"/>
+                        </File>
+                    </Component>
+                    <Component Id="Microsoft.Scripting.Metadata.dll">
+                        <File Source="$(var.Terminal.TargetDir)Microsoft.Scripting.Metadata.dll">
+                            <netfx:NativeImage Id="Microsoft.Scripting.Metadata.dll" Platform="32bit" Priority="0" AppBaseDirectory="INSTALLFOLDER"/>
+                        </File>
+                    </Component>
+                    <Component Id="MRG.Controls.UI.dll">
+                        <File Source="$(var.Terminal.TargetDir)MRG.Controls.UI.dll">
+                            <netfx:NativeImage Id="MRG.Controls.UI.dll" Platform="32bit" Priority="0" AppBaseDirectory="INSTALLFOLDER"/>
+                        </File>
+                    </Component>
+                    <Component Id="NLog.config">
+                        <File Source="$(var.Terminal.TargetDir)NLog.config"/>
+                    </Component>
+                    <Component Id="NLog.dll">
+                        <File Source="$(var.Terminal.TargetDir)NLog.dll">
+                            <netfx:NativeImage Id="NLog.dll" Platform="32bit" Priority="0" AppBaseDirectory="INSTALLFOLDER"/>
+                        </File>
+                    </Component>
+                    <Component Id="PacketParser.dll">
+                        <File Source="$(var.Terminal.TargetDir)PacketParser.dll">
+                            <netfx:NativeImage Id="PacketParser.dll" Platform="32bit" Priority="0" AppBaseDirectory="INSTALLFOLDER"/>
+                        </File>
+                    </Component>
+                    <Component Id="PacketParser.pdb">
+                        <File Source="$(var.Terminal.TargetDir)PacketParser.pdb"/>
+                    </Component>
+                    <Component Id="SciLexer.dll">
+                        <File Source="$(var.Terminal.TargetDir)SciLexer.dll"/>
+                    </Component>
+                    <Component Id="SciLexer64.dll">
+                        <File Source="$(var.Terminal.TargetDir)SciLexer64.dll"/>
+                    </Component>
+                    <Component Id="ScintillaNET.dll">
+                        <File Source="$(var.Terminal.TargetDir)ScintillaNET.dll">
+                            <netfx:NativeImage Id="ScintillaNET.dll" Platform="32bit" Priority="0" AppBaseDirectory="INSTALLFOLDER"/>
+                        </File>
+                    </Component>
+                    <Component Id="Terminal_GUI_Interface.dll">
+                        <File Source="$(var.Terminal.TargetDir)Terminal_GUI_Interface.dll">
+                            <netfx:NativeImage Id="Terminal_GUI_Interface.dll" Platform="32bit" Priority="0" AppBaseDirectory="INSTALLFOLDER"/>
+                        </File>
+                    </Component>
+                    <Component Id="Terminal_GUI_Interface.pdb">
+                        <File Source="$(var.Terminal.TargetDir)Terminal_GUI_Interface.pdb"/>
+                    </Component>
+                    <Component Id="Terminal_Interface.dll">
+                        <File Source="$(var.Terminal.TargetDir)Terminal_Interface.dll">
+                            <netfx:NativeImage Id="Terminal_Interface.dll" Platform="32bit" Priority="0" AppBaseDirectory="INSTALLFOLDER"/>
+                        </File>
+                    </Component>
+                    <Component Id="Terminal_Interface.pdb">
+                        <File Source="$(var.Terminal.TargetDir)Terminal_Interface.pdb"/>
+                    </Component>
+                </Directory>
 			</Directory>
 		</Directory>
 	</Fragment>
@@ -33,6 +164,40 @@
 	<Fragment>
 		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
             <ComponentRef Id="Terminal.exe" />
-		</ComponentGroup>
+            <ComponentRef Id="Terminal.exe.config" />
+            <ComponentRef Id="Terminal.pdb" />
+            <ComponentRef Id="App.config" />
+            <ComponentRef Id="Autofac.Configuration.dll" />
+            <ComponentRef Id="Autofac.dll" />
+            <ComponentRef Id="Bugsense.WPF.dll" />
+            <ComponentRef Id="Bugsense.WPF.pdb" />
+            <ComponentRef Id="CustomControls.dll" />
+            <ComponentRef Id="CustomControls.pdb" />
+            <ComponentRef Id="HidLibrary.dll" />
+            <ComponentRef Id="HidLibrary.pdb" />
+            <ComponentRef Id="HyperToken_WinForms_GUI.dll" />
+            <ComponentRef Id="HyperToken_WinForms_GUI.pdb" />
+            <ComponentRef Id="interpreter.py" />
+            <ComponentRef Id="IronPython.dll" />
+            <ComponentRef Id="Microsoft.Dynamic.dll" />
+            <ComponentRef Id="Microsoft.Scripting.dll" />
+            <ComponentRef Id="Microsoft.Scripting.Metadata.dll" />
+            <ComponentRef Id="MRG.Controls.UI.dll" />
+            <ComponentRef Id="NLog.config" />
+            <ComponentRef Id="NLog.dll" />
+            <ComponentRef Id="PacketParser.dll" />
+            <ComponentRef Id="PacketParser.pdb" />
+            <ComponentRef Id="SciLexer.dll" />
+            <ComponentRef Id="SciLexer64.dll" />
+            <ComponentRef Id="ScintillaNET.dll" />
+            <ComponentRef Id="Terminal_GUI_Interface.dll" />
+            <ComponentRef Id="Terminal_GUI_Interface.pdb" />
+            <ComponentRef Id="Terminal_Interface.dll" />
+            <ComponentRef Id="Terminal_Interface.pdb" />
+        </ComponentGroup>
 	</Fragment>
+
+    <Fragment>
+        <PackageGroup Id="NetFx45Redist" />
+    </Fragment>
 </Wix>
