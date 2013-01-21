@@ -32,6 +32,7 @@ namespace PacketParser
             var watcher = new FileSystemWatcher(scriptDirectory, "*.py");
 
             watcher.Changed += (sender, args) => UpdateScript();
+            watcher.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.FileName;
             watcher.EnableRaisingEvents = true;
             UpdateScript();
 
