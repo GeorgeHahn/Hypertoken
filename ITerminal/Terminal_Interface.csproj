@@ -87,6 +87,7 @@
     <Compile Include="IDataWriter.cs" />
     <Compile Include="IInitable.cs" />
     <Compile Include="IPacketInterpreter.cs" />
+    <Compile Include="IPacketSender.cs" />
     <Compile Include="ISettings.cs" />
     <Compile Include="ITerminal.cs" />
     <Compile Include="CurrentPacketParser.cs" />
