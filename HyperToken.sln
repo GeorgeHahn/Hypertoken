@@ -1,4 +1,4 @@
-Microsoft Visual Studio Solution File, Format Version 12.00
+Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HyperToken_WinForms_GUI", "HyperToken_WinForms_GUI\HyperToken_WinForms_GUI.csproj", "{6E23681C-544E-44B7-81E1-9086F5BFF888}"
 	ProjectSection(ProjectDependencies) = postProject
