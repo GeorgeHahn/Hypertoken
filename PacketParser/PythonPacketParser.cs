@@ -16,13 +16,13 @@ namespace PacketParser
 {
     public class PythonPacketParser : IPacketInterpreter
     {
-        private ScriptRuntime runtime;
-        private dynamic script;
+        private readonly ScriptRuntime _runtime;
+        private dynamic _script;
 
         public PythonPacketParser()
         {
             Log.Debug("PythonPacketParser created");
-            runtime = Python.CreateRuntime();
+            _runtime = Python.CreateRuntime();
 
             var scriptDirectory = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
             if (scriptDirectory == null)
@@ -55,7 +55,7 @@ namespace PacketParser
 
             string path = "interpreter.py";
             if (File.Exists(path))
-                script = runtime.UseFile(path);
+                _script = _runtime.UseFile(path);
         }
 
         public string InterpretPacket(byte[] packet)
@@ -63,7 +63,7 @@ namespace PacketParser
             // UpdateScript();
             try
             {
-                return script.Parse(packet);
+                return _script.Parse(packet);
 
                 //return engine.Operations.InvokeMember(scope.GetVariable("parse"), "parse", new object[] { packet });
                 //scope.SetVariable("packet", packet);
