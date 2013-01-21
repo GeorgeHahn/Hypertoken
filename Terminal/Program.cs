@@ -6,14 +6,13 @@ using Autofac;
 using Bugsense.WPF;
 using HyperToken_WinForms_GUI;
 using NLog;
+using Anotar;
 using Terminal_Interface;
 
 namespace Terminal
 {
 	internal class Program
 	{
-		private static readonly Logger logger = LogManager.GetCurrentClassLogger();
-
 		public static string GetVersion()
 		{
 			return System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
@@ -24,19 +23,21 @@ namespace Terminal
 		{
 			//try
 			//{
-			logger.Trace("Initialize BugSense");
+            LogManager.ThrowExceptions = true;
+
+			Log.Debug("Initialize BugSense");
 			BugSense.Init("9eacbe2e", GetVersion(), "http://www.bugsense.com/api/errors");
 			AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
 
-			logger.Trace("Initializing advanced JIT");
+            Log.Debug("Initializing advanced JIT");
 			AdvancedJIT.SetupJIT();
 
-			logger.Trace("Building IOC container");
+            Log.Debug("Building IOC container");
 			ContainerSetup containerSetup = new ContainerSetup();
 			var container = containerSetup.BuildWinFormsContainer();
 		    //var container = containerSetup.BuildAvalonContainer();
 
-			logger.Trace("Running ITerminal");
+            Log.Debug("Running ITerminal");
 			if (container.IsRegistered<InitableRunner>())
 				container.Resolve<InitableRunner>().Init();
 			container.Resolve<TerminalRunner>().Run();
@@ -44,7 +45,7 @@ namespace Terminal
 			//}
 			//catch (Exception e)
 			//{
-			//	logger.Fatal(e.Message);
+			//	Log.Fatal(e.Message);
 			//	BugSense.SendException(e);
 			//	MessageBox.Show(e.Message, "Unhandled exception");
 			//}
