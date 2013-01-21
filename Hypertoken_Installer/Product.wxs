@@ -20,30 +20,42 @@
         <UIRef Id="WixUI_Mondo"/>
     </Fragment>
 
+    <!-- TODO: Fix shortcuts -->
+    <!-- TODO: Add wyUpdate -->
+
     <Fragment>
-        <Directory Id="TARGETDIR" Name="SourceDir">
+        <DirectoryRef Id="TARGETDIR">
             <Directory Id="ProgramMenuFolder">
                 <Directory Id="ApplicationProgramsFolder" Name="Hypertoken">
-                    <Component Id="StartMenuShortcut">
+                    <Component Id="StartMenuShortcut" Guid="94280043-2F2B-4B09-BA4A-82884DC33D24">
                         <Shortcut Id="ApplicationStartMenuShortcut"
                                   Name="Hypertoken"
                                   Description="Modern Serial Terminal"
                                   Target="[INSTALLFOLDER]Terminal.exe"
                                   WorkingDirectory="INSTALLFOLDER"/>
+                        <RemoveFolder Id="ApplicationProgramsFolder" On="uninstall"/>
+                        <RegistryValue Root="HKCU" Key="Software\CircuitWorks\Hypertoken" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
                     </Component>
                 </Directory>
             </Directory>
         
             <Directory Id="DesktopFolder">
-                <Component Id="DesktopShortcut">
+                <Component Id="DesktopShortcut" Guid="537C9367-5D6B-4829-95FA-71A70E38138E">
                     <Shortcut Id="ApplicationDesktopShortcut"
                               Name="Hypertoken"
                               Description="Modern Serial Terminal"
                               Target="[INSTALLFOLDER]Terminal.exe"
                               WorkingDirectory="INSTALLFOLDER"/>
+                    <RemoveFolder Id="DesktopFolder" On="uninstall"/>
+                    <RegistryValue Root="HKCU" Key="Software\CircuitWorks\Hypertoken" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
                 </Component>
             </Directory>
-        </Directory>
+        </DirectoryRef>
+        
+        <ComponentGroup Id="Shortcuts" Directory="INSTALLFOLDER">
+            <ComponentRef Id="StartMenuShortcut" />
+            <ComponentRef Id="DesktopShortcut" />
+        </ComponentGroup>
     </Fragment>
     
 	<Fragment>
@@ -190,34 +202,50 @@
 	<Fragment>
 		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
             <ComponentRef Id="Terminal.exe" />
+            <ComponentGroupRef Id="Shortcuts"/>
+            
             <ComponentRef Id="Terminal.exe.config" />
             <ComponentRef Id="Terminal.pdb" />
+            
             <ComponentRef Id="App.config" />
+            
             <ComponentRef Id="Autofac.Configuration.dll" />
             <ComponentRef Id="Autofac.dll" />
+            
             <ComponentRef Id="Bugsense.WPF.dll" />
             <ComponentRef Id="Bugsense.WPF.pdb" />
+            
             <ComponentRef Id="CustomControls.dll" />
             <ComponentRef Id="CustomControls.pdb" />
+            
             <ComponentRef Id="HidLibrary.dll" />
             <ComponentRef Id="HidLibrary.pdb" />
+            
             <ComponentRef Id="HyperToken_WinForms_GUI.dll" />
             <ComponentRef Id="HyperToken_WinForms_GUI.pdb" />
+            
             <ComponentRef Id="interpreter.py" />
             <ComponentRef Id="IronPython.dll" />
             <ComponentRef Id="Microsoft.Dynamic.dll" />
             <ComponentRef Id="Microsoft.Scripting.dll" />
             <ComponentRef Id="Microsoft.Scripting.Metadata.dll" />
+            
             <ComponentRef Id="MRG.Controls.UI.dll" />
+            
             <ComponentRef Id="NLog.config" />
             <ComponentRef Id="NLog.dll" />
+            
             <ComponentRef Id="PacketParser.dll" />
             <ComponentRef Id="PacketParser.pdb" />
+            
             <ComponentRef Id="SciLexer.dll" />
             <ComponentRef Id="SciLexer64.dll" />
+            
             <ComponentRef Id="ScintillaNET.dll" />
+            
             <ComponentRef Id="Terminal_GUI_Interface.dll" />
             <ComponentRef Id="Terminal_GUI_Interface.pdb" />
+            
             <ComponentRef Id="Terminal_Interface.dll" />
             <ComponentRef Id="Terminal_Interface.pdb" />
         </ComponentGroup>
