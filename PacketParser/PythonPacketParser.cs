@@ -16,7 +16,7 @@ namespace PacketParser
 {
     public class PythonPacketParser : IPacketInterpreter
     {
-        private readonly ScriptRuntime _runtime;
+        private ScriptRuntime _runtime;
         private dynamic _script;
 
         public PythonPacketParser()
@@ -31,10 +31,10 @@ namespace PacketParser
             Log.Debug("Looking for python decoder in {0}", scriptDirectory);
             var watcher = new FileSystemWatcher(scriptDirectory, "*.py");
 
-            watcher.Changed += (sender, args) => UpdateScript();
+            watcher.Changed += (sender, args) => UpdateScript(args.FullPath);
             watcher.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.FileName;
             watcher.EnableRaisingEvents = true;
-            UpdateScript();
+            UpdateScript("interpreter.py");
 
             try
             {
@@ -46,16 +46,38 @@ namespace PacketParser
             }
         }
 
-        private void UpdateScript()
+        private void UpdateScript(string script)
         {
-            Log.Debug("Reloaded interpreter.py");
+            Log.Debug("A script was changed - {0}", script);
 
             //scriptStr = File.ReadAllText("interpreter.py");
             //source = engine.CreateScriptSourceFromString(scriptStr, "py");
 
-            string path = "interpreter.py";
-            if (File.Exists(path))
-                _script = _runtime.UseFile(path);
+            if (File.Exists(script))
+            {
+                _runtime.Shutdown();
+                _runtime = Python.CreateRuntime();
+                try
+                {
+                    _script = _runtime.UseFile(script);
+                    Log.Info("Script loaded");
+                    ScriptScope scope = _script;
+                    dynamic parserScript = scope.GetVariable("ParserScript");
+                    dynamic parser = parserScript();
+                    string name = parser.Name;
+                    string version = parser.Version;
+                    string author = parser.Author;
+                    Log.Info("Name: {0}, Version: {1}, Author: {2}", name, version, author);
+                }
+                catch (SyntaxErrorException e)
+                {
+                    Log.ErrorException("Syntax error", e);
+                }
+            }
+            else
+            {
+                Log.Error("Script not loaded (file doesn't exist)");
+            }
         }
 
         public string InterpretPacket(byte[] packet)
@@ -68,6 +90,10 @@ namespace PacketParser
                 //return engine.Operations.InvokeMember(scope.GetVariable("parse"), "parse", new object[] { packet });
                 //scope.SetVariable("packet", packet);
                 //return engine.Execute<string>(scriptStr, scope);
+            }
+            catch (NullReferenceException e)
+            {
+                return string.Format("Invalid script");
             }
             catch (Exception e)
             {
