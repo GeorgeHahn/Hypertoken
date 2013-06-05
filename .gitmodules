@@ -1,0 +1,6 @@
+[submodule "Bugsense.WPF"]
+	path = Bugsense.WPF
+	url = https://github.com/GeorgeHahn/Bugsense.WPF.git
+[submodule "HidLibrary"]
+	path = HidLibrary
+	url = https://github.com/mikeobrien/HidLibrary.git
