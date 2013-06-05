@@ -18,6 +18,10 @@ namespace PacketParser
     {
         private ScriptRuntime _runtime;
         private dynamic _script;
+        private string name;
+        private string version;
+        private string author;
+
 
         public PythonPacketParser()
         {
@@ -50,9 +54,6 @@ namespace PacketParser
         {
             Log.Debug("A script was changed - {0}", script);
 
-            //scriptStr = File.ReadAllText("interpreter.py");
-            //source = engine.CreateScriptSourceFromString(scriptStr, "py");
-
             if (File.Exists(script))
             {
                 _runtime.Shutdown();
@@ -62,16 +63,19 @@ namespace PacketParser
                     _script = _runtime.UseFile(script);
                     Log.Info("Script loaded");
                     ScriptScope scope = _script;
-                    dynamic parserScript = scope.GetVariable("ParserScript");
-                    dynamic parser = parserScript();
-                    string name = parser.Name;
-                    string version = parser.Version;
-                    string author = parser.Author;
+                    dynamic parser = scope.GetVariable("ParserScript");
+                    name = parser.Name;
+                    version = parser.Version;
+                    author = parser.Author;
                     Log.Info("Name: {0}, Version: {1}, Author: {2}", name, version, author);
                 }
                 catch (SyntaxErrorException e)
                 {
                     Log.ErrorException("Syntax error", e);
+                }
+                catch (Exception e)
+                {
+                    Log.WarnException("Script error", e);
                 }
             }
             else
@@ -82,14 +86,9 @@ namespace PacketParser
 
         public string InterpretPacket(byte[] packet)
         {
-            // UpdateScript();
             try
             {
                 return _script.Parse(packet);
-
-                //return engine.Operations.InvokeMember(scope.GetVariable("parse"), "parse", new object[] { packet });
-                //scope.SetVariable("packet", packet);
-                //return engine.Execute<string>(scriptStr, scope);
             }
             catch (NullReferenceException e)
             {
@@ -101,6 +100,6 @@ namespace PacketParser
             }
         }
 
-        public string Name { get { return "Scriptable parser"; }}
+        public string Name { get { return name ?? "Scriptable parser"; }}
     }
 }

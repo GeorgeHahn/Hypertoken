@@ -25,23 +25,17 @@ namespace Terminal
 
         public IEnumerable<string> ListAvailableDevices()
         {
-            var devices = HidDevices.EnumerateHidDeviceInstances();
-            var names = new List<string>();
-            foreach (HidDevice device in devices)
-            {
-                names.Add(GetFriendlyName(device));
-            }
-            return names.AsEnumerable();
+            return HidDevices.Enumerate().Select(GetFriendlyName);
         }
 
         private string GetFriendlyName(HidDevice device)
         {
-            return string.Format("{0}, {1}: {2}", device.Attributes.VendorHexId, device.Attributes.ProductHexId, device.Attributes.BusReportedDescription);
+            return string.Format("{0}, {1}: {2}", device.Attributes.VendorHexId, device.Attributes.ProductHexId, device.Description);
         }
 
         public string[] Devices
         {
-            get { return HidDevices.EnumerateHidDevices().ToArray(); }
+            get { return HidDevices.Enumerate().Select(x => x.Description).ToArray(); }
         }
 
         public string DeviceName
