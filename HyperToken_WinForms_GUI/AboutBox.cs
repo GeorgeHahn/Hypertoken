@@ -10,7 +10,7 @@ namespace HyperToken_WinForms_GUI
 	{
 		public AboutBox()
 		{
-			Log.Debug("AboutBox constructor");
+			Log.Trace("AboutBox constructor");
 			InitializeComponent();
 			Text = String.Format("About {0}", AssemblyTitle);
 			labelProductName.Text = AssemblyProduct;

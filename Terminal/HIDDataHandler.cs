@@ -7,6 +7,7 @@ using System.Text;
 using Anotar;
 using HidLibrary;
 using NLog;
+using PacketParser;
 using Terminal_Interface;
 using Terminal_Interface.Enums;
 using Terminal_Interface.Events;
@@ -16,12 +17,13 @@ namespace Terminal
     public class HIDDataHandler : IDataDevice
     {
         private HidDevice _device;
-
         private CurrentPacketParser _parser;
+        private HIDPreparser preparser;
 
         public HIDDataHandler(CurrentPacketParser parser)
         {
             _parser = parser;
+            preparser = new HIDPreparser();
         }
 
         public IEnumerable<string> ListAvailableDevices()
@@ -131,7 +133,8 @@ namespace Terminal
                 return;
 
             var data = report.GetBytes();
-            var dataString = _parser.CurrentParser.InterpretPacket(data);
+            var preparsed = preparser.InterpretPacket(data);
+            var dataString = _parser.CurrentParser.InterpretPacket(preparsed);
             var args = new DataReceivedEventArgs(dataString);
             DataReceived(this, args);
         }
@@ -146,14 +149,15 @@ namespace Terminal
                 return;
 
             var bytes = data.Data;
-            var dataString = _parser.CurrentParser.InterpretPacket(bytes);
+            var preparsed = preparser.InterpretPacket(bytes);
+            var dataString = _parser.CurrentParser.InterpretPacket(preparsed);
             var args = new DataReceivedEventArgs(dataString);
             DataReceived(this, args);
         }
 
         private void DeviceOnRemoved()
         {
-            throw new NotImplementedException();
+            Log.Warn("Device removed unexpectedly");
         }
 
         public int Write(byte[] data)
