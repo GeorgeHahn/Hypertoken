@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using Anotar;
@@ -30,6 +31,8 @@ namespace Terminal
 
         private string GetFriendlyName(HidDevice device)
         {
+            if (device == null)
+                return "";
             return string.Format("{0}, {1}: {2}", device.Attributes.VendorHexId, device.Attributes.ProductHexId, device.Description);
         }
 
@@ -49,8 +52,21 @@ namespace Terminal
             }
             set
             {
-                _device = HidDevices.GetDevice(value);
+                var usbid = __HACK__GetPIDVIDfromDeviceDescription(value);
+                var devices = HidDevices.Enumerate(usbid[0], new[] {usbid[1]});
+                _device = devices.FirstOrDefault(x => x.IsOpen == false);
+                if (_device == null)
+                    throw new Exception("Device in use"); // I lie.
             }
+        }
+
+        private int[] __HACK__GetPIDVIDfromDeviceDescription(string description)
+        {
+            // "0x04D8, 0xF745: HID-compliant device"
+            var result = new int[2];
+            result[0] = int.Parse(description.Substring(2, 4), NumberStyles.AllowHexSpecifier);
+            result[1] = int.Parse(description.Substring(10, 4), NumberStyles.AllowHexSpecifier);
+            return result;
         }
 
         public string FriendlyName

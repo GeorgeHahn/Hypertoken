@@ -25,12 +25,12 @@ namespace Terminal.GUI
     // Doesn't implement GenericSettingsMenu
     public class DeviceSelectionMenu : IHidSettingsMenu
     {
-        private readonly IDataDevice _dataDevice;
+        private readonly HIDDataHandler _dataDevice;
         private readonly CurrentDataDevice _terminal;
 
         public DeviceSelectionMenu(IDataDevice dataDevice, CurrentDataDevice terminal)
         {
-            _dataDevice = dataDevice;
+            _dataDevice = (HIDDataHandler)dataDevice;
             _terminal = terminal;
             _dataDevice.PropertyChanged += (sender, args) => UpdateCheckedStates(args.PropertyName);
         }
@@ -42,7 +42,7 @@ namespace Terminal.GUI
             get { return "Device Selection"; }
         }
 
-        private dynamic ItemValue
+        private string ItemValue
         {
             get { return _dataDevice.DeviceName; }
             set
@@ -99,7 +99,8 @@ namespace Terminal.GUI
 
         private void ItemClicked(int item)
         {
-            ItemValue = _devicePaths[item];
+            ItemValue = _menu.Items[item].Text;
+            //_dataDevice.DeviceName = _dataDevice.Devices[item];
         }
 
         private void UpdateCheckedStates(string propertyName)

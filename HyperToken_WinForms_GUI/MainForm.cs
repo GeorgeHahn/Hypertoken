@@ -278,7 +278,8 @@ namespace HyperToken_WinForms_GUI
         {
             e.Handled = true;
 
-            _dataDevice.Write(e.KeyChar);
+            if(_dataDevice != null)
+                _dataDevice.Write(e.KeyChar);
         }
 
         private void DataDeviceOnDataReceived(object sender, DataReceivedEventArgs dataReceivedEventArgs)
