@@ -2,6 +2,7 @@
 using System.Reflection;
 using System.Windows.Forms;
 using Anotar;
+using Anotar.NLog;
 using Terminal_Interface;
 
 namespace HyperToken_WinForms_GUI
@@ -10,7 +11,7 @@ namespace HyperToken_WinForms_GUI
 	{
 		public AboutBox()
 		{
-			Log.Trace("AboutBox constructor");
+			LogTo.Trace("AboutBox constructor");
 			InitializeComponent();
 			Text = String.Format("About {0}", AssemblyTitle);
 			labelProductName.Text = AssemblyProduct;

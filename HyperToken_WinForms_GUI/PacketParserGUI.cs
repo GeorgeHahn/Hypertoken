@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using Anotar;
+using Anotar.NLog;
 using Terminal_GUI_Interface;
 using Terminal_Interface;
 using NLog;
@@ -49,7 +50,7 @@ namespace HyperToken_WinForms_GUI
                     return;
 
                 _handler.CurrentParser = currentParser.First();
-                Log.Debug("Current parser: {0}", _handler.CurrentParser.Name);
+                LogTo.Debug("Current parser: {0}", _handler.CurrentParser.Name);
             }
         }
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using Anotar.NLog;
 using Terminal_GUI_Interface;
 using NLog;
 using Anotar;
@@ -26,11 +27,11 @@ namespace HyperToken_WinForms_GUI
             {
                 m.PropertyChanged += (sender, args) =>
                                         {
-                                            Log.Debug("Property changed: {0}", args.PropertyName);
+                                            LogTo.Debug("Property changed: {0}", args.PropertyName);
                                             if (args.PropertyName != "Items")
                                                 return;
 
-                                            Log.Debug("Regenerating ToolStripMenuItems for menu {0}", m.Text);
+                                            LogTo.Debug("Regenerating ToolStripMenuItems for menu {0}", m.Text);
 
                                             temp.DropDownItems.Clear();
                                             foreach (var item in m.Items)
@@ -44,7 +45,7 @@ namespace HyperToken_WinForms_GUI
             temp.Checked = m.Checked;
             m.PropertyChanged += (sender, args) =>
                                      {
-                                         Log.Debug("Property changed: {0}", args.PropertyName);
+                                         LogTo.Debug("Property changed: {0}", args.PropertyName);
                                          if (args.PropertyName != "Checked")
                                              return;
                                          if (m.Checked != temp.Checked)

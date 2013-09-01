@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using Anotar;
+using Anotar.NLog;
 using NLog;
 
 namespace Terminal_GUI_Interface
@@ -44,7 +45,7 @@ namespace Terminal_GUI_Interface
 
         private void SetItems()
         {
-            Log.Debug("Setting items for menu {0}", MenuName);
+            LogTo.Debug("Setting items for menu {0}", MenuName);
             _menu.Items.Clear();
 
             foreach (var value in Values)
@@ -64,7 +65,7 @@ namespace Terminal_GUI_Interface
         {
             if (propertyName != PropertyName)
             {
-                Log.Debug("Ignoring {0} on {1}", propertyName, PropertyName);
+                LogTo.Debug("Ignoring {0} on {1}", propertyName, PropertyName);
                 return;
             }
 

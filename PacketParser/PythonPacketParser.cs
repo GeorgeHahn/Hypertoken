@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Anotar;
+using Anotar.NLog;
 using IronPython.Hosting;
 using IronPython.Runtime;
 using Microsoft.Scripting;
@@ -25,14 +26,14 @@ namespace PacketParser
 
         public PythonPacketParser()
         {
-            Log.Debug("PythonPacketParser created");
+            LogTo.Debug("PythonPacketParser created");
             _runtime = Python.CreateRuntime();
 
             var scriptDirectory = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
             if (scriptDirectory == null)
                 throw new NullReferenceException("ScriptDirectory should not be null");
 
-            Log.Debug("Looking for python decoder in {0}", scriptDirectory);
+            LogTo.Debug("Looking for python decoder in {0}", scriptDirectory);
             var watcher = new FileSystemWatcher(scriptDirectory, "*.py");
 
             watcher.Changed += (sender, args) => UpdateScript(args.FullPath);
@@ -42,17 +43,17 @@ namespace PacketParser
 
             try
             {
-                Log.Debug(InterpretPacket((new UTF8Encoding()).GetBytes("Hello from Python")));
+                LogTo.Debug(InterpretPacket((new UTF8Encoding()).GetBytes("Hello from Python")));
             }
             catch (Exception e)
             {
-                Log.WarnException("Interpreting python script threw an error", e);
+                LogTo.WarnException("Interpreting python script threw an error", e);
             }
         }
 
         private void UpdateScript(string script)
         {
-            Log.Debug("A script was changed - {0}", script);
+            LogTo.Debug("A script was changed - {0}", script);
 
             if (File.Exists(script))
             {
@@ -61,26 +62,26 @@ namespace PacketParser
                 try
                 {
                     _script = _runtime.UseFile(script);
-                    Log.Info("Script loaded");
+                    LogTo.Info("Script loaded");
                     ScriptScope scope = _script;
                     dynamic parser = scope.GetVariable("ParserScript");
                     name = parser.Name;
                     version = parser.Version;
                     author = parser.Author;
-                    Log.Info("Name: {0}, Version: {1}, Author: {2}", name, version, author);
+                    LogTo.Info("Name: {0}, Version: {1}, Author: {2}", name, version, author);
                 }
                 catch (SyntaxErrorException e)
                 {
-                    Log.ErrorException("Syntax error", e);
+                    LogTo.ErrorException("Syntax error", e);
                 }
                 catch (Exception e)
                 {
-                    Log.WarnException("Script error", e);
+                    LogTo.WarnException("Script error", e);
                 }
             }
             else
             {
-                Log.Error("Script not loaded (file doesn't exist)");
+                LogTo.Error("Script not loaded (file doesn't exist)");
             }
         }
 

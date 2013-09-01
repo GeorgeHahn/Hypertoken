@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using Anotar;
+using Anotar.NLog;
 using Terminal_GUI_Interface;
 using Terminal_Interface;
 using NLog;
@@ -75,9 +76,9 @@ namespace HyperToken_WinForms_GUI
 
             if (ports == null)
             {
-                Log.Error("No serial ports to list");
-                Log.Error("TODO We should handle this more gracefully");
-                Log.Error("Show a 'No serial ports found' item");
+                LogTo.Error("No serial ports to list");
+                LogTo.Error("TODO We should handle this more gracefully");
+                LogTo.Error("Show a 'No serial ports found' item");
                 return;
             }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Anotar;
+using Anotar.NLog;
 using NLog;
 using Terminal_Interface;
 
@@ -14,13 +15,13 @@ namespace Terminal
 
 		public InitableRunner(IInitable initable)
 		{
-			Log.Debug("InitableRunner created");
+			LogTo.Debug("InitableRunner created");
 			_initable = initable;
 		}
 
 		public void Init()
 		{
-			Log.Debug("Initializing initable");
+			LogTo.Debug("Initializing initable");
 			_initable.Init();
 		}
 	}

@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.IO;
 using Anotar;
+using Anotar.NLog;
 using NLog;
 using Terminal_Interface;
 using Terminal_Interface.Enums;
@@ -19,7 +20,7 @@ namespace Terminal
 			if (_loggingFilePath == null)
 				return;
 
-			Log.Debug("Creating new FileStream for _loggingStream");
+			LogTo.Debug("Creating new FileStream for _loggingStream");
 			_loggingStream = File.Open(_loggingFilePath, FileMode.Append, FileAccess.Write, FileShare.Read);
 			_loggingStreamWriter = new StreamWriter(_loggingStream);
 		}
@@ -29,11 +30,11 @@ namespace Terminal
 			if (_loggingStream == null)
 				return;
 
-			Log.Debug("Flushing _loggingStream");
+			LogTo.Debug("Flushing _loggingStream");
 			_loggingStreamWriter.Flush();
 			_loggingStream.Flush();
 
-			Log.Debug("Closing _loggingStream");
+			LogTo.Debug("Closing _loggingStream");
 			_loggingStreamWriter.Close();
 			_loggingStream.Close();
 		}
@@ -43,7 +44,7 @@ namespace Terminal
 			get { return _loggingFilePath; }
 			set
 			{
-				Log.Debug("Setting LoggingFilePath to {0}", value);
+				LogTo.Debug("Setting LoggingFilePath to {0}", value);
 				_loggingFilePath = value;
 
 				Close();

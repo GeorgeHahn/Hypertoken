@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO.Ports;
 using System.Linq;
+using Anotar.NLog;
 using Terminal_Interface;
 using Terminal_Interface.Enums;
 using Terminal_Interface.Events;
@@ -88,7 +89,7 @@ namespace Terminal
             }
             set
             {
-                Log.Info("Invalidated DeviceStatus; {0}", value);
+                LogTo.Info("Invalidated DeviceStatus; {0}", value);
             }
         }
 
@@ -121,7 +122,7 @@ namespace Terminal
             get { return _port.IsOpen ? PortState.Open : PortState.Closed; }
             set
             {
-                Log.Info("Port being set to {0}", value);
+                LogTo.Info("Port being set to {0}", value);
                 if (value == PortState.Open)
                     try
                     {
@@ -129,7 +130,7 @@ namespace Terminal
                     }
                     catch (UnauthorizedAccessException)
                     {
-                        Log.Error("{0} is in use", DeviceName);
+                        LogTo.Error("{0} is in use", DeviceName);
                         throw;
                     }
                 else
@@ -184,7 +185,7 @@ namespace Terminal
 
         private void PortOnDataReceived(object sender, SerialDataReceivedEventArgs serialDataReceivedEventArgs)
         {
-            Log.Info("Received {0} bytes", _port.BytesToRead);
+            LogTo.Info("Received {0} bytes", _port.BytesToRead);
             if (!_port.IsOpen)
                 return;
 

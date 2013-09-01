@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using Anotar;
+using Anotar.NLog;
 using HidLibrary;
 using NLog;
 using PacketParser;
@@ -103,7 +104,11 @@ namespace Terminal
                 //if (_device == null)
                 //    return;
                 if (_device == null)
+                {
+                    LogTo.Error("No device selected");
+                    return;
                     throw new ArgumentException("_device should not be null");
+                }
 
                 if (value == PortState.Open)
                 {
@@ -125,7 +130,7 @@ namespace Terminal
 
         private void ReadReportCallback(HidReport report)
         {
-            Log.Debug("Got a ReadReportCallback of length {0}", report.Data.Length);
+            LogTo.Debug("Got a ReadReportCallback of length {0}", report.Data.Length);
 
             _device.ReadReport(ReadReportCallback);
 
@@ -141,7 +146,7 @@ namespace Terminal
 
         private void ReadCallback(HidDeviceData data)
         {
-            Log.Debug("Got a ReadCallback of length {0}", data.Data.Length);
+            LogTo.Debug("Got a ReadCallback of length {0}", data.Data.Length);
 
             _device.Read(ReadCallback);
 
@@ -157,9 +162,10 @@ namespace Terminal
 
         private void DeviceOnRemoved()
         {
-            Log.Warn("Device removed unexpectedly");
+            LogTo.Warn("Device removed unexpectedly");
         }
 
+        // TODO Fix this to send properly formatted data
         public int Write(byte[] data)
         {
             //var header = new byte[] { 0x01, 0xF0, 0x10, 0x03, 0xA0, 0x01, 0x0F, 0x58, 0x04 };

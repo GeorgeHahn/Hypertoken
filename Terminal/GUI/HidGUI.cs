@@ -109,7 +109,7 @@ namespace Terminal.GUI
 
             foreach (var menuItem in _menu.Items)
             {
-                menuItem.Checked = menuItem.Text == ItemValue.ToString();
+                menuItem.Checked = menuItem.Text == ItemValue;
             }
         }
     }

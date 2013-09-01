@@ -2,12 +2,14 @@
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Anotar.NLog;
 using Autofac;
 using Bugsense.WPF;
 using HyperToken_WinForms_GUI;
 using NLog;
 using Anotar;
 using Terminal_Interface;
+using LogTo = Anotar.NLog.LogTo;
 
 namespace Terminal
 {
@@ -25,19 +27,19 @@ namespace Terminal
 			//{
             LogManager.ThrowExceptions = true;
 
-			Log.Debug("Initialize BugSense");
+			LogTo.Debug("Initialize BugSense");
 			BugSense.Init("9eacbe2e", GetVersion(), "http://www.bugsense.com/api/errors");
 			AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
 
-            Log.Debug("Initializing advanced JIT");
+            LogTo.Debug("Initializing advanced JIT");
 			AdvancedJIT.SetupJIT();
 
-            Log.Debug("Building IOC container");
+            LogTo.Debug("Building IOC container");
 			ContainerSetup containerSetup = new ContainerSetup();
 			var container = containerSetup.BuildWinFormsContainer();
 		    //var container = containerSetup.BuildAvalonContainer();
 
-            Log.Debug("Running ITerminal");
+            LogTo.Debug("Running ITerminal");
 			if (container.IsRegistered<InitableRunner>())
 				container.Resolve<InitableRunner>().Init();
 			container.Resolve<TerminalRunner>().Run();
@@ -45,7 +47,7 @@ namespace Terminal
 			//}
 			//catch (Exception e)
 			//{
-			//	Log.Fatal(e.Message);
+			//	LogTo.Fatal(e.Message);
 			//	BugSense.SendException(e);
 			//	MessageBox.Show(e.Message, "Unhandled exception");
 			//}

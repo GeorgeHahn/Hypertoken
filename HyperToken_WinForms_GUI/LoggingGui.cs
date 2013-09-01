@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using Anotar;
+using Anotar.NLog;
 using HyperToken_WinForms_GUI.Properties;
 using Terminal_GUI_Interface;
 using Terminal_Interface;
@@ -64,7 +65,7 @@ namespace HyperToken_WinForms_GUI
 
 		private void LoggerOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
 		{
-			Log.Warn("Logger binding shim fired for {0}", propertyChangedEventArgs.PropertyName);
+			LogTo.Warn("Logger binding shim fired for {0}", propertyChangedEventArgs.PropertyName);
 			switch (propertyChangedEventArgs.PropertyName)
 			{
 				case "LoggingState":
@@ -75,7 +76,7 @@ namespace HyperToken_WinForms_GUI
 
 		private void UpdateLoggingState()
 		{
-			Log.Debug("Logging set to {0}", _logger.LoggingState);
+			LogTo.Debug("Logging set to {0}", _logger.LoggingState);
 
 			switch (_logger.LoggingState)
 			{
@@ -119,7 +120,7 @@ namespace HyperToken_WinForms_GUI
 
 		private void OnToggleLogging()
 		{
-			Log.Debug("Toggle logging");
+			LogTo.Debug("Toggle logging");
 			if (_logger.LoggingFilePath == null)
 				if (!GetLoggerFilePath())
 					return;

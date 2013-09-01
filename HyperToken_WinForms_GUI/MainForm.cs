@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
+using Anotar.NLog;
 using CustomControls;
 using HyperToken_WinForms_GUI.Properties;
 using NLog;
@@ -69,7 +70,7 @@ namespace HyperToken_WinForms_GUI
 
             _dataDevice = _currentDataDevice.CurrentDevice;
 
-            Log.Debug("Mainform object created");
+            LogTo.Debug("Mainform object created");
         }
 
         public MainForm(IAboutBox aboutBox, CurrentDataDevice dataDevice, ILogger logger, WinformsMainMenuExtender mainMenuExtender, IEnumerable<IStatusbarExtension> statusbarExtensions)
@@ -92,7 +93,7 @@ namespace HyperToken_WinForms_GUI
 
         private void Initialize()
         {
-            Log.Debug("Initializing MainForm");
+            LogTo.Debug("Initializing MainForm");
             InitializeComponent();
 
             SetMonospacedFont();
@@ -116,7 +117,7 @@ namespace HyperToken_WinForms_GUI
 
             ShowVersionInformation();
 
-            Log.Warn("MainForm initialization complete");
+            LogTo.Warn("MainForm initialization complete");
         }
 
         public void Run()
@@ -170,7 +171,7 @@ namespace HyperToken_WinForms_GUI
         //Initialize application shutdown
         private void Exit(object sender, EventArgs e)
         {
-            Log.Info("Menu click: Exit");
+            LogTo.Info("Menu click: Exit");
             Application.Exit();
         }
 
@@ -187,32 +188,32 @@ namespace HyperToken_WinForms_GUI
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Log.Debug("User clicked menu item: New");
+            LogTo.Debug("User clicked menu item: New");
             DialogResult result = MessageBox.Show("Would you like to save current session?", Resources.MainForm_SaveSession_Save_Session, MessageBoxButtons.YesNoCancel);
 
             if (result == DialogResult.Cancel)
             {
-                Log.Debug("User canceled");
+                LogTo.Debug("User canceled");
                 return;
             }
 
             if (result == DialogResult.No)
             {
-                Log.Debug("User cleared session");
+                LogTo.Debug("User cleared session");
                 IOBox.Text = "";
                 return;
             }
 
             if (result == DialogResult.Yes)
             {
-                Log.Debug("User saved session");
+                LogTo.Debug("User saved session");
                 if (SaveSession())
                 {
-                    Log.Debug("Session cleared");
+                    LogTo.Debug("Session cleared");
                     IOBox.Text = "";
                 }
                 else
-                    Log.Debug("Session not cleared");
+                    LogTo.Debug("Session not cleared");
             }
         }
 
@@ -223,7 +224,7 @@ namespace HyperToken_WinForms_GUI
 
         private bool SaveSession()
         {
-            Log.Info("Saving session");
+            LogTo.Info("Saving session");
             var save = new SaveFileDialog
                                       {
                                           AddExtension = true,
@@ -247,18 +248,18 @@ namespace HyperToken_WinForms_GUI
                         ev.FileName = save.FileName;
                         ev.SessionData = IOBox.Text;
                         OnSaveSession(this, ev);
-                        Log.Debug("Session saved");
+                        LogTo.Debug("Session saved");
                         return true;
                     }
-                    Log.Warn("OnSaveSession event has no handlers");
+                    LogTo.Warn("OnSaveSession event has no handlers");
                 }
                 else
-                    Log.Error("Filename null or empty");
+                    LogTo.Error("Filename null or empty");
             }
             else
-                Log.Debug("User canceled");
+                LogTo.Debug("User canceled");
 
-            Log.Warn("Session not saved");
+            LogTo.Warn("Session not saved");
             return false;
         }
 
@@ -311,7 +312,7 @@ namespace HyperToken_WinForms_GUI
                 {
                     // Got a font on our list
                     IOBox.Font = thisFont;
-                    Log.Info("Picked font: {0}", thisFont.Name);
+                    LogTo.Info("Picked font: {0}", thisFont.Name);
                     return;
                 }
             }
@@ -338,27 +339,27 @@ namespace HyperToken_WinForms_GUI
 
         private void ShowVersionInformation()
         {
-            Log.Warn("Version {0}", GetVersion());
+            LogTo.Warn("Version {0}", GetVersion());
             Title = "HyperToken";
 #if DEBUG
             Title += " [Debug]";
-            Log.Warn("Debug version");
+            LogTo.Warn("Debug version");
 #endif
 
             if (!System.Diagnostics.Debugger.IsAttached)
                 return;
 
-            Log.Warn("Debugger attached");
+            LogTo.Warn("Debugger attached");
             Title += " (" + GetVersion() + ')';
             Title += " [Debugger attached]";
         }
 
         private void ToggleConnection(object sender, EventArgs e)
         {
-            Log.Debug("ToggleConnection");
+            LogTo.Debug("ToggleConnection");
             if (_dataDevice == null)
             {
-                Log.Debug("No dataDevice");
+                LogTo.Debug("No dataDevice");
                 return;
             }
 
