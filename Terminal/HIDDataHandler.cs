@@ -116,7 +116,6 @@ namespace Terminal
                     _device.MonitorDeviceEvents = true;
                     _device.Removed += DeviceOnRemoved;
                     _device.Read(ReadCallback);
-                    _device.ReadReport(ReadReportCallback);
                 }
                 else
                 {
@@ -126,22 +125,6 @@ namespace Terminal
                     _device.Removed -= DeviceOnRemoved;
                 }
             }
-        }
-
-        private void ReadReportCallback(HidReport report)
-        {
-            LogTo.Debug("Got a ReadReportCallback of length {0}", report.Data.Length);
-
-            _device.ReadReport(ReadReportCallback);
-
-            if (DataReceived == null)
-                return;
-
-            var data = report.GetBytes();
-            var preparsed = preparser.InterpretPacket(data);
-            var dataString = _parser.CurrentParser.InterpretPacket(preparsed);
-            var args = new DataReceivedEventArgs(dataString);
-            DataReceived(this, args);
         }
 
         private void ReadCallback(HidDeviceData data)
@@ -168,15 +151,39 @@ namespace Terminal
         // TODO Fix this to send properly formatted data
         public int Write(byte[] data)
         {
-            //var header = new byte[] { 0x01, 0xF0, 0x10, 0x03, 0xA0, 0x01, 0x0F, 0x58, 0x04 };
-            var header = data;
+            LogTo.Trace("Writing {0} byte array", data.Length);
+            byte[] continuation = null;
+            if (data.Length > 60)
+            {
+                LogTo.Trace("Data longer than 60 bytes, setting up array for recursion");
+
+                continuation = new byte[data.Length - 60];
+                Array.Copy(data, 60, continuation, 0, data.Length - 60);
+
+                var tempData = new byte[60];
+                Array.Copy(data, tempData, 60);
+                data = tempData;
+            }
+
+            var header = new byte[] { 0, 0x55, 0xB0, (byte)data.Length };
             var writeReport = _device.CreateReport();
-            int i = 0;
-            if (writeReport.Data.Length > 0)
-                foreach (var b in header)
-                    writeReport.Data[i++] = b;
-            _device.WriteReport(writeReport);
+            Array.Copy(header, writeReport.Data, header.Length);
+            Array.Copy(data, 0, writeReport.Data, header.Length, data.Length);
+
+            writeReport.Data[63] = calculateChecksum(writeReport.Data);
+
+            if (!_device.WriteReport(writeReport))
+                LogTo.Error("Failed to write data"); // TODO: User should be notified
+
+            if (continuation != null)
+                Write(continuation);
+
             return data.Length;
+        }
+
+        private byte calculateChecksum(byte[] message)
+        {
+            return message.Aggregate(message[0], (current, b) => (byte)(current ^ b));
         }
 
         public int Write(byte data)
