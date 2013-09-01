@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Windows.Forms;
+using Anotar.NLog;
 using Bugsense.WPF;
 using NLog;
 using Terminal_Interface;
@@ -11,14 +12,12 @@ namespace HyperToken_WinForms_GUI
 	{
 		public void Init()
 		{
-			logger.Trace("Initializing WinForms GUI");
+			LogTo.Trace("Initializing WinForms GUI");
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(true);
 
-			logger.Trace("Wiring exception handlers");
+			LogTo.Trace("Wiring exception handlers");
 			Application.SetUnhandledExceptionMode(UnhandledExceptionMode.ThrowException);
 		}
-
-		private static Logger logger = LogManager.GetCurrentClassLogger();
 	}
 }
