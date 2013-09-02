@@ -22,6 +22,8 @@ using Anotar;
 
 namespace HyperToken_WinForms_GUI
 {
+    
+
     public partial class MainForm : Form, ITerminal, INotifyPropertyChanged
     {
         private readonly IAboutBox _aboutBox;

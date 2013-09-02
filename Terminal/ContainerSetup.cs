@@ -27,6 +27,7 @@ namespace Terminal
             builder.RegisterType<LoggingGui>().As<IStatusbarExtension>().SingleInstance();
             builder.RegisterType<PacketParserGUI>().As<IMainMenuExtension>().SingleInstance();
             builder.RegisterType<SerialMenu>().As<IMainMenuExtension>().SingleInstance();
+            builder.RegisterType<AboutGUI>().As<IMainMenuExtension>().SingleInstance();
 
             builder.RegisterType<SerialStatusbarPortMenu>().As<IStatusbarExtension>();
             builder.RegisterType<SerialStatusbarStatusLabel>().As<IStatusbarExtension>();

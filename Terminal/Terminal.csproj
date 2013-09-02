@@ -96,6 +96,7 @@
   <ItemGroup>
     <Compile Include="ContainerSetup.cs" />
     <Compile Include="FileLogger.cs" />
+    <Compile Include="GUI\AboutGUI.cs" />
     <Compile Include="GUI\HidGUI.cs" />
     <Compile Include="GUI\SerialGUI.cs" />
     <Compile Include="HIDDataHandler.cs" />

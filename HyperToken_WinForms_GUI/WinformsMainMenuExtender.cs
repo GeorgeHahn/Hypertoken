@@ -42,6 +42,7 @@ namespace HyperToken_WinForms_GUI
                     temp.DropDownItems.Add(MenuToToolStripMenuItem(item));
             }
 
+            temp.Click += m.FireClicked;
             temp.Checked = m.Checked;
             m.PropertyChanged += (sender, args) =>
                                      {

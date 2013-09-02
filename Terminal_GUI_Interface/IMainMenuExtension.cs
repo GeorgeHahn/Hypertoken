@@ -24,6 +24,8 @@ namespace Terminal_GUI_Interface
 
         public event ItemClickedEventHandler ItemClicked;
 
+        public event MenuClickedEventHandler Clicked;
+
         public Menu(string text)
         {
             Text = text;
@@ -62,6 +64,12 @@ namespace Terminal_GUI_Interface
         {
             if (PropertyChanged != null)
                 PropertyChanged(sender, args);
+        }
+
+        public void FireClicked(object sender, EventArgs e)
+        {
+            if (Clicked != null)
+                Clicked(sender, e);
         }
 
         public static int GetIndex(ObservableCollection<Menu> list, string menu)
@@ -104,4 +112,6 @@ namespace Terminal_GUI_Interface
     }
 
     public delegate void ItemsListOpeningEventHandler(object sender, EventArgs args);
+
+    public delegate void MenuClickedEventHandler(object sender, EventArgs args);
 }
