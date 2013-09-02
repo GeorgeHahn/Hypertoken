@@ -170,7 +170,7 @@ namespace Terminal
             Array.Copy(header, writeReport.Data, header.Length);
             Array.Copy(data, 0, writeReport.Data, header.Length, data.Length);
 
-            writeReport.Data[63] = calculateChecksum(writeReport.Data);
+            writeReport.Data[writeReport.Data.Length - 1] = calculateChecksum(writeReport.Data);
 
             if (!_device.WriteReport(writeReport))
                 LogTo.Error("Failed to write data"); // TODO: User should be notified

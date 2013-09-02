@@ -42,14 +42,18 @@ namespace HyperToken_WinForms_GUI
             get { return _handler.CurrentParser.Name; }
             set
             {
-                var currentParser = from parser in _parsers
-                                    where parser.Name == value
-                                    select parser;
+                var oldparser = _handler.CurrentParser;
+                var currentParser = _parsers.FirstOrDefault(parser => parser.Name == value);
 
                 if (currentParser == null)
+                {
+                    LogTo.Error("Parser {0} not found", (string)value);
                     return;
+                }
 
-                _handler.CurrentParser = currentParser.First();
+                _handler.CurrentParser = currentParser;
+                _handler.CurrentParser.Create();
+                oldparser.Release();
                 LogTo.Debug("Current parser: {0}", _handler.CurrentParser.Name);
             }
         }

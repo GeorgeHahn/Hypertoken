@@ -7,7 +7,11 @@ namespace Terminal_Interface
 {
     public interface IPacketInterpreter
     {
-        string InterpretPacket(byte[] packet);
         string Name { get; }
+
+        void Create();
+        void Release();
+
+        string InterpretPacket(byte[] packet);
     }
 }

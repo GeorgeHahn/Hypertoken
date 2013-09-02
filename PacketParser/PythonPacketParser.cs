@@ -19,12 +19,12 @@ namespace PacketParser
     {
         private ScriptRuntime _runtime;
         private dynamic _script;
+        private FileSystemWatcher watcher;
         private string name;
         private string version;
         private string author;
 
-
-        public PythonPacketParser()
+        public void Create()
         {
             LogTo.Debug("PythonPacketParser created");
             _runtime = Python.CreateRuntime();
@@ -34,7 +34,7 @@ namespace PacketParser
                 throw new NullReferenceException("ScriptDirectory should not be null");
 
             LogTo.Debug("Looking for python decoder in {0}", scriptDirectory);
-            var watcher = new FileSystemWatcher(scriptDirectory, "*.py");
+            watcher = new FileSystemWatcher(scriptDirectory, "*.py");
 
             watcher.Changed += (sender, args) => UpdateScript(args.FullPath);
             watcher.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.FileName;
@@ -49,6 +49,15 @@ namespace PacketParser
             {
                 LogTo.WarnException("Interpreting python script threw an error", e);
             }
+        }
+
+        public void Release()
+        {
+            LogTo.Debug("Releasing PythonPacketParser");
+            _runtime = null;
+            watcher.EnableRaisingEvents = false;
+            watcher.Dispose();
+            watcher = null;
         }
 
         private void UpdateScript(string script)

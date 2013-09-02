@@ -9,6 +9,12 @@ namespace PacketParser
 {
     public class StringPacketInterpreter : IPacketInterpreter
     {
+        public void Create()
+        { }
+
+        public void Release()
+        { }
+
         public string InterpretPacket(byte[] packet)
         {
             var hex = new StringBuilder(packet.Length * 4);
