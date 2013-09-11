@@ -82,11 +82,11 @@ namespace Terminal
             get { throw new NotImplementedException(); }
         }
 
-        public deviceType DeviceType
+        public DeviceType DeviceType
         {
             get
             {
-                return deviceType.HID;
+                return DeviceType.HID;
             }
         }
 

@@ -46,7 +46,7 @@ namespace TerminalTests
         public void TestDeviceType()
         {
             HIDDataHandler port = new HIDDataHandler(new CurrentPacketParser(new RawPacketParser()));
-            Assert.Equal(port.DeviceType, deviceType.HID);
+            Assert.Equal(port.DeviceType, DeviceType.HID);
         }
     }
 }

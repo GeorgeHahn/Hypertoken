@@ -93,11 +93,11 @@ namespace Terminal
             }
         }
 
-        public deviceType DeviceType
+        public DeviceType DeviceType
         {
             get
             {
-                return deviceType.SerialPort;
+                return DeviceType.SerialPort;
             }
         }
 

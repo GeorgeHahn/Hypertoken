@@ -1,15 +1,11 @@
 ﻿using System;
-using System.IO;
-using System.Linq;
 using System.Reflection;
 using Anotar.NLog;
 using Autofac;
 using Bugsense.WPF;
 using HyperToken_WinForms_GUI;
-using NLog;
 using Anotar;
 using Terminal_Interface;
-using LogTo = Anotar.NLog.LogTo;
 
 namespace Terminal
 {
@@ -17,7 +13,7 @@ namespace Terminal
 	{
 		public static string GetVersion()
 		{
-			return System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
+			return Assembly.GetExecutingAssembly().GetName().Version.ToString();
 		}
 
 		[STAThread]
@@ -25,7 +21,7 @@ namespace Terminal
 		{
 			//try
 			//{
-            LogManager.ThrowExceptions = true;
+            NLog.LogManager.ThrowExceptions = true;
 
 			LogTo.Debug("Initialize BugSense");
 			BugSense.Init("9eacbe2e", GetVersion(), "http://www.bugsense.com/api/errors");

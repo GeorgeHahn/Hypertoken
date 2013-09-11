@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -9,7 +8,6 @@ using System.Windows.Forms;
 using Anotar.NLog;
 using CustomControls;
 using HyperToken_WinForms_GUI.Properties;
-using NLog;
 using Terminal_GUI_Interface;
 using Terminal_Interface;
 using Terminal_Interface.Enums;
@@ -22,17 +20,15 @@ using Anotar;
 
 namespace HyperToken_WinForms_GUI
 {
-    
-
     public partial class MainForm : Form, ITerminal, INotifyPropertyChanged
     {
         private readonly IAboutBox _aboutBox;
-        private readonly IEchoer _echoer;
         private readonly ILogger _logger;
         private readonly IFileSender _fileSender;
         private readonly CurrentDataDevice _currentDataDevice;
         private readonly WinformsMainMenuExtender _mainMenuExtender;
         private readonly IEnumerable<IStatusbarExtension> _statusbarExtensions;
+        private readonly IEnumerable<IToolbarExtension> _toolbarExtensions;
 
         private IDataDevice _dataDevice;
         private IEnumerable<ToolStripMenuItem> _menuExtensions;
@@ -40,18 +36,18 @@ namespace HyperToken_WinForms_GUI
 
         public MainForm(IAboutBox aboutBox,
                         ILogger logger,
-                        IEchoer echoer,
                         IFileSender fileSender,
                         CurrentDataDevice dataDevice,
                         WinformsMainMenuExtender mainMenuExtender,
-                        IEnumerable<IStatusbarExtension> statusbarExtensions)
+                        IEnumerable<IStatusbarExtension> statusbarExtensions,
+                        IEnumerable<IToolbarExtension> toolbarExtensions)
         {
             _aboutBox = aboutBox;
             _logger = logger;
-            _echoer = echoer;
             _fileSender = fileSender;
             _mainMenuExtender = mainMenuExtender;
             _statusbarExtensions = statusbarExtensions;
+            _toolbarExtensions = toolbarExtensions;
 
             _currentDataDevice = dataDevice;
             _currentDataDevice.PropertyChanged += (sender, args) =>
@@ -74,14 +70,6 @@ namespace HyperToken_WinForms_GUI
 
             LogTo.Debug("Mainform object created");
         }
-
-        public MainForm(IAboutBox aboutBox, CurrentDataDevice dataDevice, ILogger logger, WinformsMainMenuExtender mainMenuExtender, IEnumerable<IStatusbarExtension> statusbarExtensions)
-            : this(aboutBox, logger, null, null, dataDevice, mainMenuExtender, statusbarExtensions)
-        { }
-
-        public MainForm(IAboutBox aboutBox, CurrentDataDevice dataDevice, WinformsMainMenuExtender mainMenuExtender, IEnumerable<IStatusbarExtension> statusbarExtensions)
-            : this(aboutBox, null, null, null, dataDevice, mainMenuExtender, statusbarExtensions)
-        { }
 
         public event SaveSessionEventHandler OnSaveSession;
 
@@ -108,12 +96,25 @@ namespace HyperToken_WinForms_GUI
             _menuExtensions = _mainMenuExtender.GetMenus();
 
             if (_menuExtensions != null)
+            {
+                LogTo.Trace("Registered {0} menu extensions", _menuExtensions.Count());
                 foreach (var mainMenuExtension in _menuExtensions)
                     menuStrip1.Items.Add(mainMenuExtension);
+            }
 
             if (_statusbarExtensions != null)
+            {
+                LogTo.Trace("Registered {0} statusbar extensions", _statusbarExtensions.Count());
                 foreach (var statusbarExtension in _statusbarExtensions)
                     statusStrip.Items.Add(statusbarExtension.StatusBarItem);
+            }
+
+            if (_toolbarExtensions != null)
+            {
+                LogTo.Trace("Registered {0} toolbar extensions", _toolbarExtensions.Count());
+                foreach (var extension in _toolbarExtensions)
+                    toolStrip1.Items.Add(extension.ToolBarItem);
+            }
 
             SetupFileSendSpinnerSpokes();
 

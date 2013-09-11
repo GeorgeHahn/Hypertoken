@@ -1,4 +1,5 @@
-﻿using Autofac;
+﻿using System.Reflection;
+using Autofac;
 using HyperToken_WinForms_GUI;
 using PacketParser;
 using Terminal.GUI;
@@ -12,6 +13,9 @@ namespace Terminal
         public IContainer BuildWinFormsContainer()
         {
             var builder = new ContainerBuilder();
+
+            //builder.RegisterAssemblyTypes(Assembly.Load("HyperToken_WinForms_GUI"))
+            //    .AsImplementedInterfaces();
 
             // WinForms GUI wiring
             builder.RegisterType<HyperToken_WinForms_GUI.Initializer>().As<IInitable>();
@@ -28,6 +32,9 @@ namespace Terminal
             builder.RegisterType<PacketParserGUI>().As<IMainMenuExtension>().SingleInstance();
             builder.RegisterType<SerialMenu>().As<IMainMenuExtension>().SingleInstance();
             builder.RegisterType<AboutGUI>().As<IMainMenuExtension>().SingleInstance();
+
+            builder.RegisterType<FileSendGUI>().As<IFileSender>().SingleInstance();
+            builder.RegisterType<FileSendGUI>().As<IToolbarExtension>().SingleInstance();
 
             builder.RegisterType<SerialStatusbarPortMenu>().As<IStatusbarExtension>();
             builder.RegisterType<SerialStatusbarStatusLabel>().As<IStatusbarExtension>();
@@ -70,63 +77,63 @@ namespace Terminal
             return builder.Build();
         }
 
-        public IContainer BuildAvalonContainer()
-        {
-            var builder = new ContainerBuilder();
+        //public IContainer BuildAvalonContainer()
+        //{
+        //    var builder = new ContainerBuilder();
 
-            // WinForms GUI wiring
-            builder.RegisterType<HyperToken_Avalon_GUI.Initializer>().As<IInitable>();
-            builder.RegisterType<HyperToken_Avalon_GUI.PseudoViewModel>().As<ITerminal>();
+        //    // WinForms GUI wiring
+        //    builder.RegisterType<HyperToken_Avalon_GUI.Initializer>().As<IInitable>();
+        //    builder.RegisterType<HyperToken_Avalon_GUI.PseudoViewModel>().As<ITerminal>();
 
-            // Serial port wiring
-            builder.RegisterType<SerialPortDataHandler>().As<ISerialPort>().SingleInstance();
-            builder.RegisterType<HIDDataHandler>().As<IDataDevice>().SingleInstance();
+        //    // Serial port wiring
+        //    builder.RegisterType<SerialPortDataHandler>().As<ISerialPort>().SingleInstance();
+        //    builder.RegisterType<HIDDataHandler>().As<IDataDevice>().SingleInstance();
 
-            // GUI Extensions
-            //builder.RegisterType<LoggingGui>().As<IMainMenuExtension>().SingleInstance();
-            //builder.RegisterType<LoggingGui>().As<IStatusbarExtension>().SingleInstance();
-            //builder.RegisterType<PacketParserGUI>().As<IMainMenuExtension>().SingleInstance();
-            builder.RegisterType<SerialMenu>().As<IMainMenuExtension>().SingleInstance();
+        //    // GUI Extensions
+        //    //builder.RegisterType<LoggingGui>().As<IMainMenuExtension>().SingleInstance();
+        //    //builder.RegisterType<LoggingGui>().As<IStatusbarExtension>().SingleInstance();
+        //    //builder.RegisterType<PacketParserGUI>().As<IMainMenuExtension>().SingleInstance();
+        //    builder.RegisterType<SerialMenu>().As<IMainMenuExtension>().SingleInstance();
 
-            //builder.RegisterType<SerialStatusbarPortMenu>().As<IStatusbarExtension>();
-            //builder.RegisterType<SerialStatusbarStatusLabel>().As<IStatusbarExtension>();
-            //builder.RegisterType<SerialStatusbarBaudMenu>().As<IStatusbarExtension>();
+        //    //builder.RegisterType<SerialStatusbarPortMenu>().As<IStatusbarExtension>();
+        //    //builder.RegisterType<SerialStatusbarStatusLabel>().As<IStatusbarExtension>();
+        //    //builder.RegisterType<SerialStatusbarBaudMenu>().As<IStatusbarExtension>();
 
-            //builder.RegisterType<SerialStatusbarPortMenu>();
-            //builder.RegisterType<SerialStatusbarBaudMenu>();
+        //    //builder.RegisterType<SerialStatusbarPortMenu>();
+        //    //builder.RegisterType<SerialStatusbarBaudMenu>();
 
-            //builder.RegisterType<CurrentDeviceSerialStatusLabel>().As<IStatusbarExtension>();
+        //    //builder.RegisterType<CurrentDeviceSerialStatusLabel>().As<IStatusbarExtension>();
 
-            builder.RegisterType<FlowControlMenu>().As<ISerialSettingsMenu>();
-            builder.RegisterType<BaudRateMenu>().As<ISerialSettingsMenu>();
-            builder.RegisterType<PortMenu>().As<ISerialSettingsMenu>();
-            builder.RegisterType<ParityMenu>().As<ISerialSettingsMenu>();
-            builder.RegisterType<StopBitsMenu>().As<ISerialSettingsMenu>();
-            builder.RegisterType<DataBitsMenu>().As<ISerialSettingsMenu>();
+        //    builder.RegisterType<FlowControlMenu>().As<ISerialSettingsMenu>();
+        //    builder.RegisterType<BaudRateMenu>().As<ISerialSettingsMenu>();
+        //    builder.RegisterType<PortMenu>().As<ISerialSettingsMenu>();
+        //    builder.RegisterType<ParityMenu>().As<ISerialSettingsMenu>();
+        //    builder.RegisterType<StopBitsMenu>().As<ISerialSettingsMenu>();
+        //    builder.RegisterType<DataBitsMenu>().As<ISerialSettingsMenu>();
 
-            //builder.RegisterType<WinformsMainMenuExtender>();
+        //    //builder.RegisterType<WinformsMainMenuExtender>();
 
-            builder.RegisterType<HidMenu>().As<IMainMenuExtension>();
-            builder.RegisterType<DeviceSelectionMenu>().As<IHidSettingsMenu>();
-            builder.RegisterType<HidDeviceConnection>().As<IHidSettingsMenu>();
+        //    builder.RegisterType<HidMenu>().As<IMainMenuExtension>();
+        //    builder.RegisterType<DeviceSelectionMenu>().As<IHidSettingsMenu>();
+        //    builder.RegisterType<HidDeviceConnection>().As<IHidSettingsMenu>();
 
-            builder.RegisterType<CurrentDataDevice>().SingleInstance();
-            builder.RegisterType<CurrentPacketInterpreter>().SingleInstance();
+        //    builder.RegisterType<CurrentDataDevice>().SingleInstance();
+        //    builder.RegisterType<CurrentPacketInterpreter>().SingleInstance();
 
-            builder.RegisterType<CurrentPacketParser>().SingleInstance();
-            builder.RegisterType<StringPacketInterpreter>().As<IPacketInterpreter>().SingleInstance();
-            builder.RegisterType<PythonPacketParser>().As<IPacketInterpreter>().SingleInstance();
-            builder.RegisterType<RawPacketParser>().As<IPacketInterpreter>().SingleInstance();
+        //    builder.RegisterType<CurrentPacketParser>().SingleInstance();
+        //    builder.RegisterType<StringPacketInterpreter>().As<IPacketInterpreter>().SingleInstance();
+        //    builder.RegisterType<PythonPacketParser>().As<IPacketInterpreter>().SingleInstance();
+        //    builder.RegisterType<RawPacketParser>().As<IPacketInterpreter>().SingleInstance();
 
 
-            // Logger wiring
-            builder.RegisterType<FileLogger>().As<ILogger>().SingleInstance();
+        //    // Logger wiring
+        //    builder.RegisterType<FileLogger>().As<ILogger>().SingleInstance();
 
-            // Application wiring
-            builder.RegisterType<TerminalRunner>();
-            builder.RegisterType<InitableRunner>();
+        //    // Application wiring
+        //    builder.RegisterType<TerminalRunner>();
+        //    builder.RegisterType<InitableRunner>();
 
-            return builder.Build();
-        }
+        //    return builder.Build();
+        //}
     }
 }

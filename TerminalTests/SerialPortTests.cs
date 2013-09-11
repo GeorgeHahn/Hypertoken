@@ -152,7 +152,7 @@ namespace TerminalTests
         public void TestDeviceType()
         {
             SerialPortDataHandler port = new SerialPortDataHandler(new CurrentPacketParser(new RawPacketParser()));
-            Assert.Equal(port.DeviceType, deviceType.SerialPort);
+            Assert.Equal(port.DeviceType, DeviceType.SerialPort);
         }
 
         [Fact]

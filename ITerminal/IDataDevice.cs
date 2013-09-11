@@ -5,7 +5,7 @@ using Terminal_Interface.Events;
 
 namespace Terminal_Interface
 {
-    public enum deviceType
+    public enum DeviceType
     {
         SerialPort,
         HID,
@@ -21,7 +21,7 @@ namespace Terminal_Interface
 
         string DeviceStatus { get; }
 
-        deviceType DeviceType { get; }
+        DeviceType DeviceType { get; }
 
         PortState PortState { get; set; }
 

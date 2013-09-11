@@ -80,6 +80,7 @@
     <Compile Include="GenericSettingsMenu.cs" />
     <Compile Include="IMainMenuExtension.cs" />
     <Compile Include="IStatusbarExtension.cs" />
+    <Compile Include="IToolbarExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

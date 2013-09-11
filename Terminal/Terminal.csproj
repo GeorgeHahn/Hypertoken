@@ -133,10 +133,6 @@
       <Project>{9e8f1d50-74ea-4c60-bd5c-ab2c5b53bc66}</Project>
       <Name>HidLibrary</Name>
     </ProjectReference>
-    <ProjectReference Include="..\HyperToken_Avalon_GUI\HyperToken_Avalon_GUI.csproj">
-      <Project>{47500225-3865-4c6d-a30c-4b96b8d2a41a}</Project>
-      <Name>HyperToken_Avalon_GUI</Name>
-    </ProjectReference>
     <ProjectReference Include="..\HyperToken_WinForms_GUI\HyperToken_WinForms_GUI.csproj">
       <Project>{6e23681c-544e-44b7-81e1-9086f5bff888}</Project>
       <Name>HyperToken_WinForms_GUI</Name>
