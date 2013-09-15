@@ -16,12 +16,14 @@ namespace Terminal
     {
         private HidDevice _device;
         private CurrentPacketParser _parser;
-        private IHIDPreparser _preparser;
+        readonly IHIDPreparser _preparser;
+        private bool open;
 
         public HIDDataHandler(CurrentPacketParser parser, IHIDPreparser preparser)
         {
             _parser = parser;
             _preparser = preparser;
+            open = false;
         }
 
         public IEnumerable<string> ListAvailableDevices()
@@ -109,6 +111,7 @@ namespace Terminal
 
                 if (value == PortState.Open)
                 {
+                    open = true;
                     _device.OpenDevice();
                     _device.MonitorDeviceEvents = true;
                     _device.Removed += DeviceOnRemoved;
@@ -117,6 +120,7 @@ namespace Terminal
                 else
                 {
                     // todo: Do this in a separate thread
+                    open = false;
                     _device.CloseDevice();
                     _device.MonitorDeviceEvents = false;
                     _device.Removed -= DeviceOnRemoved;
@@ -128,7 +132,13 @@ namespace Terminal
         {
             LogTo.Debug("Got a ReadCallback of length {0}", data.Data.Length);
 
-            _device.Read(ReadCallback);
+            if(open)
+                _device.Read(ReadCallback);
+            else
+            {
+                LogTo.Trace("Ignored incoming data, device is closed");
+                return;
+            }
 
             if (DataReceived == null)
                 return;
@@ -148,6 +158,12 @@ namespace Terminal
         // TODO Fix this to send properly formatted data
         public int Write(byte[] data)
         {
+            if (!open)
+            {
+                LogTo.Trace("Ignored write request; device is closed");
+                return 0;
+            }
+
             LogTo.Trace("Writing {0} byte array", data.Length);
             byte[] continuation = null;
             if (data.Length > 60)
@@ -162,7 +178,7 @@ namespace Terminal
                 data = tempData;
             }
 
-            var header = new byte[] { 0, 0x55, 0xB0, (byte)data.Length };
+            var header = new byte[] { 0x55, 0xB0, (byte)data.Length };
             var writeReport = _device.CreateReport();
             Array.Copy(header, writeReport.Data, header.Length);
             Array.Copy(data, 0, writeReport.Data, header.Length, data.Length);
@@ -180,7 +196,7 @@ namespace Terminal
 
         private byte calculateChecksum(byte[] message)
         {
-            return message.Aggregate(message[0], (current, b) => (byte)(current ^ b));
+            return message.Aggregate((byte)0, (current, b) => (byte)(current ^ b));
         }
 
         public int Write(byte data)
