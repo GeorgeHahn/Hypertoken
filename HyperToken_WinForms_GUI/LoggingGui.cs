@@ -11,7 +11,6 @@ using Terminal.Interface;
 using Terminal.Interface.Enums;
 using Terminal.Interface.Exceptions;
 using Terminal.Interface.GUI;
-using Menu = Terminal.Interface.GUI.Menu;
 
 namespace HyperToken.WinFormsGUI
 {
@@ -19,7 +18,7 @@ namespace HyperToken.WinFormsGUI
 	{
 		private readonly ILogger _logger;
 
-		private Menu _mainMenuItem;
+		private LightMenu _mainMenuItem;
 		private ToolStripStatusLabel _statusBarItem;
 		private readonly SaveFileDialog _selectLoggingFileDialog;
 
@@ -37,15 +36,15 @@ namespace HyperToken.WinFormsGUI
 									   };
 		}
 
-		public Menu Menu
+		public LightMenu Menu
 		{
 			get
 			{
 				if (_mainMenuItem == null)
 				{
-					_mainMenuItem = new Menu("Logging");
-					_mainMenuItem.Items.Add(new Menu("Enable Logging", (s, a) => OnToggleLogging()));
-					_mainMenuItem.Items.Add(new Menu("Set Destination File", (s, a) => OnSetDestinationFile()));
+					_mainMenuItem = new LightMenu("Logging");
+					_mainMenuItem.Items.Add(new LightMenu("Enable Logging", (s, a) => OnToggleLogging()));
+					_mainMenuItem.Items.Add(new LightMenu("Set Destination File", (s, a) => OnSetDestinationFile()));
 				}
 
 				return _mainMenuItem;

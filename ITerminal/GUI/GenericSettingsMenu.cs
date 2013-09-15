@@ -5,7 +5,7 @@ namespace Terminal.Interface.GUI
 {
     public abstract class GenericSettingsMenu
     {
-        protected Menu _menu;
+        protected LightMenu _menu;
 
         protected abstract dynamic Values { get; }
 
@@ -17,14 +17,14 @@ namespace Terminal.Interface.GUI
 
         protected virtual bool UpdateOnOpen { get { return false; } }
 
-        public Menu Menu
+        public LightMenu Menu
         {
             get
             {
                 if (_menu == null)
                 {
-                    _menu = new Menu(MenuName);
-                    _menu.ItemClicked += (sender, args) => ItemClicked(Menu.GetIndex(_menu.Items, args.ClickedItem));
+                    _menu = new LightMenu(MenuName);
+                    _menu.ItemClicked += (sender, args) => ItemClicked(LightMenu.GetIndex(_menu.Items, args.ClickedItem));
 
                     //_menu.PropertyChanged += (sender, args) => UpdateCheckedStates(args.PropertyName);
                     if (UpdateOnOpen)
@@ -42,7 +42,7 @@ namespace Terminal.Interface.GUI
             _menu.Items.Clear();
 
             foreach (var value in Values)
-                _menu.Items.Add(new Menu(value.ToString()));
+                _menu.Items.Add(new LightMenu(value.ToString()));
 
             UpdateCheckedStates(PropertyName);
 

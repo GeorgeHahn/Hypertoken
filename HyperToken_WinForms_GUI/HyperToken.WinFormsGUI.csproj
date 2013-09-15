@@ -166,9 +166,9 @@
     </Compile>
     <Compile Include="CurrentDeviceSerialStatusLabel.cs" />
     <Compile Include="FileSendGUI.cs" />
-    <Compile Include="Menu\AboutMenu.cs" />
-    <Compile Include="Menu\HidMenu.cs" />
-    <Compile Include="Menu\SerialMenu.cs" />
+    <Compile Include="Menus\AboutMenu.cs" />
+    <Compile Include="Menus\HidMenu.cs" />
+    <Compile Include="Menus\SerialMenu.cs" />
     <Compile Include="Helpers\GetDescription.cs" />
     <Compile Include="Initializer.cs" />
     <Compile Include="LoggingGui.cs" />

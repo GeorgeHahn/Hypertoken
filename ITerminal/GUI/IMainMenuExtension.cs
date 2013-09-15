@@ -7,14 +7,14 @@ namespace Terminal.Interface.GUI
 {
     public interface IMainMenuExtension
     {
-        Menu Menu { get; }
+        LightMenu Menu { get; }
     }
 
-    public class Menu : INotifyPropertyChanged
+    public class LightMenu : INotifyPropertyChanged
     {
         public string Text { get; set; }
 
-        public ObservableCollection<Menu> Items { get; private set; }
+        public ObservableCollection<LightMenu> Items { get; private set; }
 
         public bool Checked { get; set; }
 
@@ -24,17 +24,17 @@ namespace Terminal.Interface.GUI
 
         public event MenuClickedEventHandler Clicked;
 
-        public Menu(string text)
+        public LightMenu(string text)
         {
             Text = text;
-            Items = new ObservableCollection<Menu>();
+            Items = new ObservableCollection<LightMenu>();
         }
 
-        public Menu()
+        public LightMenu()
             : this(string.Empty)
         { }
 
-        public Menu(string text, ItemClickedEventHandler clicked)
+        public LightMenu(string text, ItemClickedEventHandler clicked)
         {
             ItemClicked += clicked;
             Text = text;
@@ -70,7 +70,7 @@ namespace Terminal.Interface.GUI
                 Clicked(sender, e);
         }
 
-        public static int GetIndex(ObservableCollection<Menu> list, string menu)
+        public static int GetIndex(ObservableCollection<LightMenu> list, string menu)
         {
             for (int index = 0; index < list.Count; index++)
             {
@@ -82,7 +82,7 @@ namespace Terminal.Interface.GUI
             return -1;
         }
 
-        public void AddRange(IEnumerable<Menu> menus)
+        public void AddRange(IEnumerable<LightMenu> menus)
         {
             foreach (var menu in menus)
                 Items.Add(menu);

@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 using Terminal.Interface;
 using Terminal.Interface.GUI;
-using Menu = Terminal.Interface.GUI.Menu;
 
 namespace HyperToken.WinFormsGUI
 {
     public class CurrentDeviceSerialStatusLabel : IStatusbarExtension
     {
-        //private Menu _menu;
         private readonly CurrentDataDevice _terminal;
 
         private ToolStripStatusLabel _item;

@@ -1,25 +1,25 @@
 ﻿using Terminal.Interface;
 using Terminal.Interface.GUI;
 
-namespace HyperToken.WinFormsGUI.Menu
+namespace HyperToken.WinFormsGUI.Menus
 {
     public class AboutMenu : IMainMenuExtension
     {
         private readonly IAboutBox _aboutBox;
-        private Terminal.Interface.GUI.Menu _menu;
+        private LightMenu _menu;
 
         public AboutMenu(IAboutBox aboutBox)
         {
             _aboutBox = aboutBox;
         }
 
-        public Terminal.Interface.GUI.Menu Menu
+        public LightMenu Menu
         {
             get
             {
                 if (_menu == null)
                 {
-                    _menu = new Terminal.Interface.GUI.Menu("About");
+                    _menu = new LightMenu("About");
                     _menu.Clicked += (sender, args) => _aboutBox.Open();
                 }
 

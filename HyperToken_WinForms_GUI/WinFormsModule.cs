@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Autofac;
-using HyperToken.WinFormsGUI.Menu;
+﻿using Autofac;
+using HyperToken.WinFormsGUI.Menus;
 using Terminal.Interface;
 using Terminal.Interface.GUI;
 

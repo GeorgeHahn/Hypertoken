@@ -6,7 +6,6 @@ using Anotar.NLog;
 using NLog;
 using Anotar;
 using Terminal.Interface.GUI;
-using Menu = Terminal.Interface.GUI.Menu;
 
 namespace HyperToken.WinFormsGUI
 {
@@ -19,7 +18,7 @@ namespace HyperToken.WinFormsGUI
             _menuExtensions = menuExtensions;
         }
 
-        private ToolStripMenuItem MenuToToolStripMenuItem(Menu m)
+        private ToolStripMenuItem MenuToToolStripMenuItem(LightMenu m)
         {
             var temp = new ToolStripMenuItem(m.Text);
 

@@ -4,11 +4,11 @@ using Terminal.Interface;
 using Terminal.Interface.Enums;
 using Terminal.Interface.GUI;
 
-namespace HyperToken.WinFormsGUI.Menu
+namespace HyperToken.WinFormsGUI.Menus
 {
     public interface IHidSettingsMenu
     {
-        Terminal.Interface.GUI.Menu Menu { get; }
+        LightMenu Menu { get; }
     }
 
     public abstract class HidSettingsMenu : GenericSettingsMenu, IHidSettingsMenu
@@ -35,7 +35,7 @@ namespace HyperToken.WinFormsGUI.Menu
             _dataDevice.PropertyChanged += (sender, args) => UpdateCheckedStates(args.PropertyName);
         }
 
-        private Terminal.Interface.GUI.Menu _menu;
+        private LightMenu _menu;
 
         private string MenuName
         {
@@ -62,14 +62,14 @@ namespace HyperToken.WinFormsGUI.Menu
             get { return true; }
         }
 
-        public Terminal.Interface.GUI.Menu Menu
+        public LightMenu Menu
         {
             get
             {
                 if (_menu == null)
                 {
-                    _menu = new Terminal.Interface.GUI.Menu(MenuName);
-                    _menu.ItemClicked += (sender, args) => ItemClicked(Terminal.Interface.GUI.Menu.GetIndex(_menu.Items, args.ClickedItem));
+                    _menu = new LightMenu(MenuName);
+                    _menu.ItemClicked += (sender, args) => ItemClicked(LightMenu.GetIndex(_menu.Items, args.ClickedItem));
                     if (UpdateOnOpen)
                         _menu.ItemsListOpening += (sender, args) => SetItems();
                     SetItems();
@@ -88,9 +88,9 @@ namespace HyperToken.WinFormsGUI.Menu
             _devicePaths = _dataDevice.Devices;
             _deviceNames = _dataDevice.ListAvailableDevices().ToArray();
 
-            var menus = new List<Terminal.Interface.GUI.Menu>();
+            var menus = new List<LightMenu>();
             foreach (var value in _deviceNames)
-                menus.Add(new Terminal.Interface.GUI.Menu(value));
+                menus.Add(new LightMenu(value));
 
             _menu.AddRange(menus);
 
@@ -151,7 +151,7 @@ namespace HyperToken.WinFormsGUI.Menu
 
     public class HidMenu : IMainMenuExtension
     {
-        private Terminal.Interface.GUI.Menu _menu;
+        private LightMenu _menu;
         private readonly IEnumerable<IHidSettingsMenu> _hidSettingsMenus;
 
         public HidMenu(IEnumerable<IHidSettingsMenu> hidSettingsMenus)
@@ -159,13 +159,13 @@ namespace HyperToken.WinFormsGUI.Menu
             _hidSettingsMenus = hidSettingsMenus;
         }
 
-        public Terminal.Interface.GUI.Menu Menu
+        public LightMenu Menu
         {
             get
             {
                 if (_menu == null)
                 {
-                    _menu = new Terminal.Interface.GUI.Menu("HID Settings");
+                    _menu = new LightMenu("HID Settings");
                     foreach (var serialSettingsMenu in _hidSettingsMenus)
                         _menu.Items.Add(serialSettingsMenu.Menu);
                 }

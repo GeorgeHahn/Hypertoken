@@ -3,11 +3,11 @@ using Terminal.Interface;
 using Terminal.Interface.Enums;
 using Terminal.Interface.GUI;
 
-namespace HyperToken.WinFormsGUI.Menu
+namespace HyperToken.WinFormsGUI.Menus
 {
     public interface ISerialSettingsMenu
     {
-        Terminal.Interface.GUI.Menu Menu { get; }
+        LightMenu Menu { get; }
     }
 
     public abstract class SerialSettingsMenu : GenericSettingsMenu, ISerialSettingsMenu
@@ -252,7 +252,7 @@ namespace HyperToken.WinFormsGUI.Menu
 
     public class SerialMenu : IMainMenuExtension
     {
-        private Terminal.Interface.GUI.Menu _menu;
+        private LightMenu _menu;
         private readonly IEnumerable<ISerialSettingsMenu> _serialSettingsMenus;
 
         public SerialMenu(IEnumerable<ISerialSettingsMenu> serialSettingsMenus)
@@ -260,13 +260,13 @@ namespace HyperToken.WinFormsGUI.Menu
             _serialSettingsMenus = serialSettingsMenus;
         }
 
-        public Terminal.Interface.GUI.Menu Menu
+        public LightMenu Menu
         {
             get
             {
                 if (_menu == null)
                 {
-                    _menu = new Terminal.Interface.GUI.Menu("Serial Settings");
+                    _menu = new LightMenu("Serial Settings");
                     foreach (var serialSettingsMenu in _serialSettingsMenus)
                         _menu.Items.Add(serialSettingsMenu.Menu);
                 }

@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Anotar;
 using Anotar.NLog;
 using Terminal.Interface;
-using NLog;
 using Terminal.Interface.GUI;
 
 namespace HyperToken.WinFormsGUI
@@ -42,7 +37,7 @@ namespace HyperToken.WinFormsGUI
             get { return _handler.CurrentParser.Name; }
             set
             {
-                var oldparser = _handler.CurrentParser;
+                var oldParser = _handler.CurrentParser;
                 var currentParser = _parsers.FirstOrDefault(parser => parser.Name == value);
 
                 if (currentParser == null)
@@ -53,7 +48,7 @@ namespace HyperToken.WinFormsGUI
 
                 _handler.CurrentParser = currentParser;
                 _handler.CurrentParser.Create();
-                oldparser.Release();
+                oldParser.Release();
                 LogTo.Debug("Current parser: {0}", _handler.CurrentParser.Name);
             }
         }

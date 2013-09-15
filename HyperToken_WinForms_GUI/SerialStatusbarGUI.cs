@@ -11,7 +11,7 @@ using Terminal.Interface.GUI;
 
 namespace HyperToken.WinFormsGUI
 {
-    // TODO Refactor this to use Menu and move it into Terminal\GUI
+    // TODO Refactor this to use LightMenu and move it into Terminal\GUI
     public abstract class SerialStatusBarExtension : IStatusbarExtension
     {
         protected static ISerialPort _serialPort;
