@@ -3,7 +3,7 @@
      xmlns:ui="http://schemas.microsoft.com/wix/UiExtension"
      xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension">
     
-	<Product Id="*" Name="Hypertoken_Installer" Language="1033" Version="1.0.0.0" Manufacturer="Circuit Works, Inc" UpgradeCode="03e683c6-1a44-4edd-9efc-27c93721503e">
+	<Product Id="*" Name="Hypertoken_Installer" Language="1033" Version="1.0.0.0" Manufacturer="Circuit Works, Inc" UpgradeCode="CEF25A06-1D75-4A5E-8E2A-0A916AA9E5ED">
 		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
         
 		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
@@ -110,13 +110,13 @@
                     <Component Id="HidLibrary.pdb">
                         <File Source="$(var.Terminal.TargetDir)HidLibrary.pdb"/>
                     </Component>
-                    <Component Id="HyperToken_WinForms_GUI.dll">
-                        <File Source="$(var.Terminal.TargetDir)HyperToken_WinForms_GUI.dll">
-                            <netfx:NativeImage Id="HyperToken_WinForms_GUI.dll" Platform="32bit" Priority="0" AppBaseDirectory="INSTALLFOLDER"/>
+                    <Component Id="HyperToken.WinForms.dll">
+                        <File Source="$(var.Terminal.TargetDir)HyperToken.WinForms.dll">
+                            <netfx:NativeImage Id="HyperToken.WinForms.dll" Platform="32bit" Priority="0" AppBaseDirectory="INSTALLFOLDER"/>
                         </File>
                     </Component>
-                    <Component Id="HyperToken_WinForms_GUI.pdb">
-                        <File Source="$(var.Terminal.TargetDir)HyperToken_WinForms_GUI.pdb"/>
+                    <Component Id="HyperToken.WinForms.pdb">
+                        <File Source="$(var.Terminal.TargetDir)HyperToken.WinForms.pdb"/>
                     </Component>
                     <Component Id="interpreter.py">
                         <File Source="$(var.Terminal.TargetDir)interpreter.py"/>
@@ -173,21 +173,13 @@
                             <netfx:NativeImage Id="ScintillaNET.dll" Platform="32bit" Priority="0" AppBaseDirectory="INSTALLFOLDER"/>
                         </File>
                     </Component>
-                    <Component Id="Terminal_GUI_Interface.dll">
-                        <File Source="$(var.Terminal.TargetDir)Terminal_GUI_Interface.dll">
-                            <netfx:NativeImage Id="Terminal_GUI_Interface.dll" Platform="32bit" Priority="0" AppBaseDirectory="INSTALLFOLDER"/>
+                    <Component Id="Terminal.Interface.dll">
+                        <File Source="$(var.Terminal.TargetDir)Terminal.Interface.dll">
+                            <netfx:NativeImage Id="Terminal.Interface.dll" Platform="32bit" Priority="0" AppBaseDirectory="INSTALLFOLDER"/>
                         </File>
                     </Component>
-                    <Component Id="Terminal_GUI_Interface.pdb">
-                        <File Source="$(var.Terminal.TargetDir)Terminal_GUI_Interface.pdb"/>
-                    </Component>
-                    <Component Id="Terminal_Interface.dll">
-                        <File Source="$(var.Terminal.TargetDir)Terminal_Interface.dll">
-                            <netfx:NativeImage Id="Terminal_Interface.dll" Platform="32bit" Priority="0" AppBaseDirectory="INSTALLFOLDER"/>
-                        </File>
-                    </Component>
-                    <Component Id="Terminal_Interface.pdb">
-                        <File Source="$(var.Terminal.TargetDir)Terminal_Interface.pdb"/>
+                    <Component Id="Terminal.Interface.pdb">
+                        <File Source="$(var.Terminal.TargetDir)Terminal.Interface.pdb"/>
                     </Component>
                 </Directory>
 			</Directory>
@@ -221,8 +213,8 @@
             <ComponentRef Id="HidLibrary.dll" />
             <ComponentRef Id="HidLibrary.pdb" />
             
-            <ComponentRef Id="HyperToken_WinForms_GUI.dll" />
-            <ComponentRef Id="HyperToken_WinForms_GUI.pdb" />
+            <ComponentRef Id="HyperToken.WinForms.dll" />
+            <ComponentRef Id="HyperToken.WinForms.pdb" />
             
             <ComponentRef Id="interpreter.py" />
             <ComponentRef Id="IronPython.dll" />
@@ -243,11 +235,8 @@
             
             <ComponentRef Id="ScintillaNET.dll" />
             
-            <ComponentRef Id="Terminal_GUI_Interface.dll" />
-            <ComponentRef Id="Terminal_GUI_Interface.pdb" />
-            
-            <ComponentRef Id="Terminal_Interface.dll" />
-            <ComponentRef Id="Terminal_Interface.pdb" />
+            <ComponentRef Id="Terminal.Interface.dll" />
+            <ComponentRef Id="Terminal.Interface.pdb" />
         </ComponentGroup>
 	</Fragment>
 
