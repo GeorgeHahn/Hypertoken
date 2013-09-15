@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Autofac;
+using HyperToken.WinFormsGUI.Menu;
 using Terminal.Interface;
 using Terminal.Interface.GUI;
 
@@ -30,6 +31,20 @@ namespace HyperToken.WinFormsGUI
             builder.RegisterType<SerialStatusbarPortMenu>();
             builder.RegisterType<SerialStatusbarBaudMenu>();
             builder.RegisterType<CurrentDeviceSerialStatusLabel>().As<IStatusbarExtension>();
+
+            builder.RegisterType<SerialMenu>().As<IMainMenuExtension>().SingleInstance();
+            builder.RegisterType<AboutMenu>().As<IMainMenuExtension>().SingleInstance();
+
+            builder.RegisterType<FlowControlMenu>().As<ISerialSettingsMenu>();
+            builder.RegisterType<BaudRateMenu>().As<ISerialSettingsMenu>();
+            builder.RegisterType<PortMenu>().As<ISerialSettingsMenu>();
+            builder.RegisterType<ParityMenu>().As<ISerialSettingsMenu>();
+            builder.RegisterType<StopBitsMenu>().As<ISerialSettingsMenu>();
+            builder.RegisterType<DataBitsMenu>().As<ISerialSettingsMenu>();
+
+            builder.RegisterType<HidMenu>().As<IMainMenuExtension>();
+            builder.RegisterType<DeviceSelectionMenu>().As<IHidSettingsMenu>();
+            builder.RegisterType<HidDeviceConnection>().As<IHidSettingsMenu>();
         }
     }
 }

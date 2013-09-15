@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using Autofac;
-using Terminal.GUI;
 using Terminal.Interface;
 using Terminal.Interface.GUI;
 
@@ -22,20 +21,20 @@ namespace Terminal
             builder.RegisterType<SerialPortDataHandler>().As<ISerialPort>().SingleInstance();
             builder.RegisterType<HIDDataHandler>().As<IDataDevice>().SingleInstance();
 
-            // GUI Extensions
-            builder.RegisterType<SerialMenu>().As<IMainMenuExtension>().SingleInstance();
-            builder.RegisterType<AboutGUI>().As<IMainMenuExtension>().SingleInstance();
+            //// GUI Extensions
+            //builder.RegisterType<SerialMenu>().As<IMainMenuExtension>().SingleInstance();
+            //builder.RegisterType<AboutGUI>().As<IMainMenuExtension>().SingleInstance();
 
-            builder.RegisterType<FlowControlMenu>().As<ISerialSettingsMenu>();
-            builder.RegisterType<BaudRateMenu>().As<ISerialSettingsMenu>();
-            builder.RegisterType<PortMenu>().As<ISerialSettingsMenu>();
-            builder.RegisterType<ParityMenu>().As<ISerialSettingsMenu>();
-            builder.RegisterType<StopBitsMenu>().As<ISerialSettingsMenu>();
-            builder.RegisterType<DataBitsMenu>().As<ISerialSettingsMenu>();
+            //builder.RegisterType<FlowControlMenu>().As<ISerialSettingsMenu>();
+            //builder.RegisterType<BaudRateMenu>().As<ISerialSettingsMenu>();
+            //builder.RegisterType<PortMenu>().As<ISerialSettingsMenu>();
+            //builder.RegisterType<ParityMenu>().As<ISerialSettingsMenu>();
+            //builder.RegisterType<StopBitsMenu>().As<ISerialSettingsMenu>();
+            //builder.RegisterType<DataBitsMenu>().As<ISerialSettingsMenu>();
 
-            builder.RegisterType<HidMenu>().As<IMainMenuExtension>();
-            builder.RegisterType<DeviceSelectionMenu>().As<IHidSettingsMenu>();
-            builder.RegisterType<HidDeviceConnection>().As<IHidSettingsMenu>();
+            //builder.RegisterType<HidMenu>().As<IMainMenuExtension>();
+            //builder.RegisterType<DeviceSelectionMenu>().As<IHidSettingsMenu>();
+            //builder.RegisterType<HidDeviceConnection>().As<IHidSettingsMenu>();
 
             builder.RegisterType<CurrentDataDevice>().SingleInstance();
             builder.RegisterType<CurrentPacketInterpreter>().SingleInstance();

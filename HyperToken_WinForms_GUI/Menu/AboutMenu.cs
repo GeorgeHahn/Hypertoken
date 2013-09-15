@@ -1,29 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Terminal.Interface;
+﻿using Terminal.Interface;
 using Terminal.Interface.GUI;
 
-namespace Terminal.GUI
+namespace HyperToken.WinFormsGUI.Menu
 {
-    public class AboutGUI : IMainMenuExtension
+    public class AboutMenu : IMainMenuExtension
     {
         private readonly IAboutBox _aboutBox;
-        private Menu _menu;
+        private Terminal.Interface.GUI.Menu _menu;
 
-        public AboutGUI(IAboutBox aboutBox)
+        public AboutMenu(IAboutBox aboutBox)
         {
             _aboutBox = aboutBox;
         }
 
-        public Menu Menu
+        public Terminal.Interface.GUI.Menu Menu
         {
             get
             {
                 if (_menu == null)
                 {
-                    _menu = new Menu("About");
+                    _menu = new Terminal.Interface.GUI.Menu("About");
                     _menu.Clicked += (sender, args) => _aboutBox.Open();
                 }
 

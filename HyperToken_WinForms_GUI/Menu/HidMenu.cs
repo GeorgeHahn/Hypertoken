@@ -4,11 +4,11 @@ using Terminal.Interface;
 using Terminal.Interface.Enums;
 using Terminal.Interface.GUI;
 
-namespace Terminal.GUI
+namespace HyperToken.WinFormsGUI.Menu
 {
     public interface IHidSettingsMenu
     {
-        Menu Menu { get; }
+        Terminal.Interface.GUI.Menu Menu { get; }
     }
 
     public abstract class HidSettingsMenu : GenericSettingsMenu, IHidSettingsMenu
@@ -25,17 +25,17 @@ namespace Terminal.GUI
     // Doesn't implement GenericSettingsMenu
     public class DeviceSelectionMenu : IHidSettingsMenu
     {
-        private readonly HIDDataHandler _dataDevice;
+        private readonly IDataDevice _dataDevice;
         private readonly CurrentDataDevice _terminal;
 
         public DeviceSelectionMenu(IDataDevice dataDevice, CurrentDataDevice terminal)
         {
-            _dataDevice = (HIDDataHandler)dataDevice;
+            _dataDevice = dataDevice;
             _terminal = terminal;
             _dataDevice.PropertyChanged += (sender, args) => UpdateCheckedStates(args.PropertyName);
         }
 
-        private Menu _menu;
+        private Terminal.Interface.GUI.Menu _menu;
 
         private string MenuName
         {
@@ -62,14 +62,14 @@ namespace Terminal.GUI
             get { return true; }
         }
 
-        public Menu Menu
+        public Terminal.Interface.GUI.Menu Menu
         {
             get
             {
                 if (_menu == null)
                 {
-                    _menu = new Menu(MenuName);
-                    _menu.ItemClicked += (sender, args) => ItemClicked(Menu.GetIndex(_menu.Items, args.ClickedItem));
+                    _menu = new Terminal.Interface.GUI.Menu(MenuName);
+                    _menu.ItemClicked += (sender, args) => ItemClicked(Terminal.Interface.GUI.Menu.GetIndex(_menu.Items, args.ClickedItem));
                     if (UpdateOnOpen)
                         _menu.ItemsListOpening += (sender, args) => SetItems();
                     SetItems();
@@ -88,9 +88,9 @@ namespace Terminal.GUI
             _devicePaths = _dataDevice.Devices;
             _deviceNames = _dataDevice.ListAvailableDevices().ToArray();
 
-            var menus = new List<Menu>();
+            var menus = new List<Terminal.Interface.GUI.Menu>();
             foreach (var value in _deviceNames)
-                menus.Add(new Menu(value));
+                menus.Add(new Terminal.Interface.GUI.Menu(value));
 
             _menu.AddRange(menus);
 
@@ -151,7 +151,7 @@ namespace Terminal.GUI
 
     public class HidMenu : IMainMenuExtension
     {
-        private Menu _menu;
+        private Terminal.Interface.GUI.Menu _menu;
         private readonly IEnumerable<IHidSettingsMenu> _hidSettingsMenus;
 
         public HidMenu(IEnumerable<IHidSettingsMenu> hidSettingsMenus)
@@ -159,13 +159,13 @@ namespace Terminal.GUI
             _hidSettingsMenus = hidSettingsMenus;
         }
 
-        public Menu Menu
+        public Terminal.Interface.GUI.Menu Menu
         {
             get
             {
                 if (_menu == null)
                 {
-                    _menu = new Menu("HID Settings");
+                    _menu = new Terminal.Interface.GUI.Menu("HID Settings");
                     foreach (var serialSettingsMenu in _hidSettingsMenus)
                         _menu.Items.Add(serialSettingsMenu.Menu);
                 }
