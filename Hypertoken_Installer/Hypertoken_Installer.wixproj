@@ -58,8 +58,8 @@
       <RefProjectOutputGroups>Binaries;Symbols</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
-    <ProjectReference Include="..\HyperToken_WinForms_GUI\HyperToken.WinFormsGUI.csproj">
-      <Name>HyperToken.WinFormsGUI</Name>
+    <ProjectReference Include="..\HyperToken_WinForms_GUI\HyperToken.WinForms.csproj">
+      <Name>HyperToken.WinForms</Name>
       <Project>{6e23681c-544e-44b7-81e1-9086f5bff888}</Project>
       <Private>True</Private>
       <DoNotHarvest>True</DoNotHarvest>

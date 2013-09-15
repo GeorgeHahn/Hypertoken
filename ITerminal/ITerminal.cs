@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel;
 using Terminal.Interface.Events;
-using Terminal.Interface.Enums;
 
 namespace Terminal.Interface
 {

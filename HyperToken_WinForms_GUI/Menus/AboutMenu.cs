@@ -1,7 +1,7 @@
 ﻿using Terminal.Interface;
 using Terminal.Interface.GUI;
 
-namespace HyperToken.WinFormsGUI.Menus
+namespace HyperToken.WinForms.Menus
 {
     public class AboutMenu : IMainMenuExtension
     {

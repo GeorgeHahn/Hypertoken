@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Reflection;
 
-namespace HyperToken.WinFormsGUI.Helpers
+namespace HyperToken.WinForms.Helpers
 {
 	public static class EnumHelper
 	{

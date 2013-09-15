@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace HyperToken.WinFormsGUI.Helpers
+namespace HyperToken.WinForms.Helpers
 {
 	public class HighResolutionSleep
 	{

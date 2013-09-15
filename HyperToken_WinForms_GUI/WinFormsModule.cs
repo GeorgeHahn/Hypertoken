@@ -1,9 +1,9 @@
 ﻿using Autofac;
-using HyperToken.WinFormsGUI.Menus;
+using HyperToken.WinForms.Menus;
 using Terminal.Interface;
 using Terminal.Interface.GUI;
 
-namespace HyperToken.WinFormsGUI
+namespace HyperToken.WinForms
 {
     public class WinFormsModule : Module
     {

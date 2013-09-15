@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO.Ports;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using PacketParser;
+﻿using PacketParser;
 using Terminal;
 using Terminal.Interface;
 using Terminal.Interface.Enums;
 using Xunit;
-using StopBits = Terminal.Interface.Enums.StopBits;
 
 namespace TerminalTests
 {

@@ -8,8 +8,8 @@
     <ProjectGuid>{6E23681C-544E-44B7-81E1-9086F5BFF888}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>HyperToken.WinFormsGUI</RootNamespace>
-    <AssemblyName>HyperToken.WinFormsGUI</AssemblyName>
+    <RootNamespace>HyperToken.WinForms</RootNamespace>
+    <AssemblyName>HyperToken.WinForms</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>

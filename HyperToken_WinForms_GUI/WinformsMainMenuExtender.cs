@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using Anotar.NLog;
-using NLog;
-using Anotar;
 using Terminal.Interface.GUI;
 
-namespace HyperToken.WinFormsGUI
+namespace HyperToken.WinForms
 {
     public class WinformsMainMenuExtender
     {

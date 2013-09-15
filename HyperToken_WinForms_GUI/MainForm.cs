@@ -7,17 +7,15 @@ using System.Linq;
 using System.Windows.Forms;
 using Anotar.NLog;
 using CustomControls;
-using HyperToken.WinFormsGUI.Properties;
+using HyperToken.WinForms.Properties;
 using Terminal.Interface;
 using Terminal.Interface.Enums;
 using Terminal.Interface.Events;
-using Terminal.Interface.Exceptions;
-using Anotar;
 // TODO Add 'human readable version' for Rob
 // TODO Custom Baud setting
 using Terminal.Interface.GUI;
 
-namespace HyperToken.WinFormsGUI
+namespace HyperToken.WinForms
 {
     public partial class MainForm : Form, ITerminal
     {

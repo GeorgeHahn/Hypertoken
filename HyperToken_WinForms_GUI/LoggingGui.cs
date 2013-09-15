@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
+﻿using System.ComponentModel;
 using System.Windows.Forms;
-using Anotar;
 using Anotar.NLog;
-using HyperToken.WinFormsGUI.Properties;
+using HyperToken.WinForms.Properties;
 using Terminal.Interface;
 using Terminal.Interface.Enums;
 using Terminal.Interface.Exceptions;
 using Terminal.Interface.GUI;
 
-namespace HyperToken.WinFormsGUI
+namespace HyperToken.WinForms
 {
 	public class LoggingGui : IMainMenuExtension, IStatusbarExtension
 	{

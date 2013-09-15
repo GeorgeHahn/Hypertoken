@@ -1,9 +1,5 @@
-﻿using System;
-using System.Windows;
-using System.Windows.Markup;
+﻿using System.Windows;
 using NLog;
-using Terminal.Interface;
-using Terminal.Interface.Enums;
 
 namespace HyperToken_Avalon_GUI
 {

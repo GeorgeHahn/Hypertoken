@@ -1,8 +1,7 @@
-﻿using System;
-using CustomControls;
+﻿using HyperToken.WinForms.Properties;
 using ScintillaNET;
 
-namespace HyperToken.WinFormsGUI
+namespace HyperToken.WinForms
 {
 	partial class MainForm
 	{
@@ -169,7 +168,7 @@ namespace HyperToken.WinFormsGUI
 			// 
 			// toolStripButtonConnect
 			// 
-			this.toolStripButtonConnect.Image = WinFormsGUI.Properties.Resources.connected;
+			this.toolStripButtonConnect.Image = Resources.connected;
 			this.toolStripButtonConnect.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.toolStripButtonConnect.Name = "toolStripButtonConnect";
 			this.toolStripButtonConnect.Size = new System.Drawing.Size(72, 22);
@@ -178,7 +177,7 @@ namespace HyperToken.WinFormsGUI
 			// 
 			// toolStripButtonSendFile
 			// 
-			this.toolStripButtonSendFile.Image = WinFormsGUI.Properties.Resources.FileSend;
+			this.toolStripButtonSendFile.Image = Resources.FileSend;
 			this.toolStripButtonSendFile.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.toolStripButtonSendFile.Name = "toolStripButtonSendFile";
 			this.toolStripButtonSendFile.Size = new System.Drawing.Size(74, 22);

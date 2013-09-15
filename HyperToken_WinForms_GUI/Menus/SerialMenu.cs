@@ -3,7 +3,7 @@ using Terminal.Interface;
 using Terminal.Interface.Enums;
 using Terminal.Interface.GUI;
 
-namespace HyperToken.WinFormsGUI.Menus
+namespace HyperToken.WinForms.Menus
 {
     public interface ISerialSettingsMenu
     {

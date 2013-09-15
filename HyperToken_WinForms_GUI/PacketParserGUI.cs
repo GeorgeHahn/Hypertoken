@@ -4,7 +4,7 @@ using Anotar.NLog;
 using Terminal.Interface;
 using Terminal.Interface.GUI;
 
-namespace HyperToken.WinFormsGUI
+namespace HyperToken.WinForms
 {
     public class PacketParserGUI : GenericSettingsMenu, IMainMenuExtension
     {

@@ -7,8 +7,6 @@ using Anotar.NLog;
 using Terminal.Interface;
 using Terminal.Interface.Enums;
 using Terminal.Interface.Events;
-using Anotar;
-using NLog;
 
 namespace Terminal
 {

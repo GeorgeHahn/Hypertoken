@@ -1,9 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.IO;
-using Anotar;
 using Anotar.NLog;
-using NLog;
 using Terminal.Interface;
 using Terminal.Interface.Enums;
 

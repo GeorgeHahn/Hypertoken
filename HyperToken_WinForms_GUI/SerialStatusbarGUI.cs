@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Windows.Forms;
-using Anotar;
 using Anotar.NLog;
 using Terminal.Interface;
-using NLog;
 using Terminal.Interface.GUI;
 
-namespace HyperToken.WinFormsGUI
+namespace HyperToken.WinForms
 {
     // TODO Refactor this to use LightMenu and move it into Terminal\GUI
     public abstract class SerialStatusBarExtension : IStatusbarExtension

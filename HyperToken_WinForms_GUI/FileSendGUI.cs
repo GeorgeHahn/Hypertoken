@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using Terminal.Interface;
-using Terminal.Interface.Enums;
+﻿using System.Windows.Forms;
 using Terminal.Interface.GUI;
 
-namespace HyperToken.WinFormsGUI
+namespace HyperToken.WinForms
 {
     public class FileSendGUI : IToolbarExtension
     {
@@ -17,12 +11,7 @@ namespace HyperToken.WinFormsGUI
         {
             get
             {
-                if(_toolBarItem != null)
-                    return _toolBarItem;
-                else
-                {
-                    return new ToolStripButton("Send File");
-                }
+                return new ToolStripButton("Send File");
             }
         }
     }

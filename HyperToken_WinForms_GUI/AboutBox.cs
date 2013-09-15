@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Reflection;
 using System.Windows.Forms;
-using Anotar;
 using Anotar.NLog;
 using Terminal.Interface;
 
-namespace HyperToken.WinFormsGUI
+namespace HyperToken.WinForms
 {
 	public partial class AboutBox : Form, IAboutBox
 	{

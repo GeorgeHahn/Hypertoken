@@ -1,7 +1,6 @@
 ﻿using System.Reflection;
 using Autofac;
 using Terminal.Interface;
-using Terminal.Interface.GUI;
 
 namespace Terminal
 {
@@ -12,7 +11,7 @@ namespace Terminal
             var builder = new ContainerBuilder();
 
             // WinForms GUI wiring
-            builder.RegisterAssemblyModules(new[] { Assembly.LoadFrom("HyperToken.WinFormsGUI.dll") });
+            builder.RegisterAssemblyModules(new[] { Assembly.LoadFrom("HyperToken.WinForms.dll") });
 
             // Packetparser wiring
             builder.RegisterAssemblyModules(new[] { Assembly.LoadFrom("PacketParser.dll") });

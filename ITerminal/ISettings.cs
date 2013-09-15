@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Terminal.Interface.Events;
+﻿using Terminal.Interface.Events;
 
 namespace Terminal.Interface
 {

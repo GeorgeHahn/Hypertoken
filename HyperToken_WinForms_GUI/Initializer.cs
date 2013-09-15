@@ -1,12 +1,8 @@
-﻿using System;
-using System.Threading;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 using Anotar.NLog;
-using Bugsense.WPF;
-using NLog;
 using Terminal.Interface;
 
-namespace HyperToken.WinFormsGUI
+namespace HyperToken.WinForms
 {
 	public class Initializer : IInitable
 	{
