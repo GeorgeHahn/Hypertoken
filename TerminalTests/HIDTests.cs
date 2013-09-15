@@ -6,10 +6,10 @@ using System.Text;
 using System.Threading.Tasks;
 using PacketParser;
 using Terminal;
-using Terminal_Interface;
-using Terminal_Interface.Enums;
+using Terminal.Interface;
+using Terminal.Interface.Enums;
 using Xunit;
-using StopBits = Terminal_Interface.Enums.StopBits;
+using StopBits = Terminal.Interface.Enums.StopBits;
 
 namespace TerminalTests
 {

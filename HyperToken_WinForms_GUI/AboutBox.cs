@@ -3,7 +3,7 @@ using System.Reflection;
 using System.Windows.Forms;
 using Anotar;
 using Anotar.NLog;
-using Terminal_Interface;
+using Terminal.Interface;
 
 namespace HyperToken.WinFormsGUI
 {

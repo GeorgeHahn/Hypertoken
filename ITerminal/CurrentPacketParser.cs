@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Terminal_Interface
+namespace Terminal.Interface
 {
     public class CurrentPacketParser : INotifyPropertyChanged
     {

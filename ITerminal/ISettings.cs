@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Terminal_Interface.Events;
+using Terminal.Interface.Events;
 
-namespace Terminal_Interface
+namespace Terminal.Interface
 {
 	public delegate void SettingChangedEventHandler(object sender, SettingChangedEventArgs e);
 

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Data;
 using System.Windows.Markup;
-using Terminal_Interface.Enums;
+using Terminal.Interface.Enums;
 
 namespace HyperToken_Avalon_GUI.Value_Converters
 {

@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
-using Terminal_Interface.Enums;
-using Terminal_Interface.Events;
+using Terminal.Interface.Enums;
+using Terminal.Interface.Events;
 
-namespace Terminal_Interface
+namespace Terminal.Interface
 {
     public enum DeviceType
     {

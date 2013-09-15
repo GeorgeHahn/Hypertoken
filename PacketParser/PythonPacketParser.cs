@@ -11,7 +11,7 @@ using IronPython.Runtime;
 using Microsoft.Scripting;
 using Microsoft.Scripting.Hosting;
 using NLog;
-using Terminal_Interface;
+using Terminal.Interface;
 
 namespace PacketParser
 {

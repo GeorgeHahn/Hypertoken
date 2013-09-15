@@ -8,11 +8,11 @@ using System.Windows.Forms;
 using Anotar.NLog;
 using CustomControls;
 using HyperToken.WinFormsGUI.Properties;
-using Terminal_GUI_Interface;
-using Terminal_Interface;
-using Terminal_Interface.Enums;
-using Terminal_Interface.Events;
-using Terminal_Interface.Exceptions;
+using Terminal.Interface.GUI;
+using Terminal.Interface;
+using Terminal.Interface.Enums;
+using Terminal.Interface.Events;
+using Terminal.Interface.Exceptions;
 using Anotar;
 
 // TODO Add 'human readable version' for Rob

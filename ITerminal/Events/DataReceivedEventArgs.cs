@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Terminal_Interface.Events
+namespace Terminal.Interface.Events
 {
 	public class DataReceivedEventArgs : EventArgs
 	{

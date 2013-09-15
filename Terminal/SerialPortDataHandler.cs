@@ -4,9 +4,9 @@ using System.ComponentModel;
 using System.IO.Ports;
 using System.Linq;
 using Anotar.NLog;
-using Terminal_Interface;
-using Terminal_Interface.Enums;
-using Terminal_Interface.Events;
+using Terminal.Interface;
+using Terminal.Interface.Enums;
+using Terminal.Interface.Events;
 using Anotar;
 using NLog;
 
@@ -29,8 +29,8 @@ namespace Terminal
             DeviceName = "COM1";
             Baud = 115200;
             DataBits = 8;
-            StopBits = Terminal_Interface.Enums.StopBits.One;
-            Parity = Terminal_Interface.Enums.Parity.None;
+            StopBits = Interface.Enums.StopBits.One;
+            Parity = Interface.Enums.Parity.None;
             FlowControl = FlowControl.None;
         }
 
@@ -103,13 +103,13 @@ namespace Terminal
 
         public FlowControl FlowControl
         {
-            get { return (Terminal_Interface.Enums.FlowControl)_port.Handshake; }
+            get { return (Interface.Enums.FlowControl)_port.Handshake; }
             set { _port.Handshake = (System.IO.Ports.Handshake)value; }
         }
 
-        public Terminal_Interface.Enums.Parity Parity
+        public Interface.Enums.Parity Parity
         {
-            get { return (Terminal_Interface.Enums.Parity)_port.Parity; }
+            get { return (Interface.Enums.Parity)_port.Parity; }
             set
             {
                 _port.Parity = (System.IO.Ports.Parity)value;
@@ -138,9 +138,9 @@ namespace Terminal
             }
         }
 
-        public Terminal_Interface.Enums.StopBits StopBits
+        public Interface.Enums.StopBits StopBits
         {
-            get { return (Terminal_Interface.Enums.StopBits)_port.StopBits; }
+            get { return (Interface.Enums.StopBits)_port.StopBits; }
             set
             {
                 _port.StopBits = (System.IO.Ports.StopBits)value;

@@ -5,8 +5,8 @@ using System.Text;
 using System.Windows.Forms;
 using Anotar;
 using Anotar.NLog;
-using Terminal_GUI_Interface;
-using Terminal_Interface;
+using Terminal.Interface.GUI;
+using Terminal.Interface;
 using NLog;
 
 namespace HyperToken.WinFormsGUI

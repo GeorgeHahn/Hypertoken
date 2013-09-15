@@ -66,12 +66,12 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
-    <ProjectReference Include="..\ITerminal\Terminal_Interface.csproj">
-      <Name>Terminal_Interface</Name>
+    <ProjectReference Include="..\ITerminal\Terminal.Interface.csproj">
+      <Name>Terminal.Interface</Name>
       <Project>{cdf84311-5363-4054-ad8b-74741cfd4418}</Project>
       <Private>True</Private>
       <DoNotHarvest>True</DoNotHarvest>
-      <RefProjectOutputGroups>Binaries;Symbols</RefProjectOutputGroups>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
     <ProjectReference Include="..\PacketParser\PacketParser.csproj">
@@ -90,12 +90,12 @@
       <RefProjectOutputGroups>Binaries;Symbols</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
-    <ProjectReference Include="..\Terminal_GUI_Interface\Terminal_GUI_Interface.csproj">
-      <Name>Terminal_GUI_Interface</Name>
+    <ProjectReference Include="..\Terminal_GUI_Interface\Terminal.Interface.GUI.csproj">
+      <Name>Terminal.Interface.GUI</Name>
       <Project>{867db553-9770-4fc6-be0b-abff3e734c96}</Project>
       <Private>True</Private>
       <DoNotHarvest>True</DoNotHarvest>
-      <RefProjectOutputGroups>Binaries;Symbols</RefProjectOutputGroups>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
   </ItemGroup>

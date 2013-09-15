@@ -310,13 +310,13 @@
       <Project>{18ae5954-cb94-41e2-942d-59bfe225abc1}</Project>
       <Name>CustomControls</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ITerminal\Terminal_Interface.csproj">
+    <ProjectReference Include="..\ITerminal\Terminal.Interface.csproj">
       <Project>{cdf84311-5363-4054-ad8b-74741cfd4418}</Project>
-      <Name>Terminal_Interface</Name>
+      <Name>Terminal.Interface</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Terminal_GUI_Interface\Terminal_GUI_Interface.csproj">
+    <ProjectReference Include="..\Terminal_GUI_Interface\Terminal.Interface.GUI.csproj">
       <Project>{867db553-9770-4fc6-be0b-abff3e734c96}</Project>
-      <Name>Terminal_GUI_Interface</Name>
+      <Name>Terminal.Interface.GUI</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

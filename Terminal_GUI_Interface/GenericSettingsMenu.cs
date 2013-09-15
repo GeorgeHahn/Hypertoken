@@ -8,7 +8,7 @@ using Anotar;
 using Anotar.NLog;
 using NLog;
 
-namespace Terminal_GUI_Interface
+namespace Terminal.Interface.GUI
 {
     public abstract class GenericSettingsMenu
     {

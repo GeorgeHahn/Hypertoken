@@ -1,4 +1,4 @@
-﻿namespace Terminal_Interface.Enums
+﻿namespace Terminal.Interface.Enums
 {
 	public enum FileSendState
 	{

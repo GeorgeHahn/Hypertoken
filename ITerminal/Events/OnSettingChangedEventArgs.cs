@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Terminal_Interface.Events
+namespace Terminal.Interface.Events
 {
 	public class OnSettingChangedEventArgs : EventArgs
 	{

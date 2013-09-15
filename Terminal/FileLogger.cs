@@ -4,8 +4,8 @@ using System.IO;
 using Anotar;
 using Anotar.NLog;
 using NLog;
-using Terminal_Interface;
-using Terminal_Interface.Enums;
+using Terminal.Interface;
+using Terminal.Interface.Enums;
 
 namespace Terminal
 {

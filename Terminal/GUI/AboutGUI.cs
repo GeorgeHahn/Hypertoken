@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Terminal_GUI_Interface;
-using Terminal_Interface;
+using Terminal.Interface.GUI;
+using Terminal.Interface;
 
 namespace Terminal.GUI
 {

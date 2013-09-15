@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Terminal_Interface.Exceptions
+namespace Terminal.Interface.Exceptions
 {
 	public class FileSelectionCanceledException : ApplicationException
 	{

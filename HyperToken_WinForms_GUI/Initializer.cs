@@ -4,7 +4,7 @@ using System.Windows.Forms;
 using Anotar.NLog;
 using Bugsense.WPF;
 using NLog;
-using Terminal_Interface;
+using Terminal.Interface;
 
 namespace HyperToken.WinFormsGUI
 {

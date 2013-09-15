@@ -1,4 +1,4 @@
-﻿using Terminal_Interface;
+﻿using Terminal.Interface;
 
 namespace HyperToken_Avalon_GUI
 {

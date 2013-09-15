@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
-using Terminal_GUI_Interface;
-using Terminal_Interface;
-using Terminal_Interface.Enums;
+using Terminal.Interface.GUI;
+using Terminal.Interface;
+using Terminal.Interface.Enums;
 
 namespace Terminal.GUI
 {

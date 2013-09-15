@@ -9,13 +9,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomControls", "CustomCon
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terminal", "Terminal\Terminal.csproj", "{5CD89504-1C11-457F-A1EC-9AC23AB51AD3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terminal_Interface", "ITerminal\Terminal_Interface.csproj", "{CDF84311-5363-4054-AD8B-74741CFD4418}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terminal.Interface", "ITerminal\Terminal.Interface.csproj", "{CDF84311-5363-4054-AD8B-74741CFD4418}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HyperToken_Avalon_GUI", "HyperToken_Avalon_GUI\HyperToken_Avalon_GUI.csproj", "{47500225-3865-4C6D-A30C-4B96B8D2A41A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bugsense.WPF", "Bugsense.WPF\Bugsense.WPF\Bugsense.WPF.csproj", "{96D7FDAA-341F-49D9-B910-1F349CA565D7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terminal_GUI_Interface", "Terminal_GUI_Interface\Terminal_GUI_Interface.csproj", "{867DB553-9770-4FC6-BE0B-ABFF3E734C96}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terminal.Interface.GUI", "Terminal_GUI_Interface\Terminal.Interface.GUI.csproj", "{867DB553-9770-4FC6-BE0B-ABFF3E734C96}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HidLibrary", "HidLibrary\src\HidLibrary\HidLibrary.csproj", "{9E8F1D50-74EA-4C60-BD5C-AB2C5B53BC66}"
 EndProject

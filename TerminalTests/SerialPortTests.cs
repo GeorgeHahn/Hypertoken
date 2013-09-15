@@ -6,10 +6,10 @@ using System.Text;
 using System.Threading.Tasks;
 using PacketParser;
 using Terminal;
-using Terminal_Interface;
-using Terminal_Interface.Enums;
+using Terminal.Interface;
+using Terminal.Interface.Enums;
 using Xunit;
-using StopBits = Terminal_Interface.Enums.StopBits;
+using StopBits = Terminal.Interface.Enums.StopBits;
 
 namespace TerminalTests
 {
@@ -107,16 +107,16 @@ namespace TerminalTests
         public void TestParity()
         {
             SerialPortDataHandler port = new SerialPortDataHandler(new CurrentPacketParser(new RawPacketParser()));
-            port.Parity = Terminal_Interface.Enums.Parity.None;
-            Assert.Equal(port.Parity, Terminal_Interface.Enums.Parity.None);
-            port.Parity = Terminal_Interface.Enums.Parity.Even;
-            Assert.Equal(port.Parity, Terminal_Interface.Enums.Parity.Even);
-            port.Parity = Terminal_Interface.Enums.Parity.Odd;
-            Assert.Equal(port.Parity, Terminal_Interface.Enums.Parity.Odd);
-            port.Parity = Terminal_Interface.Enums.Parity.Mark;
-            Assert.Equal(port.Parity, Terminal_Interface.Enums.Parity.Mark);
-            port.Parity = Terminal_Interface.Enums.Parity.Space;
-            Assert.Equal(port.Parity, Terminal_Interface.Enums.Parity.Space);
+            port.Parity = Terminal.Interface.Enums.Parity.None;
+            Assert.Equal(port.Parity, Terminal.Interface.Enums.Parity.None);
+            port.Parity = Terminal.Interface.Enums.Parity.Even;
+            Assert.Equal(port.Parity, Terminal.Interface.Enums.Parity.Even);
+            port.Parity = Terminal.Interface.Enums.Parity.Odd;
+            Assert.Equal(port.Parity, Terminal.Interface.Enums.Parity.Odd);
+            port.Parity = Terminal.Interface.Enums.Parity.Mark;
+            Assert.Equal(port.Parity, Terminal.Interface.Enums.Parity.Mark);
+            port.Parity = Terminal.Interface.Enums.Parity.Space;
+            Assert.Equal(port.Parity, Terminal.Interface.Enums.Parity.Space);
         }
 
         [Fact]
@@ -134,7 +134,7 @@ namespace TerminalTests
         {
             SerialPortDataHandler port = new SerialPortDataHandler(new CurrentPacketParser(new RawPacketParser()));
             port.DataBits = 8;
-            port.Parity = Terminal_Interface.Enums.Parity.None;
+            port.Parity = Terminal.Interface.Enums.Parity.None;
             port.StopBits = StopBits.One;
             Assert.Equal(port.DeviceStatus, "8;N;1");
         }

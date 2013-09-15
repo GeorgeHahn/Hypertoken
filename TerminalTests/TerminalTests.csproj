@@ -67,9 +67,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ITerminal\Terminal_Interface.csproj">
+    <ProjectReference Include="..\ITerminal\Terminal.Interface.csproj">
       <Project>{cdf84311-5363-4054-ad8b-74741cfd4418}</Project>
-      <Name>Terminal_Interface</Name>
+      <Name>Terminal.Interface</Name>
     </ProjectReference>
     <ProjectReference Include="..\PacketParser\PacketParser.csproj">
       <Project>{6e050dbd-053a-40dd-a044-f6cf450d2f33}</Project>

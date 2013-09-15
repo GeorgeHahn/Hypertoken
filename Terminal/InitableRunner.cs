@@ -5,7 +5,7 @@ using System.Text;
 using Anotar;
 using Anotar.NLog;
 using NLog;
-using Terminal_Interface;
+using Terminal.Interface;
 
 namespace Terminal
 {

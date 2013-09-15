@@ -111,9 +111,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ITerminal\Terminal_Interface.csproj">
+    <ProjectReference Include="..\ITerminal\Terminal.Interface.csproj">
       <Project>{CDF84311-5363-4054-AD8B-74741CFD4418}</Project>
-      <Name>Terminal_Interface</Name>
+      <Name>Terminal.Interface</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

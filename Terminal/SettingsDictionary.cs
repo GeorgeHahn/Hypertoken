@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Terminal_Interface;
-using Terminal_Interface.Events;
+using Terminal.Interface;
+using Terminal.Interface.Events;
 
 namespace Terminal
 {

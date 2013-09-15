@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Terminal_Interface.Enums
+namespace Terminal.Interface.Enums
 {
 	public enum FlowControl
 	{

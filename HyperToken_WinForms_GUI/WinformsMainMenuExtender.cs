@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using Anotar.NLog;
-using Terminal_GUI_Interface;
+using Terminal.Interface.GUI;
 using NLog;
 using Anotar;
-using Menu = Terminal_GUI_Interface.Menu;
+using Menu = Terminal.Interface.GUI.Menu;
 
 namespace HyperToken.WinFormsGUI
 {

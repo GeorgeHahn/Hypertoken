@@ -5,7 +5,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Windows.Forms;
 
-namespace Terminal_GUI_Interface
+namespace Terminal.Interface.GUI
 {
     public interface IMainMenuExtension
     {

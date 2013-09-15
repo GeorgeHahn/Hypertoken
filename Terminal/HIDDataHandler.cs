@@ -8,9 +8,9 @@ using Anotar;
 using Anotar.NLog;
 using HidLibrary;
 using NLog;
-using Terminal_Interface;
-using Terminal_Interface.Enums;
-using Terminal_Interface.Events;
+using Terminal.Interface;
+using Terminal.Interface.Enums;
+using Terminal.Interface.Events;
 
 namespace Terminal
 {

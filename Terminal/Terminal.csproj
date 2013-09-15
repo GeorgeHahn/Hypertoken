@@ -132,13 +132,13 @@
       <Project>{9e8f1d50-74ea-4c60-bd5c-ab2c5b53bc66}</Project>
       <Name>HidLibrary</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ITerminal\Terminal_Interface.csproj">
+    <ProjectReference Include="..\ITerminal\Terminal.Interface.csproj">
       <Project>{cdf84311-5363-4054-ad8b-74741cfd4418}</Project>
-      <Name>Terminal_Interface</Name>
+      <Name>Terminal.Interface</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Terminal_GUI_Interface\Terminal_GUI_Interface.csproj">
+    <ProjectReference Include="..\Terminal_GUI_Interface\Terminal.Interface.GUI.csproj">
       <Project>{867db553-9770-4fc6-be0b-abff3e734c96}</Project>
-      <Name>Terminal_GUI_Interface</Name>
+      <Name>Terminal.Interface.GUI</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

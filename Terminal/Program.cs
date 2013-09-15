@@ -3,7 +3,7 @@ using System.Reflection;
 using Anotar.NLog;
 using Autofac;
 using Bugsense.WPF;
-using Terminal_Interface;
+using Terminal.Interface;
 
 namespace Terminal
 {

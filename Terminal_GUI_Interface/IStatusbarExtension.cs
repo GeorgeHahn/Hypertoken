@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace Terminal_GUI_Interface
+namespace Terminal.Interface.GUI
 {
 	public interface IStatusbarExtension
 	{
