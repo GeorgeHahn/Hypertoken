@@ -50,6 +50,10 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Anotar.NLog">
+      <HintPath>..\packages\Anotar.NLog.Fody.2.3.0.0\Lib\portable-net4+sl4+wp7\Anotar.NLog.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="NLog">
       <HintPath>..\packages\NLog.2.0.0.2000\lib\net40\NLog.dll</HintPath>
     </Reference>
@@ -60,6 +64,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -84,6 +89,10 @@
     <Compile Include="Events\SendFileEventArgs.cs" />
     <Compile Include="Events\SetLoggingPathEventArgs.cs" />
     <Compile Include="Exceptions\FileSelectionCanceledException.cs" />
+    <Compile Include="GUI\GenericSettingsMenu.cs" />
+    <Compile Include="GUI\IMainMenuExtension.cs" />
+    <Compile Include="GUI\IStatusbarExtension.cs" />
+    <Compile Include="GUI\IToolbarExtension.cs" />
     <Compile Include="IAboutBox.cs" />
     <Compile Include="IDataDevice.cs" />
     <Compile Include="IDataReader.cs" />

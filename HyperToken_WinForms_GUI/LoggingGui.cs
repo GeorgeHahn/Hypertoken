@@ -7,10 +7,10 @@ using System.Windows.Forms;
 using Anotar;
 using Anotar.NLog;
 using HyperToken.WinFormsGUI.Properties;
-using Terminal.Interface.GUI;
 using Terminal.Interface;
 using Terminal.Interface.Enums;
 using Terminal.Interface.Exceptions;
+using Terminal.Interface.GUI;
 using Menu = Terminal.Interface.GUI.Menu;
 
 namespace HyperToken.WinFormsGUI

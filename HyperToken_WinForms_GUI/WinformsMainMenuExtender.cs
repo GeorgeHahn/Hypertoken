@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using Anotar.NLog;
-using Terminal.Interface.GUI;
 using NLog;
 using Anotar;
+using Terminal.Interface.GUI;
 using Menu = Terminal.Interface.GUI.Menu;
 
 namespace HyperToken.WinFormsGUI

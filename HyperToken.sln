@@ -15,8 +15,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HyperToken_Avalon_GUI", "Hy
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bugsense.WPF", "Bugsense.WPF\Bugsense.WPF\Bugsense.WPF.csproj", "{96D7FDAA-341F-49D9-B910-1F349CA565D7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Terminal.Interface.GUI", "Terminal_GUI_Interface\Terminal.Interface.GUI.csproj", "{867DB553-9770-4FC6-BE0B-ABFF3E734C96}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HidLibrary", "HidLibrary\src\HidLibrary\HidLibrary.csproj", "{9E8F1D50-74EA-4C60-BD5C-AB2C5B53BC66}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PacketParser", "PacketParser\PacketParser.csproj", "{6E050DBD-053A-40DD-A044-F6CF450D2F33}"
@@ -64,10 +62,6 @@ Global
 		{96D7FDAA-341F-49D9-B910-1F349CA565D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{96D7FDAA-341F-49D9-B910-1F349CA565D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{96D7FDAA-341F-49D9-B910-1F349CA565D7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{867DB553-9770-4FC6-BE0B-ABFF3E734C96}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{867DB553-9770-4FC6-BE0B-ABFF3E734C96}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{867DB553-9770-4FC6-BE0B-ABFF3E734C96}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{867DB553-9770-4FC6-BE0B-ABFF3E734C96}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9E8F1D50-74EA-4C60-BD5C-AB2C5B53BC66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9E8F1D50-74EA-4C60-BD5C-AB2C5B53BC66}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9E8F1D50-74EA-4C60-BD5C-AB2C5B53BC66}.Release|Any CPU.ActiveCfg = Release|Any CPU

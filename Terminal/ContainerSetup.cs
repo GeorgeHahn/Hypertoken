@@ -1,8 +1,8 @@
 ﻿using System.Reflection;
 using Autofac;
 using Terminal.GUI;
-using Terminal.Interface.GUI;
 using Terminal.Interface;
+using Terminal.Interface.GUI;
 
 namespace Terminal
 {

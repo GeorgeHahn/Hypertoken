@@ -8,15 +8,14 @@ using System.Windows.Forms;
 using Anotar.NLog;
 using CustomControls;
 using HyperToken.WinFormsGUI.Properties;
-using Terminal.Interface.GUI;
 using Terminal.Interface;
 using Terminal.Interface.Enums;
 using Terminal.Interface.Events;
 using Terminal.Interface.Exceptions;
 using Anotar;
-
 // TODO Add 'human readable version' for Rob
 // TODO Custom Baud setting
+using Terminal.Interface.GUI;
 
 namespace HyperToken.WinFormsGUI
 {

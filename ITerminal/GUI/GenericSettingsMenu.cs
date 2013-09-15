@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using Anotar;
+﻿using System.ComponentModel;
 using Anotar.NLog;
-using NLog;
 
 namespace Terminal.Interface.GUI
 {

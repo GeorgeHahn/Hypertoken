@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using Terminal.Interface.GUI;
 using Terminal.Interface;
 using Terminal.Interface.Enums;
+using Terminal.Interface.GUI;
 
 namespace Terminal.GUI
 {

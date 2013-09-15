@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Autofac;
-using Terminal.Interface.GUI;
 using Terminal.Interface;
+using Terminal.Interface.GUI;
 
 namespace HyperToken.WinFormsGUI
 {

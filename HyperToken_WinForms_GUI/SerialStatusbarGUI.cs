@@ -5,9 +5,9 @@ using System.Text;
 using System.Windows.Forms;
 using Anotar;
 using Anotar.NLog;
-using Terminal.Interface.GUI;
 using Terminal.Interface;
 using NLog;
+using Terminal.Interface.GUI;
 
 namespace HyperToken.WinFormsGUI
 {
