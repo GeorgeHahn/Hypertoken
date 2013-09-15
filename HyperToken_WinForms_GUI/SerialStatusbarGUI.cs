@@ -9,7 +9,7 @@ using Terminal_GUI_Interface;
 using Terminal_Interface;
 using NLog;
 
-namespace HyperToken_WinForms_GUI
+namespace HyperToken.WinFormsGUI
 {
     // TODO Refactor this to use Menu and move it into Terminal\GUI
     public abstract class SerialStatusBarExtension : IStatusbarExtension

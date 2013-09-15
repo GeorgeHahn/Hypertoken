@@ -6,14 +6,14 @@ using System.Text;
 using System.Windows.Forms;
 using Anotar;
 using Anotar.NLog;
-using HyperToken_WinForms_GUI.Properties;
+using HyperToken.WinFormsGUI.Properties;
 using Terminal_GUI_Interface;
 using Terminal_Interface;
 using Terminal_Interface.Enums;
 using Terminal_Interface.Exceptions;
 using Menu = Terminal_GUI_Interface.Menu;
 
-namespace HyperToken_WinForms_GUI
+namespace HyperToken.WinFormsGUI
 {
 	public class LoggingGui : IMainMenuExtension, IStatusbarExtension
 	{

@@ -7,12 +7,11 @@ using Terminal_GUI_Interface;
 using Terminal_Interface;
 using Terminal_Interface.Enums;
 
-namespace HyperToken_WinForms_GUI
+namespace HyperToken.WinFormsGUI
 {
-    public class FileSendGUI : IFileSender, IToolbarExtension
+    public class FileSendGUI : IToolbarExtension
     {
         private ToolStripItem _toolBarItem;
-        public FileSendState FileSendState { get; set; }
 
         public ToolStripItem ToolBarItem
         {

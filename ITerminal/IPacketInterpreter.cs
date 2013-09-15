@@ -14,4 +14,10 @@ namespace Terminal_Interface
 
         string InterpretPacket(byte[] packet);
     }
+
+    public interface IHIDPreparser
+    {
+        string Name { get; }
+        byte[] InterpretPacket(byte[] packet);
+    }
 }

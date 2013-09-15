@@ -6,7 +6,7 @@ using Bugsense.WPF;
 using NLog;
 using Terminal_Interface;
 
-namespace HyperToken_WinForms_GUI
+namespace HyperToken.WinFormsGUI
 {
 	public class Initializer : IInitable
 	{

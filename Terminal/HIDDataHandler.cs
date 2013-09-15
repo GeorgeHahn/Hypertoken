@@ -8,7 +8,6 @@ using Anotar;
 using Anotar.NLog;
 using HidLibrary;
 using NLog;
-using PacketParser;
 using Terminal_Interface;
 using Terminal_Interface.Enums;
 using Terminal_Interface.Events;
@@ -19,12 +18,12 @@ namespace Terminal
     {
         private HidDevice _device;
         private CurrentPacketParser _parser;
-        private HIDPreparser preparser;
+        private IHIDPreparser _preparser;
 
-        public HIDDataHandler(CurrentPacketParser parser)
+        public HIDDataHandler(CurrentPacketParser parser, IHIDPreparser preparser)
         {
             _parser = parser;
-            preparser = new HIDPreparser();
+            _preparser = preparser;
         }
 
         public IEnumerable<string> ListAvailableDevices()
@@ -137,7 +136,7 @@ namespace Terminal
                 return;
 
             var bytes = data.Data;
-            var preparsed = preparser.InterpretPacket(bytes);
+            var preparsed = _preparser.InterpretPacket(bytes);
             var dataString = _parser.CurrentParser.InterpretPacket(preparsed);
             var args = new DataReceivedEventArgs(dataString);
             DataReceived(this, args);

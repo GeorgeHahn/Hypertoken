@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace HyperToken_WinForms_GUI
+namespace HyperToken.WinFormsGUI
 {
 	internal class PretendStatusbarButton : ToolStripStatusLabel
 	{

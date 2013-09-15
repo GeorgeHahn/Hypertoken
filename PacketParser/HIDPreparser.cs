@@ -7,7 +7,7 @@ using Terminal_Interface;
 
 namespace PacketParser
 {
-    public class HIDPreparser
+    public class HIDPreparser: IHIDPreparser
     {
         public byte[] InterpretPacket(byte[] packet)
         {

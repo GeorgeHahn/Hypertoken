@@ -57,9 +57,4 @@ namespace Terminal_Interface
     {
         EchoState EchoState { get; set; }
     }
-
-    public interface IFileSender
-    {
-        FileSendState FileSendState { get; set; }
-    }
 }

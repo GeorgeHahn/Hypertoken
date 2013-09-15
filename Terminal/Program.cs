@@ -3,8 +3,6 @@ using System.Reflection;
 using Anotar.NLog;
 using Autofac;
 using Bugsense.WPF;
-using HyperToken_WinForms_GUI;
-using Anotar;
 using Terminal_Interface;
 
 namespace Terminal
@@ -38,7 +36,7 @@ namespace Terminal
             LogTo.Debug("Running ITerminal");
 			if (container.IsRegistered<InitableRunner>())
 				container.Resolve<InitableRunner>().Init();
-			container.Resolve<TerminalRunner>().Run();
+            container.Resolve<ITerminal>().Run();
 
 			//}
 			//catch (Exception e)

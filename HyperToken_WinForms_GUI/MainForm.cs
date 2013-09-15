@@ -7,7 +7,7 @@ using System.Linq;
 using System.Windows.Forms;
 using Anotar.NLog;
 using CustomControls;
-using HyperToken_WinForms_GUI.Properties;
+using HyperToken.WinFormsGUI.Properties;
 using Terminal_GUI_Interface;
 using Terminal_Interface;
 using Terminal_Interface.Enums;
@@ -18,13 +18,12 @@ using Anotar;
 // TODO Add 'human readable version' for Rob
 // TODO Custom Baud setting
 
-namespace HyperToken_WinForms_GUI
+namespace HyperToken.WinFormsGUI
 {
-    public partial class MainForm : Form, ITerminal, INotifyPropertyChanged
+    public partial class MainForm : Form, ITerminal
     {
         private readonly IAboutBox _aboutBox;
         private readonly ILogger _logger;
-        private readonly IFileSender _fileSender;
         private readonly CurrentDataDevice _currentDataDevice;
         private readonly WinformsMainMenuExtender _mainMenuExtender;
         private readonly IEnumerable<IStatusbarExtension> _statusbarExtensions;
@@ -36,7 +35,6 @@ namespace HyperToken_WinForms_GUI
 
         public MainForm(IAboutBox aboutBox,
                         ILogger logger,
-                        IFileSender fileSender,
                         CurrentDataDevice dataDevice,
                         WinformsMainMenuExtender mainMenuExtender,
                         IEnumerable<IStatusbarExtension> statusbarExtensions,
@@ -44,7 +42,6 @@ namespace HyperToken_WinForms_GUI
         {
             _aboutBox = aboutBox;
             _logger = logger;
-            _fileSender = fileSender;
             _mainMenuExtender = mainMenuExtender;
             _statusbarExtensions = statusbarExtensions;
             _toolbarExtensions = toolbarExtensions;

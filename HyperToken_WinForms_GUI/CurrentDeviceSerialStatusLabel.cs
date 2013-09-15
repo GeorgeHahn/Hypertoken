@@ -7,7 +7,7 @@ using Terminal_GUI_Interface;
 using Terminal_Interface;
 using Menu = Terminal_GUI_Interface.Menu;
 
-namespace HyperToken_WinForms_GUI
+namespace HyperToken.WinFormsGUI
 {
     public class CurrentDeviceSerialStatusLabel : IStatusbarExtension
     {

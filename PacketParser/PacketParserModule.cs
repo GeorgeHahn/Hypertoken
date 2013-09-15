@@ -1,0 +1,20 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Autofac;
+using Terminal_Interface;
+
+namespace PacketParser
+{
+    public class PacketParserModule : Module
+    {
+        protected override void Load(ContainerBuilder builder)
+        {
+            builder.RegisterType<StringPacketInterpreter>().As<IPacketInterpreter>().SingleInstance();
+            builder.RegisterType<PythonPacketParser>().As<IPacketInterpreter>().SingleInstance();
+            builder.RegisterType<RawPacketParser>().As<IPacketInterpreter>().SingleInstance();
+            builder.RegisterType<HIDPreparser>().As<IHIDPreparser>().SingleInstance();
+        }
+    }
+}

@@ -9,7 +9,7 @@ using Terminal_GUI_Interface;
 using Terminal_Interface;
 using NLog;
 
-namespace HyperToken_WinForms_GUI
+namespace HyperToken.WinFormsGUI
 {
     public class PacketParserGUI : GenericSettingsMenu, IMainMenuExtension
     {

@@ -5,7 +5,7 @@ using Anotar;
 using Anotar.NLog;
 using Terminal_Interface;
 
-namespace HyperToken_WinForms_GUI
+namespace HyperToken.WinFormsGUI
 {
 	public partial class AboutBox : Form, IAboutBox
 	{

@@ -1,4 +1,4 @@
-﻿namespace HyperToken_WinForms_GUI
+﻿namespace HyperToken.WinFormsGUI
 {
 	partial class AboutBox
 	{
