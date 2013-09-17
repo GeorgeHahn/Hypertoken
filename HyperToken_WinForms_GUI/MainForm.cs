@@ -130,7 +130,12 @@ namespace HyperToken.WinForms
 
         public void AddChar(char c)
         {
-            Invoke(new MethodInvoker(() => IOBox.AppendText(c.ToString(CultureInfo.InvariantCulture))));
+            Invoke(new MethodInvoker(() =>
+            {
+                IOBox.AppendText(c.ToString(CultureInfo.InvariantCulture));
+                
+                //IOBox.LineWrapping.WrapLines(0, int.MaxValue, IOBox.Width);
+            }));
         }
 
         public void AddLine(string line)
@@ -139,6 +144,7 @@ namespace HyperToken.WinForms
                        () =>
                        {
                            IOBox.AppendText(line);
+                           //IOBox.LineWrapping.WrapLines(0, int.MaxValue, IOBox.Width);
                            IOBox.Scrolling.ScrollBy(0, IOBox.Lines.Count);
                        }));
         }

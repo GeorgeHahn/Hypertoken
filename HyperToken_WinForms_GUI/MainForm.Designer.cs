@@ -1,4 +1,6 @@
-﻿using HyperToken.WinForms.Properties;
+﻿using System.Runtime.Remoting;
+using System.Windows.Forms;
+using HyperToken.WinForms.Properties;
 using ScintillaNET;
 
 namespace HyperToken.WinForms
@@ -138,9 +140,6 @@ namespace HyperToken.WinForms
 			// 
 			// IOBox
 			// 
-
-
-
 			this.IOBox.AcceptsTab = true;
 			//this.IOBox.DetectUrls = false;
 			this.IOBox.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -151,8 +150,9 @@ namespace HyperToken.WinForms
 			//this.IOBox.ShortcutsEnabled = false;
 			this.IOBox.Size = new System.Drawing.Size(491, 317);
 			this.IOBox.TabIndex = 3;
-			this.IOBox.Text = "";
-			this.IOBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.HandleKeyPress);
+            this.IOBox.Text = "";
+            this.IOBox.LineWrapping.Mode = LineWrappingMode.Char;
+            this.IOBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.HandleKeyPress);
 			this.IOBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.SendKey);
 			// 
 			// toolStrip1
