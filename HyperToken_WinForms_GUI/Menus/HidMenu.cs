@@ -90,7 +90,12 @@ namespace HyperToken.WinForms.Menus
 
             var menus = new List<LightMenu>();
             foreach (var value in _deviceNames)
-                menus.Add(new LightMenu(value));
+            {
+                var newMenu = new LightMenu(value);
+                if (value.Contains("0x04D8, 0xF745"))
+                    newMenu.Highlight = true;
+                menus.Add(newMenu);
+            }
 
             _menu.AddRange(menus);
 

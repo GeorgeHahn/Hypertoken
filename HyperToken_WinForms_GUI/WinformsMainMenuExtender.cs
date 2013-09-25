@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using Anotar.NLog;
@@ -40,6 +41,9 @@ namespace HyperToken.WinForms
 
             temp.Click += m.FireClicked;
             temp.Checked = m.Checked;
+            if (m.Highlight)
+                temp.BackColor = Color.Aqua;
+
             m.PropertyChanged += (sender, args) =>
                                      {
                                          LogTo.Debug("Property changed: {0}", args.PropertyName);
