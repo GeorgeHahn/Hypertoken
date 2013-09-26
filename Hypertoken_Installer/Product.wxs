@@ -76,11 +76,6 @@
                     <Component Id="App.config">
                         <File Source="$(var.Terminal.TargetDir)App.config"/>
                     </Component>
-                    <Component Id="Autofac.Configuration.dll">
-                        <File Source="$(var.Terminal.TargetDir)Autofac.Configuration.dll">
-                            <netfx:NativeImage Id="Autofac.Configuration.dll" Platform="32bit" Priority="0" AppBaseDirectory="INSTALLFOLDER"/>
-                        </File>
-                    </Component>
                     <Component Id="Autofac.dll">
                         <File Source="$(var.Terminal.TargetDir)Autofac.dll">
                             <netfx:NativeImage Id="Autofac.dll" Platform="32bit" Priority="0" AppBaseDirectory="INSTALLFOLDER"/>
@@ -201,7 +196,6 @@
             
             <ComponentRef Id="App.config" />
             
-            <ComponentRef Id="Autofac.Configuration.dll" />
             <ComponentRef Id="Autofac.dll" />
             
             <ComponentRef Id="Bugsense.WPF.dll" />
