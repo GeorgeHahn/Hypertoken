@@ -130,7 +130,7 @@ namespace HyperToken.WinForms
 
         public void AddChar(char c)
         {
-            Invoke(new MethodInvoker(() =>
+            BeginInvoke(new MethodInvoker(() =>
             {
                 IOBox.AppendText(c.ToString(CultureInfo.InvariantCulture));
                 
@@ -140,7 +140,7 @@ namespace HyperToken.WinForms
 
         public void AddLine(string line)
         {
-            Invoke(new MethodInvoker(
+            BeginInvoke(new MethodInvoker(
                        () =>
                        {
                            IOBox.AppendText(line);

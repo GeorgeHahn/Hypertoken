@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using System.Threading.Tasks;
 using Anotar.NLog;
 using Autofac;
 using Bugsense.WPF;
@@ -19,14 +20,18 @@ namespace Terminal
 		{
 			//try
 			//{
-            NLog.LogManager.ThrowExceptions = true;
 
-			LogTo.Debug("Initialize BugSense");
-			BugSense.Init("9eacbe2e", GetVersion(), "http://www.bugsense.com/api/errors");
-			AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
+		    Task.Factory.StartNew(() =>
+		    {
+		        NLog.LogManager.ThrowExceptions = true;
 
-            LogTo.Debug("Initializing advanced JIT");
-			AdvancedJIT.SetupJIT();
+		        LogTo.Debug("Initialize BugSense");
+		        BugSense.Init("9eacbe2e", GetVersion(), "http://www.bugsense.com/api/errors");
+		        AppDomain.CurrentDomain.UnhandledException += CurrentDomainOnUnhandledException;
+
+		        LogTo.Debug("Initializing advanced JIT");
+		        AdvancedJIT.SetupJIT();
+		    });
 
             LogTo.Debug("Building IOC container");
 			ContainerSetup containerSetup = new ContainerSetup();
