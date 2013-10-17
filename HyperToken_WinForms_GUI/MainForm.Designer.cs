@@ -50,7 +50,7 @@ namespace HyperToken.WinForms
 			this.IOBox = new Scintilla();
 			this.toolStrip1 = new ToolStripEx();
 			this.toolStripButtonConnect = new System.Windows.Forms.ToolStripButton();
-			this.toolStripButtonSendFile = new System.Windows.Forms.ToolStripButton();
+			new System.Windows.Forms.ToolStripButton();
 			this.fileSendPane1 = new CustomControls.FileSendPane();
 			this.statusStrip = new StatusStripEx();
 			this.fileSendLoadingCircle = new MRG.Controls.UI.LoadingCircleToolStripMenuItem();
@@ -141,7 +141,6 @@ namespace HyperToken.WinForms
 			// IOBox
 			// 
 			this.IOBox.AcceptsTab = true;
-			//this.IOBox.DetectUrls = false;
 			this.IOBox.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.IOBox.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.IOBox.ImeMode = System.Windows.Forms.ImeMode.Disable;
@@ -158,9 +157,7 @@ namespace HyperToken.WinForms
 			// toolStrip1
 			// 
 			this.toolStrip1.ClickThrough = true;
-			this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripButtonConnect,
-            this.toolStripButtonSendFile});
+			this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {this.toolStripButtonConnect});
 			this.toolStrip1.Location = new System.Drawing.Point(0, 24);
 			this.toolStrip1.Name = "toolStrip1";
 			this.toolStrip1.Size = new System.Drawing.Size(670, 25);
@@ -174,16 +171,6 @@ namespace HyperToken.WinForms
 			this.toolStripButtonConnect.Size = new System.Drawing.Size(72, 22);
 			this.toolStripButtonConnect.Text = "Connect";
 			this.toolStripButtonConnect.Click += new System.EventHandler(this.ToggleConnection);
-			// 
-			// toolStripButtonSendFile
-			// 
-			this.toolStripButtonSendFile.Image = Resources.FileSend;
-			this.toolStripButtonSendFile.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.toolStripButtonSendFile.Name = "toolStripButtonSendFile";
-			this.toolStripButtonSendFile.Size = new System.Drawing.Size(74, 22);
-			this.toolStripButtonSendFile.Text = "Send File";
-			this.toolStripButtonSendFile.ToolTipText = "Send File";
-			this.toolStripButtonSendFile.Click += new System.EventHandler(this.toolStripButtonSendFile_Click);
 			// 
 			// fileSendPane1
 			// 
@@ -289,8 +276,7 @@ namespace HyperToken.WinForms
 		private System.Windows.Forms.ToolStripPanel LeftToolStripPanel;
 		private System.Windows.Forms.ToolStripContentPanel ContentPanel;
 		private System.Windows.Forms.ToolStripButton toolStripButtonConnect;
-		private System.Windows.Forms.ToolStripButton toolStripButtonSendFile;
-		private System.Windows.Forms.ToolStripMenuItem newToolStripMenuItem;
+	    private System.Windows.Forms.ToolStripMenuItem newToolStripMenuItem;
 		private MenuStripEx menuStrip1;
 		private ToolStripEx toolStrip1;
 		private StatusStripEx statusStrip;

@@ -18,7 +18,7 @@ namespace HyperToken.WinForms
             builder.RegisterType<LoggingGui>().As<IMainMenuExtension>().SingleInstance();
             builder.RegisterType<LoggingGui>().As<IStatusbarExtension>().SingleInstance();
             builder.RegisterType<PacketParserGUI>().As<IMainMenuExtension>().SingleInstance();
-            builder.RegisterType<FileSendGUI>().As<IToolbarExtension>().SingleInstance();
+            //builder.RegisterType<FileSendGUI>().As<IToolbarExtension>().SingleInstance();
 
             builder.RegisterType<SerialStatusbarPortMenu>().As<IStatusbarExtension>();
             builder.RegisterType<SerialStatusbarStatusLabel>().As<IStatusbarExtension>();
