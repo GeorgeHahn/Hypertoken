@@ -21,6 +21,7 @@ namespace HyperToken.WinForms.Menus
                 {
                     _menu = new LightMenu("About");
                     _menu.Clicked += (sender, args) => _aboutBox.Open();
+                    _menu.PullRight = true;
                 }
 
                 return _menu;

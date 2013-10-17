@@ -19,6 +19,7 @@ namespace Terminal.Interface.GUI
         public bool Checked { get; set; }
 
         public bool Highlight { get; set; }
+        public bool PullRight { get; set; }
 
         public event ItemsListOpeningEventHandler ItemsListOpening;
 

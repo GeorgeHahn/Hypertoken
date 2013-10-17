@@ -35,6 +35,9 @@ namespace HyperToken.WinForms
                                                 temp.DropDownItems.Add(MenuToToolStripMenuItem(item));
                                         };
 
+                if(m.PullRight)
+                    temp.Alignment = ToolStripItemAlignment.Right;
+
                 foreach (var item in m.Items)
                     temp.DropDownItems.Add(MenuToToolStripMenuItem(item));
             }
