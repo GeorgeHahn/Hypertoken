@@ -170,3 +170,6 @@ pip-log.txt
 .DS_Store
 
 wyBuild Project*/
+
+# Nuget
+packages\
