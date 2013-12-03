@@ -104,6 +104,11 @@ namespace PacketParser
             }
         }
 
+        public string InterpretPacket(byte[] packet, byte[] unparsedPacket)
+        {
+            return InterpretPacket(packet);
+        }
+
         public string Name { get { return name ?? "Scriptable parser"; }}
     }
 }

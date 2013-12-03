@@ -145,7 +145,7 @@ namespace Terminal
 
             var bytes = data.Data;
             var preparsed = _preparser.InterpretPacket(bytes);
-            var dataString = _parser.CurrentParser.InterpretPacket(preparsed);
+            var dataString = _parser.CurrentParser.InterpretPacket(preparsed, bytes);
             var args = new DataReceivedEventArgs(dataString);
             DataReceived(this, args);
         }

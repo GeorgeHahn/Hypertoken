@@ -10,6 +10,7 @@ namespace PacketParser
             builder.RegisterType<StringPacketInterpreter>().As<IPacketInterpreter>().SingleInstance();
             builder.RegisterType<PythonPacketParser>().As<IPacketInterpreter>().SingleInstance();
             builder.RegisterType<RawPacketParser>().As<IPacketInterpreter>().SingleInstance();
+            builder.RegisterType<RawHIDParser>().As<IPacketInterpreter>().SingleInstance();
             builder.RegisterType<HIDPreparser>().As<IHIDPreparser>().SingleInstance();
         }
     }

@@ -8,6 +8,7 @@
         void Release();
 
         string InterpretPacket(byte[] packet);
+        string InterpretPacket(byte[] packet, byte[] unparsedPacket);
     }
 
     public interface IHIDPreparser

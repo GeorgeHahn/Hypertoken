@@ -32,6 +32,11 @@ namespace PacketParser
             return hex.ToString();
         }
 
+        public string InterpretPacket(byte[] packet, byte[] unparsedPacket)
+        {
+            return InterpretPacket(packet);
+        }
+
         public string Name { get { return "Unprintable character parser"; }}
     }
 }
